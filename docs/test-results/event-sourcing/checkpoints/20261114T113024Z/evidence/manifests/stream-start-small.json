@@ -1,0 +1,10 @@
+{
+  "run_id": "run-1794655173-small",
+  "captured_at": "2026-11-14T11:19:35Z",
+  "input_stream": "stream:doc-extractor:input",
+  "input_start_id": "1794654853859-0",
+  "splitted_stream": "stream:doc-extractor:splitted",
+  "splitted_start_id": "1794654854608-2",
+  "output_stream": "stream:doc-extractor:output",
+  "output_start_id": "1794654862011-0"
+}

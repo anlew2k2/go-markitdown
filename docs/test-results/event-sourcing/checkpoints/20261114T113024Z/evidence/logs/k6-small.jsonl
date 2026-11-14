@@ -1,0 +1,2041 @@
+time="2026-11-14T18:20:00+07:00" level=info msg="Automatic extension resolution is enabled. The current k6 binary doesn't satisfy all dependencies, it's required to provision a custom binary." deps="k6;k6/x/redis"
+time="2026-11-14T18:20:00+07:00" level=info msg="Using cached k6 binary" artifact_id=616bbd66e7d914937d6fdee48e4132b2972df64e deps="map[k6:v2.4.0 k6/x/redis:v0.4.5]" path=/Users/tungle/Library/Caches/k6/builds/616bbd66e7d914937d6fdee48e4132b2972df64e/k6
+time="2026-11-14T18:20:00+07:00" level=warning msg="open() was used and is currently relative to 'file:///Users/tungle/Desktop/workspace/anthony-lewis/go-markitdown/k6/', but in the future it will be aligned with how `require` and imports work and will be relative to 'file:///Users/tungle/Desktop/workspace/anthony-lewis/go-markitdown/k6/lib/manifest.js'. This means that in the future open will open relative path relative to the module/file it is written in. You can future proof this by using `import.meta.resolve()` to get relative paths to the file it is written in the current k6 version."
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: k6/load_test.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 100 max VUs, 1h7m0s max duration (incl. graceful stop):
+              * pipeline_load: Up to 0.42 iterations/s for 52m0s over 9 stages (maxVUs: 30-100, gracefulStop: 15m0s)
+
+time="2026-11-14T18:20:00+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:20:00.984Z\",\"event\":\"RUN_START\",\"run_id\":\"run-1794655173-small\",\"workload\":\"small\",\"manifest_path\":\"./fixtures/manifest.example.json\",\"allow_unverified_fixtures\":false,\"fixture_ids_pin\":null,\"workload_seed\":20261114,\"small_pool_order\":[\"pdf-small-8mib\",\"xlsx-small-1mib\",\"pdf-small-1mib\",\"docx-small-1mib\",\"docx-small-100kb\",\"csv-boundary-under-16mib\",\"xlsx-small-100kb\",\"pdf-small-240kb\"],\"outstanding_limit\":20,\"redis_url\":\"redis://127.0.0.1:16379\",\"input_stream\":\"stream:doc-extractor:input\",\"state_prefix\":\"doc-extractor:state:\",\"poll_interval_ms\":1000,\"max_observation_seconds\":120,\"stages\":[{\"target\":5,\"duration\":\"10m\"},{\"target\":10,\"duration\":\"30s\"},{\"target\":10,\"duration\":\"10m\"},{\"target\":15,\"duration\":\"30s\"},{\"target\":15,\"duration\":\"10m\"},{\"target\":20,\"duration\":\"30s\"},{\"target\":20,\"duration\":\"10m\"},{\"target\":25,\"duration\":\"30s\"},{\"target\":25,\"duration\":\"10m\"}],\"start_rate\":5,\"pre_allocated_vus\":30,\"max_vus\":100,\"graceful_stop\":\"15m\",\"message\":\"k6 load-test started. Authoritative throughput/accepted reconciliation requires loadtest/tools/drain run after this run drains. Run `loadtest/tools/drain record` BEFORE this script if you have not already, to capture stream start IDs.\"}" source=console
+
+running (0h00m01.0s), 000/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   0% ] 000/030 VUs  00m01.0s/52m0s  0.08 iters/s
+
+running (0h00m02.0s), 000/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   0% ] 000/030 VUs  00m02.0s/52m0s  0.08 iters/s
+
+running (0h00m03.0s), 000/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   0% ] 000/030 VUs  00m03.0s/52m0s  0.08 iters/s
+
+running (0h00m04.0s), 000/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   0% ] 000/030 VUs  00m04.0s/52m0s  0.08 iters/s
+
+running (0h00m05.0s), 000/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   0% ] 000/030 VUs  00m05.0s/52m0s  0.08 iters/s
+
+running (0h00m06.0s), 000/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   0% ] 000/030 VUs  00m06.0s/52m0s  0.08 iters/s
+
+running (0h00m07.0s), 000/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   0% ] 000/030 VUs  00m07.0s/52m0s  0.08 iters/s
+
+running (0h00m08.0s), 000/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   0% ] 000/030 VUs  00m08.0s/52m0s  0.08 iters/s
+
+running (0h00m09.0s), 000/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   0% ] 000/030 VUs  00m09.0s/52m0s  0.08 iters/s
+
+running (0h00m10.0s), 000/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   0% ] 000/030 VUs  00m10.0s/52m0s  0.08 iters/s
+
+running (0h00m11.0s), 000/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   0% ] 000/030 VUs  00m11.0s/52m0s  0.08 iters/s
+
+running (0h00m12.0s), 000/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   0% ] 000/030 VUs  00m12.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:20:12+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:20:12.998Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":0,\"vu\":1,\"request_id\":\"c95b0508-33b4-4c07-a1e9-67dfa3c4481f\",\"conversation_id\":\"7df8d652-14b8-487e-afef-ce2f63d2f288\",\"message_id\":\"7d772fdb-a1f8-4a48-bfe4-5ee76e7f6cd2\",\"fixture_id\":\"pdf-small-8mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_8mib.pdf\",\"bytes\":8843585},\"intent_time_ms\":1794655212998}" source=console
+time="2026-11-14T18:20:13+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:20:13.000Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":0,\"vu\":1,\"request_id\":\"c95b0508-33b4-4c07-a1e9-67dfa3c4481f\",\"fixture_id\":\"pdf-small-8mib\",\"stream_id\":\"1794655212997-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h00m13.0s), 001/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   0% ] 001/030 VUs  00m13.0s/52m0s  0.08 iters/s
+
+running (0h00m14.0s), 001/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   0% ] 001/030 VUs  00m14.0s/52m0s  0.08 iters/s
+
+running (0h00m15.0s), 001/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   0% ] 001/030 VUs  00m15.0s/52m0s  0.08 iters/s
+
+running (0h00m16.0s), 001/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 001/030 VUs  00m16.0s/52m0s  0.08 iters/s
+
+running (0h00m17.0s), 001/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 001/030 VUs  00m17.0s/52m0s  0.08 iters/s
+
+running (0h00m18.0s), 001/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 001/030 VUs  00m18.0s/52m0s  0.08 iters/s
+
+running (0h00m19.0s), 001/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 001/030 VUs  00m19.0s/52m0s  0.08 iters/s
+
+running (0h00m20.0s), 001/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 001/030 VUs  00m20.0s/52m0s  0.08 iters/s
+
+running (0h00m21.0s), 001/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 001/030 VUs  00m21.0s/52m0s  0.08 iters/s
+
+running (0h00m22.0s), 001/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 001/030 VUs  00m22.0s/52m0s  0.08 iters/s
+
+running (0h00m23.0s), 001/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 001/030 VUs  00m23.0s/52m0s  0.08 iters/s
+
+running (0h00m24.0s), 001/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 001/030 VUs  00m24.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:20:24+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:20:24.988Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":1,\"vu\":2,\"request_id\":\"3e2b2267-4bd5-4a75-a958-bea1736c67a3\",\"conversation_id\":\"b506e349-2e10-4b8d-92a5-05fbf5bb822e\",\"message_id\":\"afe8c0eb-6c52-4044-b6fa-357249a7d23e\",\"fixture_id\":\"xlsx-small-1mib\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_1mib.xlsx\",\"bytes\":1150755},\"intent_time_ms\":1794655224988}" source=console
+time="2026-11-14T18:20:24+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:20:24.989Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":1,\"vu\":2,\"request_id\":\"3e2b2267-4bd5-4a75-a958-bea1736c67a3\",\"fixture_id\":\"xlsx-small-1mib\",\"stream_id\":\"1794655224987-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h00m25.0s), 002/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m25.0s/52m0s  0.08 iters/s
+
+running (0h00m26.0s), 002/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m26.0s/52m0s  0.08 iters/s
+
+running (0h00m27.0s), 002/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m27.0s/52m0s  0.08 iters/s
+
+running (0h00m28.0s), 002/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m28.0s/52m0s  0.08 iters/s
+
+running (0h00m29.0s), 002/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m29.0s/52m0s  0.08 iters/s
+
+running (0h00m30.0s), 002/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m30.0s/52m0s  0.08 iters/s
+
+running (0h00m31.0s), 002/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m31.0s/52m0s  0.08 iters/s
+
+running (0h00m32.0s), 002/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m32.0s/52m0s  0.08 iters/s
+
+running (0h00m33.0s), 002/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m33.0s/52m0s  0.08 iters/s
+
+running (0h00m34.0s), 002/030 VUs, 0 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m34.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:20:35+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:20:35.009Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":1,\"vu\":2,\"request_id\":\"3e2b2267-4bd5-4a75-a958-bea1736c67a3\",\"conversation_id\":\"b506e349-2e10-4b8d-92a5-05fbf5bb822e\",\"message_id\":\"afe8c0eb-6c52-4044-b6fa-357249a7d23e\",\"fixture_id\":\"xlsx-small-1mib\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_1mib.xlsx\",\"bytes\":1150755},\"stream_id\":\"1794655224987-0\",\"polling\":{\"poll_count\":11,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":10020},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h00m35.0s), 001/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 001/030 VUs  00m35.0s/52m0s  0.08 iters/s
+
+running (0h00m36.0s), 001/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 001/030 VUs  00m36.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:20:36+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:20:36.989Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":2,\"vu\":3,\"request_id\":\"4e96de4f-2448-4097-9ee7-86f15b445771\",\"conversation_id\":\"fb0fa557-56b9-4375-86ac-eee7f1b49d18\",\"message_id\":\"932d8311-170e-43a5-9ee2-7d95471d6bf8\",\"fixture_id\":\"pdf-small-1mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_1mib.pdf\",\"bytes\":1102246},\"intent_time_ms\":1794655236989}" source=console
+time="2026-11-14T18:20:36+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:20:36.991Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":2,\"vu\":3,\"request_id\":\"4e96de4f-2448-4097-9ee7-86f15b445771\",\"fixture_id\":\"pdf-small-1mib\",\"stream_id\":\"1794655236988-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h00m37.0s), 002/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m37.0s/52m0s  0.08 iters/s
+
+running (0h00m38.0s), 002/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m38.0s/52m0s  0.08 iters/s
+
+running (0h00m39.0s), 002/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m39.0s/52m0s  0.08 iters/s
+
+running (0h00m40.0s), 002/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m40.0s/52m0s  0.08 iters/s
+
+running (0h00m41.0s), 002/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m41.0s/52m0s  0.08 iters/s
+
+running (0h00m42.0s), 002/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m42.0s/52m0s  0.08 iters/s
+
+running (0h00m43.0s), 002/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m43.0s/52m0s  0.08 iters/s
+
+running (0h00m44.0s), 002/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m44.0s/52m0s  0.08 iters/s
+
+running (0h00m45.0s), 002/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m45.0s/52m0s  0.08 iters/s
+
+running (0h00m46.0s), 002/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   1% ] 002/030 VUs  00m46.0s/52m0s  0.08 iters/s
+
+running (0h00m47.0s), 002/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 002/030 VUs  00m47.0s/52m0s  0.08 iters/s
+
+running (0h00m48.0s), 002/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 002/030 VUs  00m48.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:20:48+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:20:48.993Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":3,\"vu\":7,\"request_id\":\"a457d68e-b78a-41e2-850b-995ffeee5761\",\"conversation_id\":\"174d3b94-e134-4cff-92a7-f99f7c5e3469\",\"message_id\":\"044bdf92-03b3-4086-95c4-3d820557f952\",\"fixture_id\":\"docx-small-1mib\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_1mib.docx\",\"bytes\":1112582},\"intent_time_ms\":1794655248993}" source=console
+time="2026-11-14T18:20:48+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:20:48.994Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":3,\"vu\":7,\"request_id\":\"a457d68e-b78a-41e2-850b-995ffeee5761\",\"fixture_id\":\"docx-small-1mib\",\"stream_id\":\"1794655248990-0\",\"publish_duration_ms\":0}" source=console
+
+running (0h00m49.0s), 003/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 003/030 VUs  00m49.0s/52m0s  0.08 iters/s
+
+running (0h00m50.0s), 003/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 003/030 VUs  00m50.0s/52m0s  0.08 iters/s
+
+running (0h00m51.0s), 003/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 003/030 VUs  00m51.0s/52m0s  0.08 iters/s
+
+running (0h00m52.0s), 003/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 003/030 VUs  00m52.0s/52m0s  0.08 iters/s
+
+running (0h00m53.0s), 003/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 003/030 VUs  00m53.0s/52m0s  0.08 iters/s
+
+running (0h00m54.0s), 003/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 003/030 VUs  00m54.0s/52m0s  0.08 iters/s
+
+running (0h00m55.0s), 003/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 003/030 VUs  00m55.0s/52m0s  0.08 iters/s
+
+running (0h00m56.0s), 003/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 003/030 VUs  00m56.0s/52m0s  0.08 iters/s
+
+running (0h00m57.0s), 003/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 003/030 VUs  00m57.0s/52m0s  0.08 iters/s
+
+running (0h00m58.0s), 003/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 003/030 VUs  00m58.0s/52m0s  0.08 iters/s
+
+running (0h00m59.0s), 003/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 003/030 VUs  00m59.0s/52m0s  0.08 iters/s
+
+running (0h01m00.0s), 003/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 003/030 VUs  01m00.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:21:00+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:21:00.994Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":4,\"vu\":5,\"request_id\":\"919e4fd5-ceb3-448b-aebd-5aefc4c998b9\",\"conversation_id\":\"6d10a812-71d8-43bb-aa2d-75486445f829\",\"message_id\":\"ec7edeea-fff5-43d1-bd2b-6a84ec020323\",\"fixture_id\":\"docx-small-100kb\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_100kb.docx\",\"bytes\":106927},\"intent_time_ms\":1794655260994}" source=console
+time="2026-11-14T18:21:00+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:21:00.995Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":4,\"vu\":5,\"request_id\":\"919e4fd5-ceb3-448b-aebd-5aefc4c998b9\",\"fixture_id\":\"docx-small-100kb\",\"stream_id\":\"1794655260987-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h01m01.0s), 004/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 004/030 VUs  01m01.0s/52m0s  0.08 iters/s
+
+running (0h01m02.0s), 004/030 VUs, 1 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 004/030 VUs  01m02.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:21:03+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:21:03.024Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":3,\"vu\":7,\"request_id\":\"a457d68e-b78a-41e2-850b-995ffeee5761\",\"conversation_id\":\"174d3b94-e134-4cff-92a7-f99f7c5e3469\",\"message_id\":\"044bdf92-03b3-4086-95c4-3d820557f952\",\"fixture_id\":\"docx-small-1mib\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_1mib.docx\",\"bytes\":1112582},\"stream_id\":\"1794655248990-0\",\"polling\":{\"poll_count\":15,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":14031},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h01m03.0s), 003/030 VUs, 2 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 003/030 VUs  01m03.0s/52m0s  0.08 iters/s
+
+running (0h01m04.0s), 003/030 VUs, 2 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 003/030 VUs  01m04.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:21:05+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:21:05.008Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":4,\"vu\":5,\"request_id\":\"919e4fd5-ceb3-448b-aebd-5aefc4c998b9\",\"conversation_id\":\"6d10a812-71d8-43bb-aa2d-75486445f829\",\"message_id\":\"ec7edeea-fff5-43d1-bd2b-6a84ec020323\",\"fixture_id\":\"docx-small-100kb\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_100kb.docx\",\"bytes\":106927},\"stream_id\":\"1794655260987-0\",\"polling\":{\"poll_count\":5,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":4011},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h01m05.0s), 002/030 VUs, 3 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 002/030 VUs  01m05.0s/52m0s  0.08 iters/s
+
+running (0h01m06.0s), 002/030 VUs, 3 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 002/030 VUs  01m06.0s/52m0s  0.08 iters/s
+
+running (0h01m07.0s), 002/030 VUs, 3 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 002/030 VUs  01m07.0s/52m0s  0.08 iters/s
+
+running (0h01m08.0s), 002/030 VUs, 3 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 002/030 VUs  01m08.0s/52m0s  0.08 iters/s
+
+running (0h01m09.0s), 002/030 VUs, 3 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 002/030 VUs  01m09.0s/52m0s  0.08 iters/s
+
+running (0h01m10.0s), 002/030 VUs, 3 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 002/030 VUs  01m10.0s/52m0s  0.08 iters/s
+
+running (0h01m11.0s), 002/030 VUs, 3 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 002/030 VUs  01m11.0s/52m0s  0.08 iters/s
+
+running (0h01m12.0s), 002/030 VUs, 3 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 002/030 VUs  01m12.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:21:12+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:21:12.996Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":5,\"vu\":4,\"request_id\":\"c7b25ee8-f5e9-47a7-bd97-94e32bc47a08\",\"conversation_id\":\"fed5ae2f-b221-434f-bc67-7baf0c8c8a7b\",\"message_id\":\"8beac8be-dfc3-408e-a725-d1974a8f2bf7\",\"fixture_id\":\"csv-boundary-under-16mib\",\"dataset\":{\"format\":\"csv\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/boundary_under_16mb.csv\",\"bytes\":16777200},\"intent_time_ms\":1794655272996}" source=console
+time="2026-11-14T18:21:12+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:21:12.998Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":5,\"vu\":4,\"request_id\":\"c7b25ee8-f5e9-47a7-bd97-94e32bc47a08\",\"fixture_id\":\"csv-boundary-under-16mib\",\"stream_id\":\"1794655272996-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h01m13.0s), 003/030 VUs, 3 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 003/030 VUs  01m13.0s/52m0s  0.08 iters/s
+
+running (0h01m14.0s), 003/030 VUs, 3 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 003/030 VUs  01m14.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:21:15+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:21:15.003Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":5,\"vu\":4,\"request_id\":\"c7b25ee8-f5e9-47a7-bd97-94e32bc47a08\",\"conversation_id\":\"fed5ae2f-b221-434f-bc67-7baf0c8c8a7b\",\"message_id\":\"8beac8be-dfc3-408e-a725-d1974a8f2bf7\",\"fixture_id\":\"csv-boundary-under-16mib\",\"dataset\":{\"format\":\"csv\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/boundary_under_16mb.csv\",\"bytes\":16777200},\"stream_id\":\"1794655272996-0\",\"polling\":{\"poll_count\":3,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2006},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h01m15.0s), 002/030 VUs, 4 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 002/030 VUs  01m15.0s/52m0s  0.08 iters/s
+
+running (0h01m16.0s), 002/030 VUs, 4 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 002/030 VUs  01m16.0s/52m0s  0.08 iters/s
+
+running (0h01m17.0s), 002/030 VUs, 4 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 002/030 VUs  01m17.0s/52m0s  0.08 iters/s
+
+running (0h01m18.0s), 002/030 VUs, 4 complete and 0 interrupted iterations
+pipeline_load   [   2% ] 002/030 VUs  01m18.0s/52m0s  0.08 iters/s
+
+running (0h01m19.0s), 002/030 VUs, 4 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 002/030 VUs  01m19.0s/52m0s  0.08 iters/s
+
+running (0h01m20.0s), 002/030 VUs, 4 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 002/030 VUs  01m20.0s/52m0s  0.08 iters/s
+
+running (0h01m21.0s), 002/030 VUs, 4 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 002/030 VUs  01m21.0s/52m0s  0.08 iters/s
+
+running (0h01m22.0s), 002/030 VUs, 4 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 002/030 VUs  01m22.0s/52m0s  0.08 iters/s
+
+running (0h01m23.0s), 002/030 VUs, 4 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 002/030 VUs  01m23.0s/52m0s  0.08 iters/s
+
+running (0h01m24.0s), 002/030 VUs, 4 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 002/030 VUs  01m24.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:21:24+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:21:24.998Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":6,\"vu\":6,\"request_id\":\"9275037a-ea8f-403b-b813-cd87519c3e2c\",\"conversation_id\":\"14801fc8-d3a3-4ecb-8b90-cf17be40e826\",\"message_id\":\"75a1f885-c4a5-4e6a-8791-4413cb8ab738\",\"fixture_id\":\"xlsx-small-100kb\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_100kb.xlsx\",\"bytes\":110661},\"intent_time_ms\":1794655284998}" source=console
+time="2026-11-14T18:21:25+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:21:25.001Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":6,\"vu\":6,\"request_id\":\"9275037a-ea8f-403b-b813-cd87519c3e2c\",\"fixture_id\":\"xlsx-small-100kb\",\"stream_id\":\"1794655284997-0\",\"publish_duration_ms\":2}" source=console
+
+running (0h01m25.0s), 003/030 VUs, 4 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 003/030 VUs  01m25.0s/52m0s  0.08 iters/s
+
+running (0h01m26.0s), 003/030 VUs, 4 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 003/030 VUs  01m26.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:21:27+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:21:27.008Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":6,\"vu\":6,\"request_id\":\"9275037a-ea8f-403b-b813-cd87519c3e2c\",\"conversation_id\":\"14801fc8-d3a3-4ecb-8b90-cf17be40e826\",\"message_id\":\"75a1f885-c4a5-4e6a-8791-4413cb8ab738\",\"fixture_id\":\"xlsx-small-100kb\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_100kb.xlsx\",\"bytes\":110661},\"stream_id\":\"1794655284997-0\",\"polling\":{\"poll_count\":3,\"read_errors\":0,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2008},\"outcome\":\"COMPLETED\"}" source=console
+time="2026-11-14T18:21:27+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:21:27.202Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":2,\"vu\":3,\"request_id\":\"4e96de4f-2448-4097-9ee7-86f15b445771\",\"conversation_id\":\"fb0fa557-56b9-4375-86ac-eee7f1b49d18\",\"message_id\":\"932d8311-170e-43a5-9ee2-7d95471d6bf8\",\"fixture_id\":\"pdf-small-1mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_1mib.pdf\",\"bytes\":1102246},\"stream_id\":\"1794655236988-0\",\"polling\":{\"poll_count\":51,\"read_errors\":2,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":50213},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h01m27.0s), 001/030 VUs, 6 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m27.0s/52m0s  0.08 iters/s
+
+running (0h01m28.0s), 001/030 VUs, 6 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m28.0s/52m0s  0.08 iters/s
+
+running (0h01m29.0s), 001/030 VUs, 6 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m29.0s/52m0s  0.08 iters/s
+
+running (0h01m30.0s), 001/030 VUs, 6 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m30.0s/52m0s  0.08 iters/s
+
+running (0h01m31.0s), 001/030 VUs, 6 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m31.0s/52m0s  0.08 iters/s
+
+running (0h01m32.0s), 001/030 VUs, 6 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m32.0s/52m0s  0.08 iters/s
+
+running (0h01m33.0s), 001/030 VUs, 6 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m33.0s/52m0s  0.08 iters/s
+
+running (0h01m34.0s), 001/030 VUs, 6 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m34.0s/52m0s  0.08 iters/s
+
+running (0h01m35.0s), 001/030 VUs, 6 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m35.0s/52m0s  0.08 iters/s
+
+running (0h01m36.0s), 001/030 VUs, 6 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m36.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:21:36+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:21:36.998Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":7,\"vu\":10,\"request_id\":\"b145372e-3185-4b6a-a37b-6c3881a78c53\",\"conversation_id\":\"067270cc-6108-4e88-b090-0a3e4903080f\",\"message_id\":\"65dbebbc-2172-4d35-af64-e09cfe12a8d3\",\"fixture_id\":\"pdf-small-240kb\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/report.pdf\",\"bytes\":240108},\"intent_time_ms\":1794655296998}" source=console
+time="2026-11-14T18:21:37+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:21:37.002Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":7,\"vu\":10,\"request_id\":\"b145372e-3185-4b6a-a37b-6c3881a78c53\",\"fixture_id\":\"pdf-small-240kb\",\"stream_id\":\"1794655296997-0\",\"publish_duration_ms\":3}" source=console
+
+running (0h01m37.0s), 002/030 VUs, 6 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 002/030 VUs  01m37.0s/52m0s  0.08 iters/s
+
+running (0h01m38.0s), 002/030 VUs, 6 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 002/030 VUs  01m38.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:21:39+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:21:39.007Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":7,\"vu\":10,\"request_id\":\"b145372e-3185-4b6a-a37b-6c3881a78c53\",\"conversation_id\":\"067270cc-6108-4e88-b090-0a3e4903080f\",\"message_id\":\"65dbebbc-2172-4d35-af64-e09cfe12a8d3\",\"fixture_id\":\"pdf-small-240kb\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/report.pdf\",\"bytes\":240108},\"stream_id\":\"1794655296997-0\",\"polling\":{\"poll_count\":3,\"read_errors\":0,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2008},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h01m39.0s), 001/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m39.0s/52m0s  0.08 iters/s
+
+running (0h01m40.0s), 001/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m40.0s/52m0s  0.08 iters/s
+
+running (0h01m41.0s), 001/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m41.0s/52m0s  0.08 iters/s
+
+running (0h01m42.0s), 001/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m42.0s/52m0s  0.08 iters/s
+
+running (0h01m43.0s), 001/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m43.0s/52m0s  0.08 iters/s
+
+running (0h01m44.0s), 001/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m44.0s/52m0s  0.08 iters/s
+
+running (0h01m45.0s), 001/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m45.0s/52m0s  0.08 iters/s
+
+running (0h01m46.0s), 001/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m46.0s/52m0s  0.08 iters/s
+
+running (0h01m47.0s), 001/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m47.0s/52m0s  0.08 iters/s
+
+running (0h01m48.0s), 001/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 001/030 VUs  01m48.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:21:49+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:21:49.007Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":8,\"vu\":9,\"request_id\":\"6a1d23fc-ac8b-4801-ba1d-6a416d5fc1ea\",\"conversation_id\":\"a07527f1-e738-4216-93b3-fa7c78725195\",\"message_id\":\"f254bbf7-7cdb-430e-aa9e-5a841e5e26ff\",\"fixture_id\":\"pdf-small-8mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_8mib.pdf\",\"bytes\":8843585},\"intent_time_ms\":1794655309007}" source=console
+time="2026-11-14T18:21:49+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:21:49.012Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":8,\"vu\":9,\"request_id\":\"6a1d23fc-ac8b-4801-ba1d-6a416d5fc1ea\",\"fixture_id\":\"pdf-small-8mib\",\"stream_id\":\"1794655309008-0\",\"publish_duration_ms\":3}" source=console
+
+running (0h01m49.0s), 002/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   3% ] 002/030 VUs  01m49.0s/52m0s  0.08 iters/s
+
+running (0h01m50.0s), 002/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  01m50.0s/52m0s  0.08 iters/s
+
+running (0h01m51.0s), 002/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  01m51.0s/52m0s  0.08 iters/s
+
+running (0h01m52.0s), 002/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  01m52.0s/52m0s  0.08 iters/s
+
+running (0h01m53.0s), 002/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  01m53.0s/52m0s  0.08 iters/s
+
+running (0h01m54.0s), 002/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  01m54.0s/52m0s  0.08 iters/s
+
+running (0h01m55.0s), 002/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  01m55.0s/52m0s  0.08 iters/s
+
+running (0h01m56.0s), 002/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  01m56.0s/52m0s  0.08 iters/s
+
+running (0h01m57.0s), 002/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  01m57.0s/52m0s  0.08 iters/s
+
+running (0h01m58.0s), 002/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  01m58.0s/52m0s  0.08 iters/s
+
+running (0h01m59.0s), 002/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  01m59.0s/52m0s  0.08 iters/s
+
+running (0h02m00.0s), 002/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  02m00.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:22:01+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:22:01.000Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":9,\"vu\":14,\"request_id\":\"c5905f8a-1d18-46c4-8cf6-dafee920a78d\",\"conversation_id\":\"5e1496d9-e26b-44f1-9fbe-894325d237c1\",\"message_id\":\"4405667f-66d9-4598-94e0-566100e4dcda\",\"fixture_id\":\"xlsx-small-1mib\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_1mib.xlsx\",\"bytes\":1150755},\"intent_time_ms\":1794655321000}" source=console
+time="2026-11-14T18:22:01+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:22:01.001Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":9,\"vu\":14,\"request_id\":\"c5905f8a-1d18-46c4-8cf6-dafee920a78d\",\"fixture_id\":\"xlsx-small-1mib\",\"stream_id\":\"1794655320999-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h02m01.0s), 003/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 003/030 VUs  02m01.0s/52m0s  0.08 iters/s
+
+running (0h02m02.0s), 003/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 003/030 VUs  02m02.0s/52m0s  0.08 iters/s
+
+running (0h02m03.0s), 003/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 003/030 VUs  02m03.0s/52m0s  0.08 iters/s
+
+running (0h02m04.0s), 003/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 003/030 VUs  02m04.0s/52m0s  0.08 iters/s
+
+running (0h02m05.0s), 003/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 003/030 VUs  02m05.0s/52m0s  0.08 iters/s
+
+running (0h02m06.0s), 003/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 003/030 VUs  02m06.0s/52m0s  0.08 iters/s
+
+running (0h02m07.0s), 003/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 003/030 VUs  02m07.0s/52m0s  0.08 iters/s
+
+running (0h02m08.0s), 003/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 003/030 VUs  02m08.0s/52m0s  0.08 iters/s
+
+running (0h02m09.0s), 003/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 003/030 VUs  02m09.0s/52m0s  0.08 iters/s
+
+running (0h02m10.0s), 003/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 003/030 VUs  02m10.0s/52m0s  0.08 iters/s
+
+running (0h02m11.0s), 003/030 VUs, 7 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 003/030 VUs  02m11.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:22:12+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:22:12.023Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":9,\"vu\":14,\"request_id\":\"c5905f8a-1d18-46c4-8cf6-dafee920a78d\",\"conversation_id\":\"5e1496d9-e26b-44f1-9fbe-894325d237c1\",\"message_id\":\"4405667f-66d9-4598-94e0-566100e4dcda\",\"fixture_id\":\"xlsx-small-1mib\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_1mib.xlsx\",\"bytes\":1150755},\"stream_id\":\"1794655320999-0\",\"polling\":{\"poll_count\":12,\"read_errors\":0,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":11023},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h02m12.0s), 002/030 VUs, 8 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  02m12.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:22:13+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:22:13.000Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":10,\"vu\":11,\"request_id\":\"0160c9ab-92f8-4feb-9155-38b5a9883e32\",\"conversation_id\":\"76baa9eb-3ccc-4b6d-9abb-930905cb4531\",\"message_id\":\"568afaef-4110-4685-9bd5-c8b6c2e57bba\",\"fixture_id\":\"pdf-small-1mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_1mib.pdf\",\"bytes\":1102246},\"intent_time_ms\":1794655333000}" source=console
+time="2026-11-14T18:22:13+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:22:13.000Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":0,\"vu\":1,\"request_id\":\"c95b0508-33b4-4c07-a1e9-67dfa3c4481f\",\"conversation_id\":\"7df8d652-14b8-487e-afef-ce2f63d2f288\",\"message_id\":\"7d772fdb-a1f8-4a48-bfe4-5ee76e7f6cd2\",\"fixture_id\":\"pdf-small-8mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_8mib.pdf\",\"bytes\":8843585},\"stream_id\":\"1794655212997-0\",\"polling\":{\"poll_count\":120,\"read_errors\":1,\"last_observed_status\":\"PROCESSING\",\"e2e_duration_ms\":null},\"outcome\":\"OBSERVATION_TIMEOUT\"}" source=console
+time="2026-11-14T18:22:13+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:22:13.002Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":10,\"vu\":11,\"request_id\":\"0160c9ab-92f8-4feb-9155-38b5a9883e32\",\"fixture_id\":\"pdf-small-1mib\",\"stream_id\":\"1794655333000-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h02m13.0s), 002/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  02m13.0s/52m0s  0.08 iters/s
+
+running (0h02m14.0s), 002/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  02m14.0s/52m0s  0.08 iters/s
+
+running (0h02m15.0s), 002/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  02m15.0s/52m0s  0.08 iters/s
+
+running (0h02m16.0s), 002/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  02m16.0s/52m0s  0.08 iters/s
+
+running (0h02m17.0s), 002/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  02m17.0s/52m0s  0.08 iters/s
+
+running (0h02m18.0s), 002/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  02m18.0s/52m0s  0.08 iters/s
+
+running (0h02m19.0s), 002/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  02m19.0s/52m0s  0.08 iters/s
+
+running (0h02m20.0s), 002/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   4% ] 002/030 VUs  02m20.0s/52m0s  0.08 iters/s
+
+running (0h02m21.0s), 002/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 002/030 VUs  02m21.0s/52m0s  0.08 iters/s
+
+running (0h02m22.0s), 002/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 002/030 VUs  02m22.0s/52m0s  0.08 iters/s
+
+running (0h02m23.0s), 002/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 002/030 VUs  02m23.0s/52m0s  0.08 iters/s
+
+running (0h02m24.0s), 002/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 002/030 VUs  02m24.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:22:25+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:22:25.000Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":11,\"vu\":12,\"request_id\":\"a4819a20-b05c-4298-a1d4-5c9c91c29df0\",\"conversation_id\":\"2632c983-bb10-4c52-9e50-dc3797934ad3\",\"message_id\":\"92a56747-cbb9-4144-99b4-fe3d8b983d2b\",\"fixture_id\":\"docx-small-1mib\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_1mib.docx\",\"bytes\":1112582},\"intent_time_ms\":1794655345000}" source=console
+time="2026-11-14T18:22:25+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:22:25.001Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":11,\"vu\":12,\"request_id\":\"a4819a20-b05c-4298-a1d4-5c9c91c29df0\",\"fixture_id\":\"docx-small-1mib\",\"stream_id\":\"1794655344999-0\",\"publish_duration_ms\":0}" source=console
+
+running (0h02m25.0s), 003/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 003/030 VUs  02m25.0s/52m0s  0.08 iters/s
+
+running (0h02m26.0s), 003/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 003/030 VUs  02m26.0s/52m0s  0.08 iters/s
+
+running (0h02m27.0s), 003/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 003/030 VUs  02m27.0s/52m0s  0.08 iters/s
+
+running (0h02m28.0s), 003/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 003/030 VUs  02m28.0s/52m0s  0.08 iters/s
+
+running (0h02m29.0s), 003/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 003/030 VUs  02m29.0s/52m0s  0.08 iters/s
+
+running (0h02m30.0s), 003/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 003/030 VUs  02m30.0s/52m0s  0.08 iters/s
+
+running (0h02m31.0s), 003/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 003/030 VUs  02m31.0s/52m0s  0.08 iters/s
+
+running (0h02m32.0s), 003/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 003/030 VUs  02m32.0s/52m0s  0.08 iters/s
+
+running (0h02m33.0s), 003/030 VUs, 9 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 003/030 VUs  02m33.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:22:34+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:22:34.018Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":11,\"vu\":12,\"request_id\":\"a4819a20-b05c-4298-a1d4-5c9c91c29df0\",\"conversation_id\":\"2632c983-bb10-4c52-9e50-dc3797934ad3\",\"message_id\":\"92a56747-cbb9-4144-99b4-fe3d8b983d2b\",\"fixture_id\":\"docx-small-1mib\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_1mib.docx\",\"bytes\":1112582},\"stream_id\":\"1794655344999-0\",\"polling\":{\"poll_count\":10,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":9018},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h02m34.0s), 002/030 VUs, 10 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 002/030 VUs  02m34.0s/52m0s  0.08 iters/s
+
+running (0h02m35.0s), 002/030 VUs, 10 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 002/030 VUs  02m35.0s/52m0s  0.08 iters/s
+
+running (0h02m36.0s), 002/030 VUs, 10 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 002/030 VUs  02m36.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:22:36+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:22:36.999Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":12,\"vu\":15,\"request_id\":\"6173f923-cb8c-4004-9410-2a11915fbbac\",\"conversation_id\":\"2721be15-d1bf-4836-94a8-1e1580ecd1aa\",\"message_id\":\"823d72e9-2472-4d50-81d1-5f3f25eda7c9\",\"fixture_id\":\"docx-small-100kb\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_100kb.docx\",\"bytes\":106927},\"intent_time_ms\":1794655356999}" source=console
+time="2026-11-14T18:22:37+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:22:37.001Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":12,\"vu\":15,\"request_id\":\"6173f923-cb8c-4004-9410-2a11915fbbac\",\"fixture_id\":\"docx-small-100kb\",\"stream_id\":\"1794655356999-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h02m37.0s), 003/030 VUs, 10 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 003/030 VUs  02m37.0s/52m0s  0.08 iters/s
+
+running (0h02m38.0s), 003/030 VUs, 10 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 003/030 VUs  02m38.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:22:39+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:22:39.005Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":12,\"vu\":15,\"request_id\":\"6173f923-cb8c-4004-9410-2a11915fbbac\",\"conversation_id\":\"2721be15-d1bf-4836-94a8-1e1580ecd1aa\",\"message_id\":\"823d72e9-2472-4d50-81d1-5f3f25eda7c9\",\"fixture_id\":\"docx-small-100kb\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_100kb.docx\",\"bytes\":106927},\"stream_id\":\"1794655356999-0\",\"polling\":{\"poll_count\":3,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2006},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h02m39.0s), 002/030 VUs, 11 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 002/030 VUs  02m39.0s/52m0s  0.08 iters/s
+
+running (0h02m40.0s), 002/030 VUs, 11 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 002/030 VUs  02m40.0s/52m0s  0.08 iters/s
+
+running (0h02m41.0s), 002/030 VUs, 11 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 002/030 VUs  02m41.0s/52m0s  0.08 iters/s
+
+running (0h02m42.0s), 002/030 VUs, 11 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 002/030 VUs  02m42.0s/52m0s  0.08 iters/s
+
+running (0h02m43.0s), 002/030 VUs, 11 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 002/030 VUs  02m43.0s/52m0s  0.08 iters/s
+
+running (0h02m44.0s), 002/030 VUs, 11 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 002/030 VUs  02m44.0s/52m0s  0.08 iters/s
+
+running (0h02m45.0s), 002/030 VUs, 11 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 002/030 VUs  02m45.0s/52m0s  0.08 iters/s
+
+running (0h02m46.0s), 002/030 VUs, 11 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 002/030 VUs  02m46.0s/52m0s  0.08 iters/s
+
+running (0h02m47.0s), 002/030 VUs, 11 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 002/030 VUs  02m47.0s/52m0s  0.08 iters/s
+
+running (0h02m48.0s), 002/030 VUs, 11 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 002/030 VUs  02m48.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:22:49+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:22:49.002Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":13,\"vu\":13,\"request_id\":\"0ac19c75-2317-4993-a049-dd96eec82bbb\",\"conversation_id\":\"e39cde05-d896-4938-8b0d-bbdc272dca63\",\"message_id\":\"2461a628-1fee-4d78-9ceb-c6c199076136\",\"fixture_id\":\"csv-boundary-under-16mib\",\"dataset\":{\"format\":\"csv\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/boundary_under_16mb.csv\",\"bytes\":16777200},\"intent_time_ms\":1794655369002}" source=console
+time="2026-11-14T18:22:49+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:22:49.003Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":13,\"vu\":13,\"request_id\":\"0ac19c75-2317-4993-a049-dd96eec82bbb\",\"fixture_id\":\"csv-boundary-under-16mib\",\"stream_id\":\"1794655369002-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h02m49.0s), 003/030 VUs, 11 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 003/030 VUs  02m49.0s/52m0s  0.08 iters/s
+
+running (0h02m50.0s), 003/030 VUs, 11 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 003/030 VUs  02m50.0s/52m0s  0.08 iters/s
+
+running (0h02m51.0s), 003/030 VUs, 11 complete and 0 interrupted iterations
+pipeline_load   [   5% ] 003/030 VUs  02m51.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:22:52+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:22:52.009Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":13,\"vu\":13,\"request_id\":\"0ac19c75-2317-4993-a049-dd96eec82bbb\",\"conversation_id\":\"e39cde05-d896-4938-8b0d-bbdc272dca63\",\"message_id\":\"2461a628-1fee-4d78-9ceb-c6c199076136\",\"fixture_id\":\"csv-boundary-under-16mib\",\"dataset\":{\"format\":\"csv\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/boundary_under_16mb.csv\",\"bytes\":16777200},\"stream_id\":\"1794655369002-0\",\"polling\":{\"poll_count\":4,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":3007},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h02m52.0s), 002/030 VUs, 12 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 002/030 VUs  02m52.0s/52m0s  0.08 iters/s
+
+running (0h02m53.0s), 002/030 VUs, 12 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 002/030 VUs  02m53.0s/52m0s  0.08 iters/s
+
+running (0h02m54.0s), 002/030 VUs, 12 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 002/030 VUs  02m54.0s/52m0s  0.08 iters/s
+
+running (0h02m55.0s), 002/030 VUs, 12 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 002/030 VUs  02m55.0s/52m0s  0.08 iters/s
+
+running (0h02m56.0s), 002/030 VUs, 12 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 002/030 VUs  02m56.0s/52m0s  0.08 iters/s
+
+running (0h02m57.0s), 002/030 VUs, 12 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 002/030 VUs  02m57.0s/52m0s  0.08 iters/s
+
+running (0h02m58.0s), 002/030 VUs, 12 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 002/030 VUs  02m58.0s/52m0s  0.08 iters/s
+
+running (0h02m59.0s), 002/030 VUs, 12 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 002/030 VUs  02m59.0s/52m0s  0.08 iters/s
+
+running (0h03m00.0s), 002/030 VUs, 12 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 002/030 VUs  03m00.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:23:01+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:23:01.001Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":14,\"vu\":8,\"request_id\":\"cc062f10-f549-4843-9585-1eb2b58f9bfc\",\"conversation_id\":\"92ff593d-4284-4b25-9296-11a641326f1a\",\"message_id\":\"240825c7-eaa5-4691-aeb7-030ee82eb733\",\"fixture_id\":\"xlsx-small-100kb\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_100kb.xlsx\",\"bytes\":110661},\"intent_time_ms\":1794655381001}" source=console
+time="2026-11-14T18:23:01+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:23:01.003Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":14,\"vu\":8,\"request_id\":\"cc062f10-f549-4843-9585-1eb2b58f9bfc\",\"fixture_id\":\"xlsx-small-100kb\",\"stream_id\":\"1794655381001-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h03m01.0s), 003/030 VUs, 12 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 003/030 VUs  03m01.0s/52m0s  0.08 iters/s
+
+running (0h03m02.0s), 003/030 VUs, 12 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 003/030 VUs  03m02.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:23:03+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:23:03.008Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":14,\"vu\":8,\"request_id\":\"cc062f10-f549-4843-9585-1eb2b58f9bfc\",\"conversation_id\":\"92ff593d-4284-4b25-9296-11a641326f1a\",\"message_id\":\"240825c7-eaa5-4691-aeb7-030ee82eb733\",\"fixture_id\":\"xlsx-small-100kb\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_100kb.xlsx\",\"bytes\":110661},\"stream_id\":\"1794655381001-0\",\"polling\":{\"poll_count\":3,\"read_errors\":0,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2006},\"outcome\":\"COMPLETED\"}" source=console
+time="2026-11-14T18:23:03+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:23:03.368Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":10,\"vu\":11,\"request_id\":\"0160c9ab-92f8-4feb-9155-38b5a9883e32\",\"conversation_id\":\"76baa9eb-3ccc-4b6d-9abb-930905cb4531\",\"message_id\":\"568afaef-4110-4685-9bd5-c8b6c2e57bba\",\"fixture_id\":\"pdf-small-1mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_1mib.pdf\",\"bytes\":1102246},\"stream_id\":\"1794655333000-0\",\"polling\":{\"poll_count\":51,\"read_errors\":2,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":50367},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h03m03.0s), 001/030 VUs, 14 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 001/030 VUs  03m03.0s/52m0s  0.08 iters/s
+
+running (0h03m04.0s), 001/030 VUs, 14 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 001/030 VUs  03m04.0s/52m0s  0.08 iters/s
+
+running (0h03m05.0s), 001/030 VUs, 14 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 001/030 VUs  03m05.0s/52m0s  0.08 iters/s
+
+running (0h03m06.0s), 001/030 VUs, 14 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 001/030 VUs  03m06.0s/52m0s  0.08 iters/s
+
+running (0h03m07.0s), 001/030 VUs, 14 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 001/030 VUs  03m07.0s/52m0s  0.08 iters/s
+
+running (0h03m08.0s), 001/030 VUs, 14 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 001/030 VUs  03m08.0s/52m0s  0.08 iters/s
+
+running (0h03m09.0s), 001/030 VUs, 14 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 001/030 VUs  03m09.0s/52m0s  0.08 iters/s
+
+running (0h03m10.0s), 001/030 VUs, 14 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 001/030 VUs  03m10.0s/52m0s  0.08 iters/s
+
+running (0h03m11.0s), 001/030 VUs, 14 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 001/030 VUs  03m11.0s/52m0s  0.08 iters/s
+
+running (0h03m12.0s), 001/030 VUs, 14 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 001/030 VUs  03m12.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:23:12+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:23:12.999Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":15,\"vu\":22,\"request_id\":\"56b6852a-571c-4c25-a5e8-42236d6338a2\",\"conversation_id\":\"c39edc60-5e1f-4a22-a46d-259092421990\",\"message_id\":\"78e35e26-37bc-4dc7-ad96-50c16bd0fc5e\",\"fixture_id\":\"pdf-small-240kb\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/report.pdf\",\"bytes\":240108},\"intent_time_ms\":1794655392999}" source=console
+time="2026-11-14T18:23:13+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:23:13.001Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":15,\"vu\":22,\"request_id\":\"56b6852a-571c-4c25-a5e8-42236d6338a2\",\"fixture_id\":\"pdf-small-240kb\",\"stream_id\":\"1794655392999-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h03m13.0s), 002/030 VUs, 14 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 002/030 VUs  03m13.0s/52m0s  0.08 iters/s
+
+running (0h03m14.0s), 002/030 VUs, 14 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 002/030 VUs  03m14.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:23:15+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:23:15.006Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":15,\"vu\":22,\"request_id\":\"56b6852a-571c-4c25-a5e8-42236d6338a2\",\"conversation_id\":\"c39edc60-5e1f-4a22-a46d-259092421990\",\"message_id\":\"78e35e26-37bc-4dc7-ad96-50c16bd0fc5e\",\"fixture_id\":\"pdf-small-240kb\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/report.pdf\",\"bytes\":240108},\"stream_id\":\"1794655392999-0\",\"polling\":{\"poll_count\":3,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2006},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h03m15.0s), 001/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 001/030 VUs  03m15.0s/52m0s  0.08 iters/s
+
+running (0h03m16.0s), 001/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 001/030 VUs  03m16.0s/52m0s  0.08 iters/s
+
+running (0h03m17.0s), 001/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 001/030 VUs  03m17.0s/52m0s  0.08 iters/s
+
+running (0h03m18.0s), 001/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 001/030 VUs  03m18.0s/52m0s  0.08 iters/s
+
+running (0h03m19.0s), 001/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 001/030 VUs  03m19.0s/52m0s  0.08 iters/s
+
+running (0h03m20.0s), 001/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 001/030 VUs  03m20.0s/52m0s  0.08 iters/s
+
+running (0h03m21.0s), 001/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 001/030 VUs  03m21.0s/52m0s  0.08 iters/s
+
+running (0h03m22.0s), 001/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   6% ] 001/030 VUs  03m22.0s/52m0s  0.08 iters/s
+
+running (0h03m23.0s), 001/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 001/030 VUs  03m23.0s/52m0s  0.08 iters/s
+
+running (0h03m24.0s), 001/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 001/030 VUs  03m24.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:23:25+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:23:25.001Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":16,\"vu\":19,\"request_id\":\"3d7de764-80dd-4dc3-87da-a1c7c78f0bba\",\"conversation_id\":\"52aeef3f-a426-4c3e-8ac1-a5113b751670\",\"message_id\":\"ef00faaa-f7f9-434f-8340-fb4975c62b60\",\"fixture_id\":\"pdf-small-8mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_8mib.pdf\",\"bytes\":8843585},\"intent_time_ms\":1794655405001}" source=console
+time="2026-11-14T18:23:25+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:23:25.003Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":16,\"vu\":19,\"request_id\":\"3d7de764-80dd-4dc3-87da-a1c7c78f0bba\",\"fixture_id\":\"pdf-small-8mib\",\"stream_id\":\"1794655405001-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h03m25.0s), 002/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 002/030 VUs  03m25.0s/52m0s  0.08 iters/s
+
+running (0h03m26.0s), 002/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 002/030 VUs  03m26.0s/52m0s  0.08 iters/s
+
+running (0h03m27.0s), 002/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 002/030 VUs  03m27.0s/52m0s  0.08 iters/s
+
+running (0h03m28.0s), 002/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 002/030 VUs  03m28.0s/52m0s  0.08 iters/s
+
+running (0h03m29.0s), 002/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 002/030 VUs  03m29.0s/52m0s  0.08 iters/s
+
+running (0h03m30.0s), 002/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 002/030 VUs  03m30.0s/52m0s  0.08 iters/s
+
+running (0h03m31.0s), 002/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 002/030 VUs  03m31.0s/52m0s  0.08 iters/s
+
+running (0h03m32.0s), 002/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 002/030 VUs  03m32.0s/52m0s  0.08 iters/s
+
+running (0h03m33.0s), 002/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 002/030 VUs  03m33.0s/52m0s  0.08 iters/s
+
+running (0h03m34.0s), 002/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 002/030 VUs  03m34.0s/52m0s  0.08 iters/s
+
+running (0h03m35.0s), 002/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 002/030 VUs  03m35.0s/52m0s  0.08 iters/s
+
+running (0h03m36.0s), 002/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 002/030 VUs  03m36.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:23:37+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:23:37.002Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":17,\"vu\":16,\"request_id\":\"bcf416c8-5c44-4ef3-b0bf-930728326259\",\"conversation_id\":\"5f4fc70b-eb54-4f6b-9cb1-2f93b09672a5\",\"message_id\":\"53a1e1d8-3cb2-4738-a222-9f098f9c94f5\",\"fixture_id\":\"xlsx-small-1mib\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_1mib.xlsx\",\"bytes\":1150755},\"intent_time_ms\":1794655417002}" source=console
+time="2026-11-14T18:23:37+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:23:37.006Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":17,\"vu\":16,\"request_id\":\"bcf416c8-5c44-4ef3-b0bf-930728326259\",\"fixture_id\":\"xlsx-small-1mib\",\"stream_id\":\"1794655417004-0\",\"publish_duration_ms\":3}" source=console
+
+running (0h03m37.0s), 003/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 003/030 VUs  03m37.0s/52m0s  0.08 iters/s
+
+running (0h03m38.0s), 003/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 003/030 VUs  03m38.0s/52m0s  0.08 iters/s
+
+running (0h03m39.0s), 003/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 003/030 VUs  03m39.0s/52m0s  0.08 iters/s
+
+running (0h03m40.0s), 003/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 003/030 VUs  03m40.0s/52m0s  0.08 iters/s
+
+running (0h03m41.0s), 003/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 003/030 VUs  03m41.0s/52m0s  0.08 iters/s
+
+running (0h03m42.0s), 003/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 003/030 VUs  03m42.0s/52m0s  0.08 iters/s
+
+running (0h03m43.0s), 003/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 003/030 VUs  03m43.0s/52m0s  0.08 iters/s
+
+running (0h03m44.0s), 003/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 003/030 VUs  03m44.0s/52m0s  0.08 iters/s
+
+running (0h03m45.0s), 003/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 003/030 VUs  03m45.0s/52m0s  0.08 iters/s
+
+running (0h03m46.0s), 003/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 003/030 VUs  03m46.0s/52m0s  0.08 iters/s
+
+running (0h03m47.0s), 003/030 VUs, 15 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 003/030 VUs  03m47.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:23:48+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:23:48.029Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":17,\"vu\":16,\"request_id\":\"bcf416c8-5c44-4ef3-b0bf-930728326259\",\"conversation_id\":\"5f4fc70b-eb54-4f6b-9cb1-2f93b09672a5\",\"message_id\":\"53a1e1d8-3cb2-4738-a222-9f098f9c94f5\",\"fixture_id\":\"xlsx-small-1mib\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_1mib.xlsx\",\"bytes\":1150755},\"stream_id\":\"1794655417004-0\",\"polling\":{\"poll_count\":12,\"read_errors\":0,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":11027},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h03m48.0s), 002/030 VUs, 16 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 002/030 VUs  03m48.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:23:48+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:23:48.999Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":18,\"vu\":18,\"request_id\":\"56e33f98-a2ee-4b19-8a7a-bfaba0ecd13a\",\"conversation_id\":\"170994ad-13a2-484d-ac35-dbb725e2a1b5\",\"message_id\":\"85817037-76d1-4d1d-a82f-0ed14b557a95\",\"fixture_id\":\"pdf-small-1mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_1mib.pdf\",\"bytes\":1102246},\"intent_time_ms\":1794655428999}" source=console
+time="2026-11-14T18:23:49+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:23:49.001Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":18,\"vu\":18,\"request_id\":\"56e33f98-a2ee-4b19-8a7a-bfaba0ecd13a\",\"fixture_id\":\"pdf-small-1mib\",\"stream_id\":\"1794655428999-0\",\"publish_duration_ms\":1}" source=console
+time="2026-11-14T18:23:49+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:23:49.012Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":8,\"vu\":9,\"request_id\":\"6a1d23fc-ac8b-4801-ba1d-6a416d5fc1ea\",\"conversation_id\":\"a07527f1-e738-4216-93b3-fa7c78725195\",\"message_id\":\"f254bbf7-7cdb-430e-aa9e-5a841e5e26ff\",\"fixture_id\":\"pdf-small-8mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_8mib.pdf\",\"bytes\":8843585},\"stream_id\":\"1794655309008-0\",\"polling\":{\"poll_count\":120,\"read_errors\":2,\"last_observed_status\":\"PROCESSING\",\"e2e_duration_ms\":null},\"outcome\":\"OBSERVATION_TIMEOUT\"}" source=console
+
+running (0h03m49.0s), 002/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 002/030 VUs  03m49.0s/52m0s  0.08 iters/s
+
+running (0h03m50.0s), 002/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 002/030 VUs  03m50.0s/52m0s  0.08 iters/s
+
+running (0h03m51.0s), 002/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 002/030 VUs  03m51.0s/52m0s  0.08 iters/s
+
+running (0h03m52.0s), 002/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 002/030 VUs  03m52.0s/52m0s  0.08 iters/s
+
+running (0h03m53.0s), 002/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 002/030 VUs  03m53.0s/52m0s  0.08 iters/s
+
+running (0h03m54.0s), 002/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   7% ] 002/030 VUs  03m54.0s/52m0s  0.08 iters/s
+
+running (0h03m55.0s), 002/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 002/030 VUs  03m55.0s/52m0s  0.08 iters/s
+
+running (0h03m56.0s), 002/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 002/030 VUs  03m56.0s/52m0s  0.08 iters/s
+
+running (0h03m57.0s), 002/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 002/030 VUs  03m57.0s/52m0s  0.08 iters/s
+
+running (0h03m58.0s), 002/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 002/030 VUs  03m58.0s/52m0s  0.08 iters/s
+
+running (0h03m59.0s), 002/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 002/030 VUs  03m59.0s/52m0s  0.08 iters/s
+
+running (0h04m00.0s), 002/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 002/030 VUs  04m00.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:24:00+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:24:00.999Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":19,\"vu\":23,\"request_id\":\"33109a44-08b5-40bc-96e9-13cc2fdc5ea1\",\"conversation_id\":\"6ac1cf9d-6996-4822-a218-d098554e8a11\",\"message_id\":\"1c32d5c3-bfb2-4646-9453-d221f01afb3f\",\"fixture_id\":\"docx-small-1mib\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_1mib.docx\",\"bytes\":1112582},\"intent_time_ms\":1794655440999}" source=console
+time="2026-11-14T18:24:01+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:24:01.000Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":19,\"vu\":23,\"request_id\":\"33109a44-08b5-40bc-96e9-13cc2fdc5ea1\",\"fixture_id\":\"docx-small-1mib\",\"stream_id\":\"1794655440998-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h04m01.0s), 003/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 003/030 VUs  04m01.0s/52m0s  0.08 iters/s
+
+running (0h04m02.0s), 003/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 003/030 VUs  04m02.0s/52m0s  0.08 iters/s
+
+running (0h04m03.0s), 003/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 003/030 VUs  04m03.0s/52m0s  0.08 iters/s
+
+running (0h04m04.0s), 003/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 003/030 VUs  04m04.0s/52m0s  0.08 iters/s
+
+running (0h04m05.0s), 003/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 003/030 VUs  04m05.0s/52m0s  0.08 iters/s
+
+running (0h04m06.0s), 003/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 003/030 VUs  04m06.0s/52m0s  0.08 iters/s
+
+running (0h04m07.0s), 003/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 003/030 VUs  04m07.0s/52m0s  0.08 iters/s
+
+running (0h04m08.0s), 003/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 003/030 VUs  04m08.0s/52m0s  0.08 iters/s
+
+running (0h04m09.0s), 003/030 VUs, 17 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 003/030 VUs  04m09.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:24:10+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:24:10.021Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":19,\"vu\":23,\"request_id\":\"33109a44-08b5-40bc-96e9-13cc2fdc5ea1\",\"conversation_id\":\"6ac1cf9d-6996-4822-a218-d098554e8a11\",\"message_id\":\"1c32d5c3-bfb2-4646-9453-d221f01afb3f\",\"fixture_id\":\"docx-small-1mib\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_1mib.docx\",\"bytes\":1112582},\"stream_id\":\"1794655440998-0\",\"polling\":{\"poll_count\":10,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":9022},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h04m10.0s), 002/030 VUs, 18 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 002/030 VUs  04m10.0s/52m0s  0.08 iters/s
+
+running (0h04m11.0s), 002/030 VUs, 18 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 002/030 VUs  04m11.0s/52m0s  0.08 iters/s
+
+running (0h04m12.0s), 002/030 VUs, 18 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 002/030 VUs  04m12.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:24:13+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:24:13.000Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":20,\"vu\":17,\"request_id\":\"a94b03ae-6d7d-47be-9247-0ac90e630b55\",\"conversation_id\":\"ba33d385-ca30-4cdf-8ae4-92dc51b9e226\",\"message_id\":\"f7031060-567b-40ba-9353-9dc4199cb0dd\",\"fixture_id\":\"docx-small-100kb\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_100kb.docx\",\"bytes\":106927},\"intent_time_ms\":1794655453000}" source=console
+time="2026-11-14T18:24:13+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:24:13.001Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":20,\"vu\":17,\"request_id\":\"a94b03ae-6d7d-47be-9247-0ac90e630b55\",\"fixture_id\":\"docx-small-100kb\",\"stream_id\":\"1794655453000-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h04m13.0s), 003/030 VUs, 18 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 003/030 VUs  04m13.0s/52m0s  0.08 iters/s
+
+running (0h04m14.0s), 003/030 VUs, 18 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 003/030 VUs  04m14.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:24:15+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:24:15.006Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":20,\"vu\":17,\"request_id\":\"a94b03ae-6d7d-47be-9247-0ac90e630b55\",\"conversation_id\":\"ba33d385-ca30-4cdf-8ae4-92dc51b9e226\",\"message_id\":\"f7031060-567b-40ba-9353-9dc4199cb0dd\",\"fixture_id\":\"docx-small-100kb\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_100kb.docx\",\"bytes\":106927},\"stream_id\":\"1794655453000-0\",\"polling\":{\"poll_count\":3,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2005},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h04m15.0s), 002/030 VUs, 19 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 002/030 VUs  04m15.0s/52m0s  0.08 iters/s
+
+running (0h04m16.0s), 002/030 VUs, 19 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 002/030 VUs  04m16.0s/52m0s  0.08 iters/s
+
+running (0h04m17.0s), 002/030 VUs, 19 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 002/030 VUs  04m17.0s/52m0s  0.08 iters/s
+
+running (0h04m18.0s), 002/030 VUs, 19 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 002/030 VUs  04m18.0s/52m0s  0.08 iters/s
+
+running (0h04m19.0s), 002/030 VUs, 19 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 002/030 VUs  04m19.0s/52m0s  0.08 iters/s
+
+running (0h04m20.0s), 002/030 VUs, 19 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 002/030 VUs  04m20.0s/52m0s  0.08 iters/s
+
+running (0h04m21.0s), 002/030 VUs, 19 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 002/030 VUs  04m21.0s/52m0s  0.08 iters/s
+
+running (0h04m22.0s), 002/030 VUs, 19 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 002/030 VUs  04m22.0s/52m0s  0.08 iters/s
+
+running (0h04m23.0s), 002/030 VUs, 19 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 002/030 VUs  04m23.0s/52m0s  0.08 iters/s
+
+running (0h04m24.0s), 002/030 VUs, 19 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 002/030 VUs  04m24.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:24:24+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:24:24.999Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":21,\"vu\":24,\"request_id\":\"68ca3feb-bf0d-4fdf-ad09-cf60f68a8ea5\",\"conversation_id\":\"59aaf476-d4af-48c5-be10-5bc8bb086ff7\",\"message_id\":\"709f2a83-df74-4517-a42a-881182bbb449\",\"fixture_id\":\"csv-boundary-under-16mib\",\"dataset\":{\"format\":\"csv\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/boundary_under_16mb.csv\",\"bytes\":16777200},\"intent_time_ms\":1794655464999}" source=console
+time="2026-11-14T18:24:25+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:24:25.001Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":21,\"vu\":24,\"request_id\":\"68ca3feb-bf0d-4fdf-ad09-cf60f68a8ea5\",\"fixture_id\":\"csv-boundary-under-16mib\",\"stream_id\":\"1794655464999-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h04m25.0s), 003/030 VUs, 19 complete and 0 interrupted iterations
+pipeline_load   [   8% ] 003/030 VUs  04m25.0s/52m0s  0.08 iters/s
+
+running (0h04m26.0s), 003/030 VUs, 19 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 003/030 VUs  04m26.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:24:27+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:24:27.059Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":21,\"vu\":24,\"request_id\":\"68ca3feb-bf0d-4fdf-ad09-cf60f68a8ea5\",\"conversation_id\":\"59aaf476-d4af-48c5-be10-5bc8bb086ff7\",\"message_id\":\"709f2a83-df74-4517-a42a-881182bbb449\",\"fixture_id\":\"csv-boundary-under-16mib\",\"dataset\":{\"format\":\"csv\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/boundary_under_16mb.csv\",\"bytes\":16777200},\"stream_id\":\"1794655464999-0\",\"polling\":{\"poll_count\":3,\"read_errors\":2,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2059},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h04m27.0s), 002/030 VUs, 20 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 002/030 VUs  04m27.0s/52m0s  0.08 iters/s
+
+running (0h04m28.0s), 002/030 VUs, 20 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 002/030 VUs  04m28.0s/52m0s  0.08 iters/s
+
+running (0h04m29.0s), 002/030 VUs, 20 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 002/030 VUs  04m29.0s/52m0s  0.08 iters/s
+
+running (0h04m30.0s), 002/030 VUs, 20 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 002/030 VUs  04m30.0s/52m0s  0.08 iters/s
+
+running (0h04m31.0s), 002/030 VUs, 20 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 002/030 VUs  04m31.0s/52m0s  0.08 iters/s
+
+running (0h04m32.0s), 002/030 VUs, 20 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 002/030 VUs  04m32.0s/52m0s  0.08 iters/s
+
+running (0h04m33.0s), 002/030 VUs, 20 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 002/030 VUs  04m33.0s/52m0s  0.08 iters/s
+
+running (0h04m34.0s), 002/030 VUs, 20 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 002/030 VUs  04m34.0s/52m0s  0.08 iters/s
+
+running (0h04m35.0s), 002/030 VUs, 20 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 002/030 VUs  04m35.0s/52m0s  0.08 iters/s
+
+running (0h04m36.0s), 002/030 VUs, 20 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 002/030 VUs  04m36.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:24:37+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:24:37.002Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":22,\"vu\":21,\"request_id\":\"4f14bd61-d095-4f36-94c0-c0100e1e60c3\",\"conversation_id\":\"3036dbb7-0904-4e06-bb75-5c6025078d64\",\"message_id\":\"d6907c15-06b8-4116-8e28-d1e48ccfd8c4\",\"fixture_id\":\"xlsx-small-100kb\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_100kb.xlsx\",\"bytes\":110661},\"intent_time_ms\":1794655477002}" source=console
+time="2026-11-14T18:24:37+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:24:37.006Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":22,\"vu\":21,\"request_id\":\"4f14bd61-d095-4f36-94c0-c0100e1e60c3\",\"fixture_id\":\"xlsx-small-100kb\",\"stream_id\":\"1794655477002-0\",\"publish_duration_ms\":3}" source=console
+
+running (0h04m37.0s), 003/030 VUs, 20 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 003/030 VUs  04m37.0s/52m0s  0.08 iters/s
+
+running (0h04m38.0s), 003/030 VUs, 20 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 003/030 VUs  04m38.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:24:39+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:24:39.011Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":22,\"vu\":21,\"request_id\":\"4f14bd61-d095-4f36-94c0-c0100e1e60c3\",\"conversation_id\":\"3036dbb7-0904-4e06-bb75-5c6025078d64\",\"message_id\":\"d6907c15-06b8-4116-8e28-d1e48ccfd8c4\",\"fixture_id\":\"xlsx-small-100kb\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_100kb.xlsx\",\"bytes\":110661},\"stream_id\":\"1794655477002-0\",\"polling\":{\"poll_count\":3,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2008},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h04m39.0s), 002/030 VUs, 21 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 002/030 VUs  04m39.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:24:40+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:24:40.100Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":18,\"vu\":18,\"request_id\":\"56e33f98-a2ee-4b19-8a7a-bfaba0ecd13a\",\"conversation_id\":\"170994ad-13a2-484d-ac35-dbb725e2a1b5\",\"message_id\":\"85817037-76d1-4d1d-a82f-0ed14b557a95\",\"fixture_id\":\"pdf-small-1mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_1mib.pdf\",\"bytes\":1102246},\"stream_id\":\"1794655428999-0\",\"polling\":{\"poll_count\":52,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":51100},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h04m40.0s), 001/030 VUs, 22 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 001/030 VUs  04m40.0s/52m0s  0.08 iters/s
+
+running (0h04m41.0s), 001/030 VUs, 22 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 001/030 VUs  04m41.0s/52m0s  0.08 iters/s
+
+running (0h04m42.0s), 001/030 VUs, 22 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 001/030 VUs  04m42.0s/52m0s  0.08 iters/s
+
+running (0h04m43.0s), 001/030 VUs, 22 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 001/030 VUs  04m43.0s/52m0s  0.08 iters/s
+
+running (0h04m44.0s), 001/030 VUs, 22 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 001/030 VUs  04m44.0s/52m0s  0.08 iters/s
+
+running (0h04m45.0s), 001/030 VUs, 22 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 001/030 VUs  04m45.0s/52m0s  0.08 iters/s
+
+running (0h04m46.0s), 001/030 VUs, 22 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 001/030 VUs  04m46.0s/52m0s  0.08 iters/s
+
+running (0h04m47.0s), 001/030 VUs, 22 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 001/030 VUs  04m47.0s/52m0s  0.08 iters/s
+
+running (0h04m48.0s), 001/030 VUs, 22 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 001/030 VUs  04m48.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:24:48+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:24:48.999Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":23,\"vu\":20,\"request_id\":\"d8e377a2-709f-42f9-9cf6-30f1a05bc1ec\",\"conversation_id\":\"81640e5f-2fca-40b9-98ec-ad74fea0b9aa\",\"message_id\":\"bfb51cf0-6e71-4600-a5db-b011e6d89bf8\",\"fixture_id\":\"pdf-small-240kb\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/report.pdf\",\"bytes\":240108},\"intent_time_ms\":1794655488999}" source=console
+time="2026-11-14T18:24:49+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:24:49.001Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":23,\"vu\":20,\"request_id\":\"d8e377a2-709f-42f9-9cf6-30f1a05bc1ec\",\"fixture_id\":\"pdf-small-240kb\",\"stream_id\":\"1794655488997-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h04m49.0s), 002/030 VUs, 22 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 002/030 VUs  04m49.0s/52m0s  0.08 iters/s
+
+running (0h04m50.0s), 002/030 VUs, 22 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 002/030 VUs  04m50.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:24:51+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:24:51.005Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":23,\"vu\":20,\"request_id\":\"d8e377a2-709f-42f9-9cf6-30f1a05bc1ec\",\"conversation_id\":\"81640e5f-2fca-40b9-98ec-ad74fea0b9aa\",\"message_id\":\"bfb51cf0-6e71-4600-a5db-b011e6d89bf8\",\"fixture_id\":\"pdf-small-240kb\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/report.pdf\",\"bytes\":240108},\"stream_id\":\"1794655488997-0\",\"polling\":{\"poll_count\":3,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2005},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h04m51.0s), 001/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 001/030 VUs  04m51.0s/52m0s  0.08 iters/s
+
+running (0h04m52.0s), 001/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 001/030 VUs  04m52.0s/52m0s  0.08 iters/s
+
+running (0h04m53.0s), 001/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 001/030 VUs  04m53.0s/52m0s  0.08 iters/s
+
+running (0h04m54.0s), 001/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 001/030 VUs  04m54.0s/52m0s  0.08 iters/s
+
+running (0h04m55.0s), 001/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 001/030 VUs  04m55.0s/52m0s  0.08 iters/s
+
+running (0h04m56.0s), 001/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [   9% ] 001/030 VUs  04m56.0s/52m0s  0.08 iters/s
+
+running (0h04m57.0s), 001/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 001/030 VUs  04m57.0s/52m0s  0.08 iters/s
+
+running (0h04m58.0s), 001/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 001/030 VUs  04m58.0s/52m0s  0.08 iters/s
+
+running (0h04m59.0s), 001/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 001/030 VUs  04m59.0s/52m0s  0.08 iters/s
+
+running (0h05m00.0s), 001/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 001/030 VUs  05m00.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:25:01+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:25:01.000Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":24,\"vu\":27,\"request_id\":\"711a1724-11ea-4f02-8cfb-6d4b409b1895\",\"conversation_id\":\"85396dfc-10a4-4eba-9a5f-a8524fa28489\",\"message_id\":\"0412fa4f-e1c3-4a57-882f-c8b7cf49e142\",\"fixture_id\":\"pdf-small-8mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_8mib.pdf\",\"bytes\":8843585},\"intent_time_ms\":1794655501000}" source=console
+time="2026-11-14T18:25:01+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:25:01.001Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":24,\"vu\":27,\"request_id\":\"711a1724-11ea-4f02-8cfb-6d4b409b1895\",\"fixture_id\":\"pdf-small-8mib\",\"stream_id\":\"1794655500998-0\",\"publish_duration_ms\":0}" source=console
+
+running (0h05m01.0s), 002/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 002/030 VUs  05m01.0s/52m0s  0.08 iters/s
+
+running (0h05m02.0s), 002/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 002/030 VUs  05m02.0s/52m0s  0.08 iters/s
+
+running (0h05m03.0s), 002/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 002/030 VUs  05m03.0s/52m0s  0.08 iters/s
+
+running (0h05m04.0s), 002/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 002/030 VUs  05m04.0s/52m0s  0.08 iters/s
+
+running (0h05m05.0s), 002/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 002/030 VUs  05m05.0s/52m0s  0.08 iters/s
+
+running (0h05m06.0s), 002/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 002/030 VUs  05m06.0s/52m0s  0.08 iters/s
+
+running (0h05m07.0s), 002/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 002/030 VUs  05m07.0s/52m0s  0.08 iters/s
+
+running (0h05m08.0s), 002/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 002/030 VUs  05m08.0s/52m0s  0.08 iters/s
+
+running (0h05m09.0s), 002/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 002/030 VUs  05m09.0s/52m0s  0.08 iters/s
+
+running (0h05m10.0s), 002/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 002/030 VUs  05m10.0s/52m0s  0.08 iters/s
+
+running (0h05m11.0s), 002/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 002/030 VUs  05m11.0s/52m0s  0.08 iters/s
+
+running (0h05m12.0s), 002/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 002/030 VUs  05m12.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:25:13+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:25:13.000Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":25,\"vu\":26,\"request_id\":\"990d2846-3c7e-422a-a861-fcabedbd4d67\",\"conversation_id\":\"37dd01a0-33e0-4d64-84cc-e23395b6bd70\",\"message_id\":\"a0cb004e-c550-4950-a7c4-635c6084f6e8\",\"fixture_id\":\"xlsx-small-1mib\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_1mib.xlsx\",\"bytes\":1150755},\"intent_time_ms\":1794655513000}" source=console
+time="2026-11-14T18:25:13+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:25:13.002Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":25,\"vu\":26,\"request_id\":\"990d2846-3c7e-422a-a861-fcabedbd4d67\",\"fixture_id\":\"xlsx-small-1mib\",\"stream_id\":\"1794655513000-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h05m13.0s), 003/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 003/030 VUs  05m13.0s/52m0s  0.08 iters/s
+
+running (0h05m14.0s), 003/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 003/030 VUs  05m14.0s/52m0s  0.08 iters/s
+
+running (0h05m15.0s), 003/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 003/030 VUs  05m15.0s/52m0s  0.08 iters/s
+
+running (0h05m16.0s), 003/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 003/030 VUs  05m16.0s/52m0s  0.08 iters/s
+
+running (0h05m17.0s), 003/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 003/030 VUs  05m17.0s/52m0s  0.08 iters/s
+
+running (0h05m18.0s), 003/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 003/030 VUs  05m18.0s/52m0s  0.08 iters/s
+
+running (0h05m19.0s), 003/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 003/030 VUs  05m19.0s/52m0s  0.08 iters/s
+
+running (0h05m20.0s), 003/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 003/030 VUs  05m20.0s/52m0s  0.08 iters/s
+
+running (0h05m21.0s), 003/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 003/030 VUs  05m21.0s/52m0s  0.08 iters/s
+
+running (0h05m22.0s), 003/030 VUs, 23 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 003/030 VUs  05m22.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:25:23+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:25:23.020Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":25,\"vu\":26,\"request_id\":\"990d2846-3c7e-422a-a861-fcabedbd4d67\",\"conversation_id\":\"37dd01a0-33e0-4d64-84cc-e23395b6bd70\",\"message_id\":\"a0cb004e-c550-4950-a7c4-635c6084f6e8\",\"fixture_id\":\"xlsx-small-1mib\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_1mib.xlsx\",\"bytes\":1150755},\"stream_id\":\"1794655513000-0\",\"polling\":{\"poll_count\":11,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":10020},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h05m23.0s), 002/030 VUs, 24 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 002/030 VUs  05m23.0s/52m0s  0.08 iters/s
+
+running (0h05m24.0s), 002/030 VUs, 24 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 002/030 VUs  05m24.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:25:25+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:25:25.000Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":26,\"vu\":28,\"request_id\":\"a77a5204-c3b7-4b77-aa61-9b13ed21efd7\",\"conversation_id\":\"f53d86f9-aa3b-47a9-a286-d69ee8f8c820\",\"message_id\":\"517733ef-234c-49c0-b533-2b47c081fd1c\",\"fixture_id\":\"pdf-small-1mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_1mib.pdf\",\"bytes\":1102246},\"intent_time_ms\":1794655525000}" source=console
+time="2026-11-14T18:25:25+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:25:25.002Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":26,\"vu\":28,\"request_id\":\"a77a5204-c3b7-4b77-aa61-9b13ed21efd7\",\"fixture_id\":\"pdf-small-1mib\",\"stream_id\":\"1794655525000-0\",\"publish_duration_ms\":1}" source=console
+time="2026-11-14T18:25:25+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:25:25.003Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":16,\"vu\":19,\"request_id\":\"3d7de764-80dd-4dc3-87da-a1c7c78f0bba\",\"conversation_id\":\"52aeef3f-a426-4c3e-8ac1-a5113b751670\",\"message_id\":\"ef00faaa-f7f9-434f-8340-fb4975c62b60\",\"fixture_id\":\"pdf-small-8mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_8mib.pdf\",\"bytes\":8843585},\"stream_id\":\"1794655405001-0\",\"polling\":{\"poll_count\":120,\"read_errors\":2,\"last_observed_status\":\"PROCESSING\",\"e2e_duration_ms\":null},\"outcome\":\"OBSERVATION_TIMEOUT\"}" source=console
+
+running (0h05m25.0s), 002/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 002/030 VUs  05m25.0s/52m0s  0.08 iters/s
+
+running (0h05m26.0s), 002/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 002/030 VUs  05m26.0s/52m0s  0.08 iters/s
+
+running (0h05m27.0s), 002/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  10% ] 002/030 VUs  05m27.0s/52m0s  0.08 iters/s
+
+running (0h05m28.0s), 002/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m28.0s/52m0s  0.08 iters/s
+
+running (0h05m29.0s), 002/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m29.0s/52m0s  0.08 iters/s
+
+running (0h05m30.0s), 002/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m30.0s/52m0s  0.08 iters/s
+
+running (0h05m31.0s), 002/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m31.0s/52m0s  0.08 iters/s
+
+running (0h05m32.0s), 002/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m32.0s/52m0s  0.08 iters/s
+
+running (0h05m33.0s), 002/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m33.0s/52m0s  0.08 iters/s
+
+running (0h05m34.0s), 002/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m34.0s/52m0s  0.08 iters/s
+
+running (0h05m35.0s), 002/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m35.0s/52m0s  0.08 iters/s
+
+running (0h05m36.0s), 002/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m36.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:25:37+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:25:37.002Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":27,\"vu\":25,\"request_id\":\"f065319e-a5df-4a79-953f-759b0f1e93fc\",\"conversation_id\":\"8dd3e957-2294-4d29-a2f4-e8e5fdec42e7\",\"message_id\":\"0419f14e-ba57-4e15-aa54-6aec40709cf8\",\"fixture_id\":\"docx-small-1mib\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_1mib.docx\",\"bytes\":1112582},\"intent_time_ms\":1794655537002}" source=console
+time="2026-11-14T18:25:37+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:25:37.003Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":27,\"vu\":25,\"request_id\":\"f065319e-a5df-4a79-953f-759b0f1e93fc\",\"fixture_id\":\"docx-small-1mib\",\"stream_id\":\"1794655537001-0\",\"publish_duration_ms\":0}" source=console
+
+running (0h05m37.0s), 003/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 003/030 VUs  05m37.0s/52m0s  0.08 iters/s
+
+running (0h05m38.0s), 003/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 003/030 VUs  05m38.0s/52m0s  0.08 iters/s
+
+running (0h05m39.0s), 003/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 003/030 VUs  05m39.0s/52m0s  0.08 iters/s
+
+running (0h05m40.0s), 003/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 003/030 VUs  05m40.0s/52m0s  0.08 iters/s
+
+running (0h05m41.0s), 003/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 003/030 VUs  05m41.0s/52m0s  0.08 iters/s
+
+running (0h05m42.0s), 003/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 003/030 VUs  05m42.0s/52m0s  0.08 iters/s
+
+running (0h05m43.0s), 003/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 003/030 VUs  05m43.0s/52m0s  0.08 iters/s
+
+running (0h05m44.0s), 003/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 003/030 VUs  05m44.0s/52m0s  0.08 iters/s
+
+running (0h05m45.0s), 003/030 VUs, 25 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 003/030 VUs  05m45.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:25:46+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:25:46.021Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":27,\"vu\":25,\"request_id\":\"f065319e-a5df-4a79-953f-759b0f1e93fc\",\"conversation_id\":\"8dd3e957-2294-4d29-a2f4-e8e5fdec42e7\",\"message_id\":\"0419f14e-ba57-4e15-aa54-6aec40709cf8\",\"fixture_id\":\"docx-small-1mib\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_1mib.docx\",\"bytes\":1112582},\"stream_id\":\"1794655537001-0\",\"polling\":{\"poll_count\":10,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":9019},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h05m46.0s), 002/030 VUs, 26 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m46.0s/52m0s  0.08 iters/s
+
+running (0h05m47.0s), 002/030 VUs, 26 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m47.0s/52m0s  0.08 iters/s
+
+running (0h05m48.0s), 002/030 VUs, 26 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m48.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:25:49+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:25:49.001Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":28,\"vu\":29,\"request_id\":\"b2b27e0e-d4d5-4e98-bdcf-cd4731fa7136\",\"conversation_id\":\"337a343a-400e-4f37-b2bc-ba0acc4401ab\",\"message_id\":\"7b86f1ed-1995-48e9-bad2-8ced536e523e\",\"fixture_id\":\"docx-small-100kb\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_100kb.docx\",\"bytes\":106927},\"intent_time_ms\":1794655549001}" source=console
+time="2026-11-14T18:25:49+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:25:49.003Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":28,\"vu\":29,\"request_id\":\"b2b27e0e-d4d5-4e98-bdcf-cd4731fa7136\",\"fixture_id\":\"docx-small-100kb\",\"stream_id\":\"1794655549000-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h05m49.0s), 003/030 VUs, 26 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 003/030 VUs  05m49.0s/52m0s  0.08 iters/s
+
+running (0h05m50.0s), 003/030 VUs, 26 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 003/030 VUs  05m50.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:25:51+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:25:51.008Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":28,\"vu\":29,\"request_id\":\"b2b27e0e-d4d5-4e98-bdcf-cd4731fa7136\",\"conversation_id\":\"337a343a-400e-4f37-b2bc-ba0acc4401ab\",\"message_id\":\"7b86f1ed-1995-48e9-bad2-8ced536e523e\",\"fixture_id\":\"docx-small-100kb\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_100kb.docx\",\"bytes\":106927},\"stream_id\":\"1794655549000-0\",\"polling\":{\"poll_count\":3,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2006},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h05m51.0s), 002/030 VUs, 27 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m51.0s/52m0s  0.08 iters/s
+
+running (0h05m52.0s), 002/030 VUs, 27 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m52.0s/52m0s  0.08 iters/s
+
+running (0h05m53.0s), 002/030 VUs, 27 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m53.0s/52m0s  0.08 iters/s
+
+running (0h05m54.0s), 002/030 VUs, 27 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m54.0s/52m0s  0.08 iters/s
+
+running (0h05m55.0s), 002/030 VUs, 27 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m55.0s/52m0s  0.08 iters/s
+
+running (0h05m56.0s), 002/030 VUs, 27 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m56.0s/52m0s  0.08 iters/s
+
+running (0h05m57.0s), 002/030 VUs, 27 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m57.0s/52m0s  0.08 iters/s
+
+running (0h05m58.0s), 002/030 VUs, 27 complete and 0 interrupted iterations
+pipeline_load   [  11% ] 002/030 VUs  05m58.0s/52m0s  0.08 iters/s
+
+running (0h05m59.0s), 002/030 VUs, 27 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 002/030 VUs  05m59.0s/52m0s  0.08 iters/s
+
+running (0h06m00.0s), 002/030 VUs, 27 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 002/030 VUs  06m00.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:26:01+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:26:01.001Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":29,\"vu\":30,\"request_id\":\"016bde35-99e8-402d-8a08-553751518bab\",\"conversation_id\":\"a367d003-5693-43e5-afc9-43ba3c069ff7\",\"message_id\":\"b2894b75-5259-480f-9c44-a67b87808502\",\"fixture_id\":\"csv-boundary-under-16mib\",\"dataset\":{\"format\":\"csv\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/boundary_under_16mb.csv\",\"bytes\":16777200},\"intent_time_ms\":1794655561001}" source=console
+time="2026-11-14T18:26:01+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:26:01.002Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":29,\"vu\":30,\"request_id\":\"016bde35-99e8-402d-8a08-553751518bab\",\"fixture_id\":\"csv-boundary-under-16mib\",\"stream_id\":\"1794655561001-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h06m01.0s), 003/030 VUs, 27 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 003/030 VUs  06m01.0s/52m0s  0.08 iters/s
+
+running (0h06m02.0s), 003/030 VUs, 27 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 003/030 VUs  06m02.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:26:03+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:26:03.008Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":29,\"vu\":30,\"request_id\":\"016bde35-99e8-402d-8a08-553751518bab\",\"conversation_id\":\"a367d003-5693-43e5-afc9-43ba3c069ff7\",\"message_id\":\"b2894b75-5259-480f-9c44-a67b87808502\",\"fixture_id\":\"csv-boundary-under-16mib\",\"dataset\":{\"format\":\"csv\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/boundary_under_16mb.csv\",\"bytes\":16777200},\"stream_id\":\"1794655561001-0\",\"polling\":{\"poll_count\":3,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2006},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h06m03.0s), 002/030 VUs, 28 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 002/030 VUs  06m03.0s/52m0s  0.08 iters/s
+
+running (0h06m04.0s), 002/030 VUs, 28 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 002/030 VUs  06m04.0s/52m0s  0.08 iters/s
+
+running (0h06m05.0s), 002/030 VUs, 28 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 002/030 VUs  06m05.0s/52m0s  0.08 iters/s
+
+running (0h06m06.0s), 002/030 VUs, 28 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 002/030 VUs  06m06.0s/52m0s  0.08 iters/s
+
+running (0h06m07.0s), 002/030 VUs, 28 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 002/030 VUs  06m07.0s/52m0s  0.08 iters/s
+
+running (0h06m08.0s), 002/030 VUs, 28 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 002/030 VUs  06m08.0s/52m0s  0.08 iters/s
+
+running (0h06m09.0s), 002/030 VUs, 28 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 002/030 VUs  06m09.0s/52m0s  0.08 iters/s
+
+running (0h06m10.0s), 002/030 VUs, 28 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 002/030 VUs  06m10.0s/52m0s  0.08 iters/s
+
+running (0h06m11.0s), 002/030 VUs, 28 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 002/030 VUs  06m11.0s/52m0s  0.08 iters/s
+
+running (0h06m12.0s), 002/030 VUs, 28 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 002/030 VUs  06m12.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:26:13+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:26:13.035Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":30,\"vu\":2,\"request_id\":\"3b1db13b-ac2e-4fd3-9b12-5893d520d08e\",\"conversation_id\":\"1da35f40-458d-497e-8428-03731519c437\",\"message_id\":\"8d19d63e-74ed-4e03-828e-9f2e5a554c7f\",\"fixture_id\":\"xlsx-small-100kb\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_100kb.xlsx\",\"bytes\":110661},\"intent_time_ms\":1794655573035}" source=console
+time="2026-11-14T18:26:13+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:26:13.037Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":30,\"vu\":2,\"request_id\":\"3b1db13b-ac2e-4fd3-9b12-5893d520d08e\",\"fixture_id\":\"xlsx-small-100kb\",\"stream_id\":\"1794655573034-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h06m13.0s), 003/030 VUs, 28 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 003/030 VUs  06m13.0s/52m0s  0.08 iters/s
+
+running (0h06m14.0s), 003/030 VUs, 28 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 003/030 VUs  06m14.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:26:15+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:26:15.041Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":30,\"vu\":2,\"request_id\":\"3b1db13b-ac2e-4fd3-9b12-5893d520d08e\",\"conversation_id\":\"1da35f40-458d-497e-8428-03731519c437\",\"message_id\":\"8d19d63e-74ed-4e03-828e-9f2e5a554c7f\",\"fixture_id\":\"xlsx-small-100kb\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_100kb.xlsx\",\"bytes\":110661},\"stream_id\":\"1794655573034-0\",\"polling\":{\"poll_count\":3,\"read_errors\":0,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2005},\"outcome\":\"COMPLETED\"}" source=console
+time="2026-11-14T18:26:15+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:26:15.093Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":26,\"vu\":28,\"request_id\":\"a77a5204-c3b7-4b77-aa61-9b13ed21efd7\",\"conversation_id\":\"f53d86f9-aa3b-47a9-a286-d69ee8f8c820\",\"message_id\":\"517733ef-234c-49c0-b533-2b47c081fd1c\",\"fixture_id\":\"pdf-small-1mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_1mib.pdf\",\"bytes\":1102246},\"stream_id\":\"1794655525000-0\",\"polling\":{\"poll_count\":51,\"read_errors\":0,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":50093},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h06m15.0s), 001/030 VUs, 30 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 001/030 VUs  06m15.0s/52m0s  0.08 iters/s
+
+running (0h06m16.0s), 001/030 VUs, 30 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 001/030 VUs  06m16.0s/52m0s  0.08 iters/s
+
+running (0h06m17.0s), 001/030 VUs, 30 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 001/030 VUs  06m17.0s/52m0s  0.08 iters/s
+
+running (0h06m18.0s), 001/030 VUs, 30 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 001/030 VUs  06m18.0s/52m0s  0.08 iters/s
+
+running (0h06m19.0s), 001/030 VUs, 30 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 001/030 VUs  06m19.0s/52m0s  0.08 iters/s
+
+running (0h06m20.0s), 001/030 VUs, 30 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 001/030 VUs  06m20.0s/52m0s  0.08 iters/s
+
+running (0h06m21.0s), 001/030 VUs, 30 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 001/030 VUs  06m21.0s/52m0s  0.08 iters/s
+
+running (0h06m22.0s), 001/030 VUs, 30 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 001/030 VUs  06m22.0s/52m0s  0.08 iters/s
+
+running (0h06m23.0s), 001/030 VUs, 30 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 001/030 VUs  06m23.0s/52m0s  0.08 iters/s
+
+running (0h06m24.0s), 001/030 VUs, 30 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 001/030 VUs  06m24.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:26:24+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:26:24.999Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":31,\"vu\":7,\"request_id\":\"014184a7-c075-46e3-8576-c3472a62de84\",\"conversation_id\":\"a398de23-ea14-47e9-ac7f-91ad32c3ed80\",\"message_id\":\"6ddb2561-c52d-4c93-aebf-a3e845cf3626\",\"fixture_id\":\"pdf-small-240kb\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/report.pdf\",\"bytes\":240108},\"intent_time_ms\":1794655584999}" source=console
+time="2026-11-14T18:26:25+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:26:25.000Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":31,\"vu\":7,\"request_id\":\"014184a7-c075-46e3-8576-c3472a62de84\",\"fixture_id\":\"pdf-small-240kb\",\"stream_id\":\"1794655584998-0\",\"publish_duration_ms\":0}" source=console
+
+running (0h06m25.0s), 002/030 VUs, 30 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 002/030 VUs  06m25.0s/52m0s  0.08 iters/s
+
+running (0h06m26.0s), 002/030 VUs, 30 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 002/030 VUs  06m26.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:26:27+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:26:27.005Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":31,\"vu\":7,\"request_id\":\"014184a7-c075-46e3-8576-c3472a62de84\",\"conversation_id\":\"a398de23-ea14-47e9-ac7f-91ad32c3ed80\",\"message_id\":\"6ddb2561-c52d-4c93-aebf-a3e845cf3626\",\"fixture_id\":\"pdf-small-240kb\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/report.pdf\",\"bytes\":240108},\"stream_id\":\"1794655584998-0\",\"polling\":{\"poll_count\":3,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2005},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h06m27.0s), 001/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 001/030 VUs  06m27.0s/52m0s  0.08 iters/s
+
+running (0h06m28.0s), 001/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 001/030 VUs  06m28.0s/52m0s  0.08 iters/s
+
+running (0h06m29.0s), 001/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 001/030 VUs  06m29.0s/52m0s  0.08 iters/s
+
+running (0h06m30.0s), 001/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  12% ] 001/030 VUs  06m30.0s/52m0s  0.08 iters/s
+
+running (0h06m31.0s), 001/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 001/030 VUs  06m31.0s/52m0s  0.08 iters/s
+
+running (0h06m32.0s), 001/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 001/030 VUs  06m32.0s/52m0s  0.08 iters/s
+
+running (0h06m33.0s), 001/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 001/030 VUs  06m33.0s/52m0s  0.08 iters/s
+
+running (0h06m34.0s), 001/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 001/030 VUs  06m34.0s/52m0s  0.08 iters/s
+
+running (0h06m35.0s), 001/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 001/030 VUs  06m35.0s/52m0s  0.08 iters/s
+
+running (0h06m36.0s), 001/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 001/030 VUs  06m36.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:26:37+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:26:37.001Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":32,\"vu\":5,\"request_id\":\"854cff6f-a7b3-40c1-86c3-84035615574f\",\"conversation_id\":\"a9ff3c42-b75d-49ea-aa3a-b80d4e82f340\",\"message_id\":\"67cfbcf6-6f59-4f24-9e61-ab9cafe3edfd\",\"fixture_id\":\"pdf-small-8mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_8mib.pdf\",\"bytes\":8843585},\"intent_time_ms\":1794655597001}" source=console
+time="2026-11-14T18:26:37+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:26:37.002Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":32,\"vu\":5,\"request_id\":\"854cff6f-a7b3-40c1-86c3-84035615574f\",\"fixture_id\":\"pdf-small-8mib\",\"stream_id\":\"1794655597000-0\",\"publish_duration_ms\":0}" source=console
+
+running (0h06m37.0s), 002/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 002/030 VUs  06m37.0s/52m0s  0.08 iters/s
+
+running (0h06m38.0s), 002/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 002/030 VUs  06m38.0s/52m0s  0.08 iters/s
+
+running (0h06m39.0s), 002/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 002/030 VUs  06m39.0s/52m0s  0.08 iters/s
+
+running (0h06m40.0s), 002/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 002/030 VUs  06m40.0s/52m0s  0.08 iters/s
+
+running (0h06m41.0s), 002/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 002/030 VUs  06m41.0s/52m0s  0.08 iters/s
+
+running (0h06m42.0s), 002/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 002/030 VUs  06m42.0s/52m0s  0.08 iters/s
+
+running (0h06m43.0s), 002/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 002/030 VUs  06m43.0s/52m0s  0.08 iters/s
+
+running (0h06m44.0s), 002/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 002/030 VUs  06m44.0s/52m0s  0.08 iters/s
+
+running (0h06m45.0s), 002/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 002/030 VUs  06m45.0s/52m0s  0.08 iters/s
+
+running (0h06m46.0s), 002/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 002/030 VUs  06m46.0s/52m0s  0.08 iters/s
+
+running (0h06m47.0s), 002/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 002/030 VUs  06m47.0s/52m0s  0.08 iters/s
+
+running (0h06m48.0s), 002/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 002/030 VUs  06m48.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:26:49+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:26:49.000Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":33,\"vu\":4,\"request_id\":\"8758ab91-515b-4531-9730-b033d3d19c4f\",\"conversation_id\":\"a8682b62-30c7-4830-94f4-c2604015e3e4\",\"message_id\":\"10f314d2-fc25-4250-86a6-714f1182f980\",\"fixture_id\":\"xlsx-small-1mib\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_1mib.xlsx\",\"bytes\":1150755},\"intent_time_ms\":1794655609000}" source=console
+time="2026-11-14T18:26:49+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:26:49.005Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":33,\"vu\":4,\"request_id\":\"8758ab91-515b-4531-9730-b033d3d19c4f\",\"fixture_id\":\"xlsx-small-1mib\",\"stream_id\":\"1794655609002-0\",\"publish_duration_ms\":4}" source=console
+
+running (0h06m49.0s), 003/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 003/030 VUs  06m49.0s/52m0s  0.08 iters/s
+
+running (0h06m50.0s), 003/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 003/030 VUs  06m50.0s/52m0s  0.08 iters/s
+
+running (0h06m51.0s), 003/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 003/030 VUs  06m51.0s/52m0s  0.08 iters/s
+
+running (0h06m52.0s), 003/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 003/030 VUs  06m52.0s/52m0s  0.08 iters/s
+
+running (0h06m53.0s), 003/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 003/030 VUs  06m53.0s/52m0s  0.08 iters/s
+
+running (0h06m54.0s), 003/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 003/030 VUs  06m54.0s/52m0s  0.08 iters/s
+
+running (0h06m55.0s), 003/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 003/030 VUs  06m55.0s/52m0s  0.08 iters/s
+
+running (0h06m56.0s), 003/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 003/030 VUs  06m56.0s/52m0s  0.08 iters/s
+
+running (0h06m57.0s), 003/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 003/030 VUs  06m57.0s/52m0s  0.08 iters/s
+
+running (0h06m58.0s), 003/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 003/030 VUs  06m58.0s/52m0s  0.08 iters/s
+
+running (0h06m59.0s), 003/030 VUs, 31 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 003/030 VUs  06m59.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:27:00+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:27:00.026Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":33,\"vu\":4,\"request_id\":\"8758ab91-515b-4531-9730-b033d3d19c4f\",\"conversation_id\":\"a8682b62-30c7-4830-94f4-c2604015e3e4\",\"message_id\":\"10f314d2-fc25-4250-86a6-714f1182f980\",\"fixture_id\":\"xlsx-small-1mib\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_1mib.xlsx\",\"bytes\":1150755},\"stream_id\":\"1794655609002-0\",\"polling\":{\"poll_count\":12,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":11026},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h07m00.0s), 002/030 VUs, 32 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 002/030 VUs  07m00.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:27:01+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:27:01.001Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":24,\"vu\":27,\"request_id\":\"711a1724-11ea-4f02-8cfb-6d4b409b1895\",\"conversation_id\":\"85396dfc-10a4-4eba-9a5f-a8524fa28489\",\"message_id\":\"0412fa4f-e1c3-4a57-882f-c8b7cf49e142\",\"fixture_id\":\"pdf-small-8mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_8mib.pdf\",\"bytes\":8843585},\"stream_id\":\"1794655500998-0\",\"polling\":{\"poll_count\":120,\"read_errors\":1,\"last_observed_status\":\"PROCESSING\",\"e2e_duration_ms\":null},\"outcome\":\"OBSERVATION_TIMEOUT\"}" source=console
+time="2026-11-14T18:27:01+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:27:01.003Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":34,\"vu\":6,\"request_id\":\"b6a94fd5-e92a-4494-a3b7-f2b54d11d955\",\"conversation_id\":\"c6917490-b2ac-4737-92d0-51f3b6d66b39\",\"message_id\":\"3fe5f67b-9f3a-432e-ad47-a202108dd21c\",\"fixture_id\":\"pdf-small-1mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_1mib.pdf\",\"bytes\":1102246},\"intent_time_ms\":1794655621003}" source=console
+time="2026-11-14T18:27:01+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:27:01.005Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":34,\"vu\":6,\"request_id\":\"b6a94fd5-e92a-4494-a3b7-f2b54d11d955\",\"fixture_id\":\"pdf-small-1mib\",\"stream_id\":\"1794655621003-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h07m01.0s), 002/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  13% ] 002/030 VUs  07m01.0s/52m0s  0.08 iters/s
+
+running (0h07m02.0s), 002/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m02.0s/52m0s  0.08 iters/s
+
+running (0h07m03.0s), 002/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m03.0s/52m0s  0.08 iters/s
+
+running (0h07m04.0s), 002/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m04.0s/52m0s  0.08 iters/s
+
+running (0h07m05.0s), 002/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m05.0s/52m0s  0.08 iters/s
+
+running (0h07m06.0s), 002/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m06.0s/52m0s  0.08 iters/s
+
+running (0h07m07.0s), 002/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m07.0s/52m0s  0.08 iters/s
+
+running (0h07m08.0s), 002/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m08.0s/52m0s  0.08 iters/s
+
+running (0h07m09.0s), 002/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m09.0s/52m0s  0.08 iters/s
+
+running (0h07m10.0s), 002/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m10.0s/52m0s  0.08 iters/s
+
+running (0h07m11.0s), 002/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m11.0s/52m0s  0.08 iters/s
+
+running (0h07m12.0s), 002/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m12.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:27:13+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:27:13.000Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":35,\"vu\":3,\"request_id\":\"bff9d2f7-5ef1-4c60-81c3-3488338cef3e\",\"conversation_id\":\"378eb0af-4715-40a6-9934-0b6ceb470ed9\",\"message_id\":\"b975e3d0-7dbc-4b7b-b7b8-27665cb78ba4\",\"fixture_id\":\"docx-small-1mib\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_1mib.docx\",\"bytes\":1112582},\"intent_time_ms\":1794655633000}" source=console
+time="2026-11-14T18:27:13+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:27:13.004Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":35,\"vu\":3,\"request_id\":\"bff9d2f7-5ef1-4c60-81c3-3488338cef3e\",\"fixture_id\":\"docx-small-1mib\",\"stream_id\":\"1794655633002-0\",\"publish_duration_ms\":3}" source=console
+
+running (0h07m13.0s), 003/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 003/030 VUs  07m13.0s/52m0s  0.08 iters/s
+
+running (0h07m14.0s), 003/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 003/030 VUs  07m14.0s/52m0s  0.08 iters/s
+
+running (0h07m15.0s), 003/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 003/030 VUs  07m15.0s/52m0s  0.08 iters/s
+
+running (0h07m16.0s), 003/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 003/030 VUs  07m16.0s/52m0s  0.08 iters/s
+
+running (0h07m17.0s), 003/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 003/030 VUs  07m17.0s/52m0s  0.08 iters/s
+
+running (0h07m18.0s), 003/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 003/030 VUs  07m18.0s/52m0s  0.08 iters/s
+
+running (0h07m19.0s), 003/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 003/030 VUs  07m19.0s/52m0s  0.08 iters/s
+
+running (0h07m20.0s), 003/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 003/030 VUs  07m20.0s/52m0s  0.08 iters/s
+
+running (0h07m21.0s), 003/030 VUs, 33 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 003/030 VUs  07m21.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:27:22+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:27:22.024Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":35,\"vu\":3,\"request_id\":\"bff9d2f7-5ef1-4c60-81c3-3488338cef3e\",\"conversation_id\":\"378eb0af-4715-40a6-9934-0b6ceb470ed9\",\"message_id\":\"b975e3d0-7dbc-4b7b-b7b8-27665cb78ba4\",\"fixture_id\":\"docx-small-1mib\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_1mib.docx\",\"bytes\":1112582},\"stream_id\":\"1794655633002-0\",\"polling\":{\"poll_count\":10,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":9024},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h07m22.0s), 002/030 VUs, 34 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m22.0s/52m0s  0.08 iters/s
+
+running (0h07m23.0s), 002/030 VUs, 34 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m23.0s/52m0s  0.08 iters/s
+
+running (0h07m24.0s), 002/030 VUs, 34 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m24.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:27:25+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:27:25.000Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":36,\"vu\":10,\"request_id\":\"a41f00b7-e9fd-4536-bd75-37ff32c23eec\",\"conversation_id\":\"5432c1aa-d082-4437-84f0-46dc3256c9c5\",\"message_id\":\"f5523c92-1bad-40e9-b34d-9ebf3e5b7df4\",\"fixture_id\":\"docx-small-100kb\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_100kb.docx\",\"bytes\":106927},\"intent_time_ms\":1794655645000}" source=console
+time="2026-11-14T18:27:25+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:27:25.002Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":36,\"vu\":10,\"request_id\":\"a41f00b7-e9fd-4536-bd75-37ff32c23eec\",\"fixture_id\":\"docx-small-100kb\",\"stream_id\":\"1794655645000-0\",\"publish_duration_ms\":2}" source=console
+
+running (0h07m25.0s), 003/030 VUs, 34 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 003/030 VUs  07m25.0s/52m0s  0.08 iters/s
+
+running (0h07m26.0s), 003/030 VUs, 34 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 003/030 VUs  07m26.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:27:27+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:27:27.008Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":36,\"vu\":10,\"request_id\":\"a41f00b7-e9fd-4536-bd75-37ff32c23eec\",\"conversation_id\":\"5432c1aa-d082-4437-84f0-46dc3256c9c5\",\"message_id\":\"f5523c92-1bad-40e9-b34d-9ebf3e5b7df4\",\"fixture_id\":\"docx-small-100kb\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_100kb.docx\",\"bytes\":106927},\"stream_id\":\"1794655645000-0\",\"polling\":{\"poll_count\":3,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2006},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h07m27.0s), 002/030 VUs, 35 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m27.0s/52m0s  0.08 iters/s
+
+running (0h07m28.0s), 002/030 VUs, 35 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m28.0s/52m0s  0.08 iters/s
+
+running (0h07m29.0s), 002/030 VUs, 35 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m29.0s/52m0s  0.08 iters/s
+
+running (0h07m30.0s), 002/030 VUs, 35 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m30.0s/52m0s  0.08 iters/s
+
+running (0h07m31.0s), 002/030 VUs, 35 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m31.0s/52m0s  0.08 iters/s
+
+running (0h07m32.0s), 002/030 VUs, 35 complete and 0 interrupted iterations
+pipeline_load   [  14% ] 002/030 VUs  07m32.0s/52m0s  0.08 iters/s
+
+running (0h07m33.0s), 002/030 VUs, 35 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 002/030 VUs  07m33.0s/52m0s  0.08 iters/s
+
+running (0h07m34.0s), 002/030 VUs, 35 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 002/030 VUs  07m34.0s/52m0s  0.08 iters/s
+
+running (0h07m35.0s), 002/030 VUs, 35 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 002/030 VUs  07m35.0s/52m0s  0.08 iters/s
+
+running (0h07m36.0s), 002/030 VUs, 35 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 002/030 VUs  07m36.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:27:37+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:27:37.000Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":37,\"vu\":14,\"request_id\":\"c049c6d3-a91d-4c66-aa92-00f3064d53c0\",\"conversation_id\":\"d2bc77db-cc20-43dc-a2ed-de5ae4e931f4\",\"message_id\":\"0e15f1cf-b5d4-40ce-8fb5-40c3e0559d7a\",\"fixture_id\":\"csv-boundary-under-16mib\",\"dataset\":{\"format\":\"csv\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/boundary_under_16mb.csv\",\"bytes\":16777200},\"intent_time_ms\":1794655657000}" source=console
+time="2026-11-14T18:27:37+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:27:37.002Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":37,\"vu\":14,\"request_id\":\"c049c6d3-a91d-4c66-aa92-00f3064d53c0\",\"fixture_id\":\"csv-boundary-under-16mib\",\"stream_id\":\"1794655657000-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h07m37.0s), 003/030 VUs, 35 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 003/030 VUs  07m37.0s/52m0s  0.08 iters/s
+
+running (0h07m38.0s), 003/030 VUs, 35 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 003/030 VUs  07m38.0s/52m0s  0.08 iters/s
+
+running (0h07m39.0s), 003/030 VUs, 35 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 003/030 VUs  07m39.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:27:40+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:27:40.008Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":37,\"vu\":14,\"request_id\":\"c049c6d3-a91d-4c66-aa92-00f3064d53c0\",\"conversation_id\":\"d2bc77db-cc20-43dc-a2ed-de5ae4e931f4\",\"message_id\":\"0e15f1cf-b5d4-40ce-8fb5-40c3e0559d7a\",\"fixture_id\":\"csv-boundary-under-16mib\",\"dataset\":{\"format\":\"csv\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/boundary_under_16mb.csv\",\"bytes\":16777200},\"stream_id\":\"1794655657000-0\",\"polling\":{\"poll_count\":4,\"read_errors\":0,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":3007},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h07m40.0s), 002/030 VUs, 36 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 002/030 VUs  07m40.0s/52m0s  0.08 iters/s
+
+running (0h07m41.0s), 002/030 VUs, 36 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 002/030 VUs  07m41.0s/52m0s  0.08 iters/s
+
+running (0h07m42.0s), 002/030 VUs, 36 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 002/030 VUs  07m42.0s/52m0s  0.08 iters/s
+
+running (0h07m43.0s), 002/030 VUs, 36 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 002/030 VUs  07m43.0s/52m0s  0.08 iters/s
+
+running (0h07m44.0s), 002/030 VUs, 36 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 002/030 VUs  07m44.0s/52m0s  0.08 iters/s
+
+running (0h07m45.0s), 002/030 VUs, 36 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 002/030 VUs  07m45.0s/52m0s  0.08 iters/s
+
+running (0h07m46.0s), 002/030 VUs, 36 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 002/030 VUs  07m46.0s/52m0s  0.08 iters/s
+
+running (0h07m47.0s), 002/030 VUs, 36 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 002/030 VUs  07m47.0s/52m0s  0.08 iters/s
+
+running (0h07m48.0s), 002/030 VUs, 36 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 002/030 VUs  07m48.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:27:49+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:27:49.000Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":38,\"vu\":1,\"request_id\":\"0c122de0-d7ad-4701-9956-ad0a62e12478\",\"conversation_id\":\"b7788ffe-2ad1-4dbf-9830-55826d477e72\",\"message_id\":\"ab9b3f9e-79f9-4912-854e-1b60671a9e3c\",\"fixture_id\":\"xlsx-small-100kb\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_100kb.xlsx\",\"bytes\":110661},\"intent_time_ms\":1794655669000}" source=console
+time="2026-11-14T18:27:49+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:27:49.003Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":38,\"vu\":1,\"request_id\":\"0c122de0-d7ad-4701-9956-ad0a62e12478\",\"fixture_id\":\"xlsx-small-100kb\",\"stream_id\":\"1794655669000-0\",\"publish_duration_ms\":2}" source=console
+
+running (0h07m49.0s), 003/030 VUs, 36 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 003/030 VUs  07m49.0s/52m0s  0.08 iters/s
+
+running (0h07m50.0s), 003/030 VUs, 36 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 003/030 VUs  07m50.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:27:51+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:27:51.009Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":38,\"vu\":1,\"request_id\":\"0c122de0-d7ad-4701-9956-ad0a62e12478\",\"conversation_id\":\"b7788ffe-2ad1-4dbf-9830-55826d477e72\",\"message_id\":\"ab9b3f9e-79f9-4912-854e-1b60671a9e3c\",\"fixture_id\":\"xlsx-small-100kb\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_100kb.xlsx\",\"bytes\":110661},\"stream_id\":\"1794655669000-0\",\"polling\":{\"poll_count\":3,\"read_errors\":0,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2008},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h07m51.0s), 002/030 VUs, 37 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 002/030 VUs  07m51.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:27:52+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:27:52.098Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":34,\"vu\":6,\"request_id\":\"b6a94fd5-e92a-4494-a3b7-f2b54d11d955\",\"conversation_id\":\"c6917490-b2ac-4737-92d0-51f3b6d66b39\",\"message_id\":\"3fe5f67b-9f3a-432e-ad47-a202108dd21c\",\"fixture_id\":\"pdf-small-1mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_1mib.pdf\",\"bytes\":1102246},\"stream_id\":\"1794655621003-0\",\"polling\":{\"poll_count\":52,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":51094},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h07m52.0s), 001/030 VUs, 38 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 001/030 VUs  07m52.0s/52m0s  0.08 iters/s
+
+running (0h07m53.0s), 001/030 VUs, 38 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 001/030 VUs  07m53.0s/52m0s  0.08 iters/s
+
+running (0h07m54.0s), 001/030 VUs, 38 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 001/030 VUs  07m54.0s/52m0s  0.08 iters/s
+
+running (0h07m55.0s), 001/030 VUs, 38 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 001/030 VUs  07m55.0s/52m0s  0.08 iters/s
+
+running (0h07m56.0s), 001/030 VUs, 38 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 001/030 VUs  07m56.0s/52m0s  0.08 iters/s
+
+running (0h07m57.0s), 001/030 VUs, 38 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 001/030 VUs  07m57.0s/52m0s  0.08 iters/s
+
+running (0h07m58.0s), 001/030 VUs, 38 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 001/030 VUs  07m58.0s/52m0s  0.08 iters/s
+
+running (0h07m59.0s), 001/030 VUs, 38 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 001/030 VUs  07m59.0s/52m0s  0.08 iters/s
+
+running (0h08m00.0s), 001/030 VUs, 38 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 001/030 VUs  08m00.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:28:01+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:28:01.000Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":39,\"vu\":12,\"request_id\":\"9d3004c1-b81f-41e9-bf4b-58825d77e1ce\",\"conversation_id\":\"e0c715a3-5c13-4ca5-9bc6-0790d4872dfb\",\"message_id\":\"0ff56e1d-21b5-42c4-820a-bcd7b56bf38b\",\"fixture_id\":\"pdf-small-240kb\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/report.pdf\",\"bytes\":240108},\"intent_time_ms\":1794655681000}" source=console
+time="2026-11-14T18:28:01+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:28:01.001Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":39,\"vu\":12,\"request_id\":\"9d3004c1-b81f-41e9-bf4b-58825d77e1ce\",\"fixture_id\":\"pdf-small-240kb\",\"stream_id\":\"1794655681000-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h08m01.0s), 002/030 VUs, 38 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 002/030 VUs  08m01.0s/52m0s  0.08 iters/s
+
+running (0h08m02.0s), 002/030 VUs, 38 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 002/030 VUs  08m02.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:28:03+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:28:03.006Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":39,\"vu\":12,\"request_id\":\"9d3004c1-b81f-41e9-bf4b-58825d77e1ce\",\"conversation_id\":\"e0c715a3-5c13-4ca5-9bc6-0790d4872dfb\",\"message_id\":\"0ff56e1d-21b5-42c4-820a-bcd7b56bf38b\",\"fixture_id\":\"pdf-small-240kb\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/report.pdf\",\"bytes\":240108},\"stream_id\":\"1794655681000-0\",\"polling\":{\"poll_count\":3,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2006},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h08m03.0s), 001/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  15% ] 001/030 VUs  08m03.0s/52m0s  0.08 iters/s
+
+running (0h08m04.0s), 001/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 001/030 VUs  08m04.0s/52m0s  0.08 iters/s
+
+running (0h08m05.0s), 001/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 001/030 VUs  08m05.0s/52m0s  0.08 iters/s
+
+running (0h08m06.0s), 001/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 001/030 VUs  08m06.0s/52m0s  0.08 iters/s
+
+running (0h08m07.0s), 001/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 001/030 VUs  08m07.0s/52m0s  0.08 iters/s
+
+running (0h08m08.0s), 001/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 001/030 VUs  08m08.0s/52m0s  0.08 iters/s
+
+running (0h08m09.0s), 001/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 001/030 VUs  08m09.0s/52m0s  0.08 iters/s
+
+running (0h08m10.0s), 001/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 001/030 VUs  08m10.0s/52m0s  0.08 iters/s
+
+running (0h08m11.0s), 001/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 001/030 VUs  08m11.0s/52m0s  0.08 iters/s
+
+running (0h08m12.0s), 001/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 001/030 VUs  08m12.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:28:13+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:28:13.003Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":40,\"vu\":15,\"request_id\":\"2ad16aa8-9452-4677-9850-8f59ec9b7ab9\",\"conversation_id\":\"79654d98-b50e-4bc4-904b-636446b7ef44\",\"message_id\":\"a83bddd8-9f39-46a2-9a69-f7ecfa03073b\",\"fixture_id\":\"pdf-small-8mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_8mib.pdf\",\"bytes\":8843585},\"intent_time_ms\":1794655693003}" source=console
+time="2026-11-14T18:28:13+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:28:13.008Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":40,\"vu\":15,\"request_id\":\"2ad16aa8-9452-4677-9850-8f59ec9b7ab9\",\"fixture_id\":\"pdf-small-8mib\",\"stream_id\":\"1794655693004-0\",\"publish_duration_ms\":4}" source=console
+
+running (0h08m13.0s), 002/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 002/030 VUs  08m13.0s/52m0s  0.08 iters/s
+
+running (0h08m14.0s), 002/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 002/030 VUs  08m14.0s/52m0s  0.08 iters/s
+
+running (0h08m15.0s), 002/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 002/030 VUs  08m15.0s/52m0s  0.08 iters/s
+
+running (0h08m16.0s), 002/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 002/030 VUs  08m16.0s/52m0s  0.08 iters/s
+
+running (0h08m17.0s), 002/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 002/030 VUs  08m17.0s/52m0s  0.08 iters/s
+
+running (0h08m18.0s), 002/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 002/030 VUs  08m18.0s/52m0s  0.08 iters/s
+
+running (0h08m19.0s), 002/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 002/030 VUs  08m19.0s/52m0s  0.08 iters/s
+
+running (0h08m20.0s), 002/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 002/030 VUs  08m20.0s/52m0s  0.08 iters/s
+
+running (0h08m21.0s), 002/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 002/030 VUs  08m21.0s/52m0s  0.08 iters/s
+
+running (0h08m22.0s), 002/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 002/030 VUs  08m22.0s/52m0s  0.08 iters/s
+
+running (0h08m23.0s), 002/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 002/030 VUs  08m23.0s/52m0s  0.08 iters/s
+
+running (0h08m24.0s), 002/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 002/030 VUs  08m24.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:28:25+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:28:25.002Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":41,\"vu\":13,\"request_id\":\"73a0f76e-d726-4bb3-9d2f-2012e4197e23\",\"conversation_id\":\"c2432135-7dc4-4ff2-a21a-7b9c2ec26b4f\",\"message_id\":\"72342635-34d4-4d81-814e-6578017498e6\",\"fixture_id\":\"xlsx-small-1mib\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_1mib.xlsx\",\"bytes\":1150755},\"intent_time_ms\":1794655705002}" source=console
+time="2026-11-14T18:28:25+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:28:25.004Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":41,\"vu\":13,\"request_id\":\"73a0f76e-d726-4bb3-9d2f-2012e4197e23\",\"fixture_id\":\"xlsx-small-1mib\",\"stream_id\":\"1794655705002-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h08m25.0s), 003/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 003/030 VUs  08m25.0s/52m0s  0.08 iters/s
+
+running (0h08m26.0s), 003/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 003/030 VUs  08m26.0s/52m0s  0.08 iters/s
+
+running (0h08m27.0s), 003/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 003/030 VUs  08m27.0s/52m0s  0.08 iters/s
+
+running (0h08m28.0s), 003/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 003/030 VUs  08m28.0s/52m0s  0.08 iters/s
+
+running (0h08m29.0s), 003/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 003/030 VUs  08m29.0s/52m0s  0.08 iters/s
+
+running (0h08m30.0s), 003/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 003/030 VUs  08m30.0s/52m0s  0.08 iters/s
+
+running (0h08m31.0s), 003/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 003/030 VUs  08m31.0s/52m0s  0.08 iters/s
+
+running (0h08m32.0s), 003/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 003/030 VUs  08m32.0s/52m0s  0.08 iters/s
+
+running (0h08m33.0s), 003/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 003/030 VUs  08m33.0s/52m0s  0.08 iters/s
+
+running (0h08m34.0s), 003/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  16% ] 003/030 VUs  08m34.0s/52m0s  0.08 iters/s
+
+running (0h08m35.0s), 003/030 VUs, 39 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 003/030 VUs  08m35.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:28:36+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:28:36.026Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":41,\"vu\":13,\"request_id\":\"73a0f76e-d726-4bb3-9d2f-2012e4197e23\",\"conversation_id\":\"c2432135-7dc4-4ff2-a21a-7b9c2ec26b4f\",\"message_id\":\"72342635-34d4-4d81-814e-6578017498e6\",\"fixture_id\":\"xlsx-small-1mib\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_1mib.xlsx\",\"bytes\":1150755},\"stream_id\":\"1794655705002-0\",\"polling\":{\"poll_count\":12,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":11023},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h08m36.0s), 002/030 VUs, 40 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  08m36.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:28:37+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:28:37.000Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":42,\"vu\":8,\"request_id\":\"56df7a2c-7b37-41a5-b48c-71dc2ef49d2b\",\"conversation_id\":\"b19b76f1-e97d-4e34-acc0-3c4fca7b83b7\",\"message_id\":\"71cedc01-84a6-4593-9fb1-737328142af7\",\"fixture_id\":\"pdf-small-1mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_1mib.pdf\",\"bytes\":1102246},\"intent_time_ms\":1794655717000}" source=console
+time="2026-11-14T18:28:37+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:28:37.001Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":42,\"vu\":8,\"request_id\":\"56df7a2c-7b37-41a5-b48c-71dc2ef49d2b\",\"fixture_id\":\"pdf-small-1mib\",\"stream_id\":\"1794655717000-0\",\"publish_duration_ms\":1}" source=console
+time="2026-11-14T18:28:37+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:28:37.002Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":32,\"vu\":5,\"request_id\":\"854cff6f-a7b3-40c1-86c3-84035615574f\",\"conversation_id\":\"a9ff3c42-b75d-49ea-aa3a-b80d4e82f340\",\"message_id\":\"67cfbcf6-6f59-4f24-9e61-ab9cafe3edfd\",\"fixture_id\":\"pdf-small-8mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_8mib.pdf\",\"bytes\":8843585},\"stream_id\":\"1794655597000-0\",\"polling\":{\"poll_count\":120,\"read_errors\":3,\"last_observed_status\":\"PROCESSING\",\"e2e_duration_ms\":null},\"outcome\":\"OBSERVATION_TIMEOUT\"}" source=console
+
+running (0h08m37.0s), 002/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  08m37.0s/52m0s  0.08 iters/s
+
+running (0h08m38.0s), 002/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  08m38.0s/52m0s  0.08 iters/s
+
+running (0h08m39.0s), 002/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  08m39.0s/52m0s  0.08 iters/s
+
+running (0h08m40.0s), 002/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  08m40.0s/52m0s  0.08 iters/s
+
+running (0h08m41.0s), 002/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  08m41.0s/52m0s  0.08 iters/s
+
+running (0h08m42.0s), 002/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  08m42.0s/52m0s  0.08 iters/s
+
+running (0h08m43.0s), 002/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  08m43.0s/52m0s  0.08 iters/s
+
+running (0h08m44.0s), 002/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  08m44.0s/52m0s  0.08 iters/s
+
+running (0h08m45.0s), 002/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  08m45.0s/52m0s  0.08 iters/s
+
+running (0h08m46.0s), 002/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  08m46.0s/52m0s  0.08 iters/s
+
+running (0h08m47.0s), 002/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  08m47.0s/52m0s  0.08 iters/s
+
+running (0h08m48.0s), 002/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  08m48.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:28:49+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:28:49.019Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":43,\"vu\":11,\"request_id\":\"90ef0e1c-7834-4fec-893c-021c24751f84\",\"conversation_id\":\"9d4b007e-1d13-4df7-879e-c88fd59c7001\",\"message_id\":\"c73236dd-452d-47f0-8b0e-6b36015afbfe\",\"fixture_id\":\"docx-small-1mib\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_1mib.docx\",\"bytes\":1112582},\"intent_time_ms\":1794655729019}" source=console
+time="2026-11-14T18:28:49+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:28:49.021Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":43,\"vu\":11,\"request_id\":\"90ef0e1c-7834-4fec-893c-021c24751f84\",\"fixture_id\":\"docx-small-1mib\",\"stream_id\":\"1794655729019-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h08m49.0s), 003/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 003/030 VUs  08m49.0s/52m0s  0.08 iters/s
+
+running (0h08m50.0s), 003/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 003/030 VUs  08m50.0s/52m0s  0.08 iters/s
+
+running (0h08m51.0s), 003/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 003/030 VUs  08m51.0s/52m0s  0.08 iters/s
+
+running (0h08m52.0s), 003/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 003/030 VUs  08m52.0s/52m0s  0.08 iters/s
+
+running (0h08m53.0s), 003/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 003/030 VUs  08m53.0s/52m0s  0.08 iters/s
+
+running (0h08m54.0s), 003/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 003/030 VUs  08m54.0s/52m0s  0.08 iters/s
+
+running (0h08m55.0s), 003/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 003/030 VUs  08m55.0s/52m0s  0.08 iters/s
+
+running (0h08m56.0s), 003/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 003/030 VUs  08m56.0s/52m0s  0.08 iters/s
+
+running (0h08m57.0s), 003/030 VUs, 41 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 003/030 VUs  08m57.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:28:58+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:28:58.040Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":43,\"vu\":11,\"request_id\":\"90ef0e1c-7834-4fec-893c-021c24751f84\",\"conversation_id\":\"9d4b007e-1d13-4df7-879e-c88fd59c7001\",\"message_id\":\"c73236dd-452d-47f0-8b0e-6b36015afbfe\",\"fixture_id\":\"docx-small-1mib\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_1mib.docx\",\"bytes\":1112582},\"stream_id\":\"1794655729019-0\",\"polling\":{\"poll_count\":10,\"read_errors\":0,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":9021},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h08m58.0s), 002/030 VUs, 42 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  08m58.0s/52m0s  0.08 iters/s
+
+running (0h08m59.0s), 002/030 VUs, 42 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  08m59.0s/52m0s  0.08 iters/s
+
+running (0h09m00.0s), 002/030 VUs, 42 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  09m00.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:29:01+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:29:01.001Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":44,\"vu\":22,\"request_id\":\"47ccb785-be3d-43d0-af91-7ae9ecd9cf03\",\"conversation_id\":\"9fbbae36-1ce3-447f-adef-11f3fe06c366\",\"message_id\":\"64f90bf2-8f97-4fa2-b77e-1633042f5e20\",\"fixture_id\":\"docx-small-100kb\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_100kb.docx\",\"bytes\":106927},\"intent_time_ms\":1794655741001}" source=console
+time="2026-11-14T18:29:01+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:29:01.002Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":44,\"vu\":22,\"request_id\":\"47ccb785-be3d-43d0-af91-7ae9ecd9cf03\",\"fixture_id\":\"docx-small-100kb\",\"stream_id\":\"1794655741000-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h09m01.0s), 003/030 VUs, 42 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 003/030 VUs  09m01.0s/52m0s  0.08 iters/s
+
+running (0h09m02.0s), 003/030 VUs, 42 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 003/030 VUs  09m02.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:29:03+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:29:03.035Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":44,\"vu\":22,\"request_id\":\"47ccb785-be3d-43d0-af91-7ae9ecd9cf03\",\"conversation_id\":\"9fbbae36-1ce3-447f-adef-11f3fe06c366\",\"message_id\":\"64f90bf2-8f97-4fa2-b77e-1633042f5e20\",\"fixture_id\":\"docx-small-100kb\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_100kb.docx\",\"bytes\":106927},\"stream_id\":\"1794655741000-0\",\"polling\":{\"poll_count\":3,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2034},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h09m03.0s), 002/030 VUs, 43 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  09m03.0s/52m0s  0.08 iters/s
+
+running (0h09m04.0s), 002/030 VUs, 43 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  09m04.0s/52m0s  0.08 iters/s
+
+running (0h09m05.0s), 002/030 VUs, 43 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  09m05.0s/52m0s  0.08 iters/s
+
+running (0h09m06.0s), 002/030 VUs, 43 complete and 0 interrupted iterations
+pipeline_load   [  17% ] 002/030 VUs  09m06.0s/52m0s  0.08 iters/s
+
+running (0h09m07.0s), 002/030 VUs, 43 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 002/030 VUs  09m07.0s/52m0s  0.08 iters/s
+
+running (0h09m08.0s), 002/030 VUs, 43 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 002/030 VUs  09m08.0s/52m0s  0.08 iters/s
+
+running (0h09m09.0s), 002/030 VUs, 43 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 002/030 VUs  09m09.0s/52m0s  0.08 iters/s
+
+running (0h09m10.0s), 002/030 VUs, 43 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 002/030 VUs  09m10.0s/52m0s  0.08 iters/s
+
+running (0h09m11.0s), 002/030 VUs, 43 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 002/030 VUs  09m11.0s/52m0s  0.08 iters/s
+
+running (0h09m12.0s), 002/030 VUs, 43 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 002/030 VUs  09m12.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:29:13+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:29:13.001Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":45,\"vu\":16,\"request_id\":\"18e5e2b1-346f-43d3-a572-bf217077bd1f\",\"conversation_id\":\"12e36886-7b16-492e-a90d-1e82a31e9d1f\",\"message_id\":\"1333b218-7449-4562-8ed9-d538350e0665\",\"fixture_id\":\"csv-boundary-under-16mib\",\"dataset\":{\"format\":\"csv\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/boundary_under_16mb.csv\",\"bytes\":16777200},\"intent_time_ms\":1794655753001}" source=console
+time="2026-11-14T18:29:13+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:29:13.003Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":45,\"vu\":16,\"request_id\":\"18e5e2b1-346f-43d3-a572-bf217077bd1f\",\"fixture_id\":\"csv-boundary-under-16mib\",\"stream_id\":\"1794655753001-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h09m13.0s), 003/030 VUs, 43 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 003/030 VUs  09m13.0s/52m0s  0.08 iters/s
+
+running (0h09m14.0s), 003/030 VUs, 43 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 003/030 VUs  09m14.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:29:15+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:29:15.009Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":45,\"vu\":16,\"request_id\":\"18e5e2b1-346f-43d3-a572-bf217077bd1f\",\"conversation_id\":\"12e36886-7b16-492e-a90d-1e82a31e9d1f\",\"message_id\":\"1333b218-7449-4562-8ed9-d538350e0665\",\"fixture_id\":\"csv-boundary-under-16mib\",\"dataset\":{\"format\":\"csv\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/boundary_under_16mb.csv\",\"bytes\":16777200},\"stream_id\":\"1794655753001-0\",\"polling\":{\"poll_count\":3,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2006},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h09m15.0s), 002/030 VUs, 44 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 002/030 VUs  09m15.0s/52m0s  0.08 iters/s
+
+running (0h09m16.0s), 002/030 VUs, 44 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 002/030 VUs  09m16.0s/52m0s  0.08 iters/s
+
+running (0h09m17.0s), 002/030 VUs, 44 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 002/030 VUs  09m17.0s/52m0s  0.08 iters/s
+
+running (0h09m18.0s), 002/030 VUs, 44 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 002/030 VUs  09m18.0s/52m0s  0.08 iters/s
+
+running (0h09m19.0s), 002/030 VUs, 44 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 002/030 VUs  09m19.0s/52m0s  0.08 iters/s
+
+running (0h09m20.0s), 002/030 VUs, 44 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 002/030 VUs  09m20.0s/52m0s  0.08 iters/s
+
+running (0h09m21.0s), 002/030 VUs, 44 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 002/030 VUs  09m21.0s/52m0s  0.08 iters/s
+
+running (0h09m22.0s), 002/030 VUs, 44 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 002/030 VUs  09m22.0s/52m0s  0.08 iters/s
+
+running (0h09m23.0s), 002/030 VUs, 44 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 002/030 VUs  09m23.0s/52m0s  0.08 iters/s
+
+running (0h09m24.0s), 002/030 VUs, 44 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 002/030 VUs  09m24.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:29:25+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:29:25.000Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":46,\"vu\":9,\"request_id\":\"bde17fc6-b469-4c69-83ce-92a80971e537\",\"conversation_id\":\"5f0ae67f-710e-4d9b-b3ef-76e4fc3a3e90\",\"message_id\":\"010cb5d0-0d82-4b94-8768-6750cea9b12a\",\"fixture_id\":\"xlsx-small-100kb\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_100kb.xlsx\",\"bytes\":110661},\"intent_time_ms\":1794655765000}" source=console
+time="2026-11-14T18:29:25+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:29:25.001Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":46,\"vu\":9,\"request_id\":\"bde17fc6-b469-4c69-83ce-92a80971e537\",\"fixture_id\":\"xlsx-small-100kb\",\"stream_id\":\"1794655764999-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h09m25.0s), 003/030 VUs, 44 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 003/030 VUs  09m25.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:29:26+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:29:26.135Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":42,\"vu\":8,\"request_id\":\"56df7a2c-7b37-41a5-b48c-71dc2ef49d2b\",\"conversation_id\":\"b19b76f1-e97d-4e34-acc0-3c4fca7b83b7\",\"message_id\":\"71cedc01-84a6-4593-9fb1-737328142af7\",\"fixture_id\":\"pdf-small-1mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_1mib.pdf\",\"bytes\":1102246},\"stream_id\":\"1794655717000-0\",\"polling\":{\"poll_count\":50,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":49134},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h09m26.0s), 002/030 VUs, 45 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 002/030 VUs  09m26.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:29:27+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:29:27.006Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":46,\"vu\":9,\"request_id\":\"bde17fc6-b469-4c69-83ce-92a80971e537\",\"conversation_id\":\"5f0ae67f-710e-4d9b-b3ef-76e4fc3a3e90\",\"message_id\":\"010cb5d0-0d82-4b94-8768-6750cea9b12a\",\"fixture_id\":\"xlsx-small-100kb\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_100kb.xlsx\",\"bytes\":110661},\"stream_id\":\"1794655764999-0\",\"polling\":{\"poll_count\":3,\"read_errors\":0,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2005},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h09m27.0s), 001/030 VUs, 46 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 001/030 VUs  09m27.0s/52m0s  0.08 iters/s
+
+running (0h09m28.0s), 001/030 VUs, 46 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 001/030 VUs  09m28.0s/52m0s  0.08 iters/s
+
+running (0h09m29.0s), 001/030 VUs, 46 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 001/030 VUs  09m29.0s/52m0s  0.08 iters/s
+
+running (0h09m30.0s), 001/030 VUs, 46 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 001/030 VUs  09m30.0s/52m0s  0.08 iters/s
+
+running (0h09m31.0s), 001/030 VUs, 46 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 001/030 VUs  09m31.0s/52m0s  0.08 iters/s
+
+running (0h09m32.0s), 001/030 VUs, 46 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 001/030 VUs  09m32.0s/52m0s  0.08 iters/s
+
+running (0h09m33.0s), 001/030 VUs, 46 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 001/030 VUs  09m33.0s/52m0s  0.08 iters/s
+
+running (0h09m34.0s), 001/030 VUs, 46 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 001/030 VUs  09m34.0s/52m0s  0.08 iters/s
+
+running (0h09m35.0s), 001/030 VUs, 46 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 001/030 VUs  09m35.0s/52m0s  0.08 iters/s
+
+running (0h09m36.0s), 001/030 VUs, 46 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 001/030 VUs  09m36.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:29:37+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:29:37.000Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":47,\"vu\":23,\"request_id\":\"79264740-521f-44e4-a40b-581cc07f2285\",\"conversation_id\":\"09c3291c-cefc-4c2f-86e4-d3de78c16bbd\",\"message_id\":\"5f2aee12-0c2a-4e60-bb41-4cd174860486\",\"fixture_id\":\"pdf-small-240kb\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/report.pdf\",\"bytes\":240108},\"intent_time_ms\":1794655777000}" source=console
+time="2026-11-14T18:29:37+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:29:37.001Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":47,\"vu\":23,\"request_id\":\"79264740-521f-44e4-a40b-581cc07f2285\",\"fixture_id\":\"pdf-small-240kb\",\"stream_id\":\"1794655776999-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h09m37.0s), 002/030 VUs, 46 complete and 0 interrupted iterations
+pipeline_load   [  18% ] 002/030 VUs  09m37.0s/52m0s  0.08 iters/s
+
+running (0h09m38.0s), 002/030 VUs, 46 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 002/030 VUs  09m38.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:29:39+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:29:39.007Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":47,\"vu\":23,\"request_id\":\"79264740-521f-44e4-a40b-581cc07f2285\",\"conversation_id\":\"09c3291c-cefc-4c2f-86e4-d3de78c16bbd\",\"message_id\":\"5f2aee12-0c2a-4e60-bb41-4cd174860486\",\"fixture_id\":\"pdf-small-240kb\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/report.pdf\",\"bytes\":240108},\"stream_id\":\"1794655776999-0\",\"polling\":{\"poll_count\":3,\"read_errors\":1,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":2006},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h09m39.0s), 001/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 001/030 VUs  09m39.0s/52m0s  0.08 iters/s
+
+running (0h09m40.0s), 001/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 001/030 VUs  09m40.0s/52m0s  0.08 iters/s
+
+running (0h09m41.0s), 001/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 001/030 VUs  09m41.0s/52m0s  0.08 iters/s
+
+running (0h09m42.0s), 001/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 001/030 VUs  09m42.0s/52m0s  0.08 iters/s
+
+running (0h09m43.0s), 001/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 001/030 VUs  09m43.0s/52m0s  0.08 iters/s
+
+running (0h09m44.0s), 001/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 001/030 VUs  09m44.0s/52m0s  0.08 iters/s
+
+running (0h09m45.0s), 001/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 001/030 VUs  09m45.0s/52m0s  0.08 iters/s
+
+running (0h09m46.0s), 001/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 001/030 VUs  09m46.0s/52m0s  0.08 iters/s
+
+running (0h09m47.0s), 001/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 001/030 VUs  09m47.0s/52m0s  0.08 iters/s
+
+running (0h09m48.0s), 001/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 001/030 VUs  09m48.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:29:49+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:29:49.001Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":48,\"vu\":17,\"request_id\":\"c9bfc326-c5f0-4bb2-b80a-9cb07b7d5cdf\",\"conversation_id\":\"02e3f251-deba-4232-a5ca-3d64f9bab3af\",\"message_id\":\"a6180201-7ae3-44ad-b860-bd14771c6004\",\"fixture_id\":\"pdf-small-8mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_8mib.pdf\",\"bytes\":8843585},\"intent_time_ms\":1794655789001}" source=console
+time="2026-11-14T18:29:49+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:29:49.002Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":48,\"vu\":17,\"request_id\":\"c9bfc326-c5f0-4bb2-b80a-9cb07b7d5cdf\",\"fixture_id\":\"pdf-small-8mib\",\"stream_id\":\"1794655789000-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h09m49.0s), 002/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 002/030 VUs  09m49.0s/52m0s  0.08 iters/s
+
+running (0h09m50.0s), 002/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 002/030 VUs  09m50.0s/52m0s  0.08 iters/s
+
+running (0h09m51.0s), 002/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 002/030 VUs  09m51.0s/52m0s  0.08 iters/s
+
+running (0h09m52.0s), 002/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 002/030 VUs  09m52.0s/52m0s  0.08 iters/s
+
+running (0h09m53.0s), 002/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 002/030 VUs  09m53.0s/52m0s  0.08 iters/s
+
+running (0h09m54.0s), 002/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 002/030 VUs  09m54.0s/52m0s  0.08 iters/s
+
+running (0h09m55.0s), 002/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 002/030 VUs  09m55.0s/52m0s  0.08 iters/s
+
+running (0h09m56.0s), 002/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 002/030 VUs  09m56.0s/52m0s  0.08 iters/s
+
+running (0h09m57.0s), 002/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 002/030 VUs  09m57.0s/52m0s  0.08 iters/s
+
+running (0h09m58.0s), 002/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 002/030 VUs  09m58.0s/52m0s  0.08 iters/s
+
+running (0h09m59.0s), 002/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 002/030 VUs  09m59.0s/52m0s  0.08 iters/s
+
+running (0h10m00.0s), 002/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 002/030 VUs  10m00.0s/52m0s  0.08 iters/s
+time="2026-11-14T18:30:01+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:30:01.002Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":49,\"vu\":24,\"request_id\":\"2952b34b-2edf-48ec-86f5-2a67e47ea255\",\"conversation_id\":\"b03499fb-a583-4af2-842c-5866d9bf96d4\",\"message_id\":\"4d956046-20ec-4d8b-bade-213d95f8ddf5\",\"fixture_id\":\"xlsx-small-1mib\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_1mib.xlsx\",\"bytes\":1150755},\"intent_time_ms\":1794655801002}" source=console
+time="2026-11-14T18:30:01+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:30:01.007Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":49,\"vu\":24,\"request_id\":\"2952b34b-2edf-48ec-86f5-2a67e47ea255\",\"fixture_id\":\"xlsx-small-1mib\",\"stream_id\":\"1794655801002-0\",\"publish_duration_ms\":2}" source=console
+
+running (0h10m01.0s), 003/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 003/030 VUs  10m01.0s/52m0s  0.10 iters/s
+
+running (0h10m02.0s), 003/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 003/030 VUs  10m02.0s/52m0s  0.10 iters/s
+
+running (0h10m03.0s), 003/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 003/030 VUs  10m03.0s/52m0s  0.10 iters/s
+
+running (0h10m04.0s), 003/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 003/030 VUs  10m04.0s/52m0s  0.10 iters/s
+
+running (0h10m05.0s), 003/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 003/030 VUs  10m05.0s/52m0s  0.10 iters/s
+
+running (0h10m06.0s), 003/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 003/030 VUs  10m06.0s/52m0s  0.10 iters/s
+
+running (0h10m07.0s), 003/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 003/030 VUs  10m07.0s/52m0s  0.10 iters/s
+
+running (0h10m08.0s), 003/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  19% ] 003/030 VUs  10m08.0s/52m0s  0.10 iters/s
+
+running (0h10m09.0s), 003/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  20% ] 003/030 VUs  10m09.0s/52m0s  0.10 iters/s
+
+running (0h10m10.0s), 003/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  20% ] 003/030 VUs  10m10.0s/52m0s  0.10 iters/s
+time="2026-11-14T18:30:11+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:30:11.251Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":50,\"vu\":21,\"request_id\":\"8353ef93-fb16-43a6-9c77-392cf2151c2c\",\"conversation_id\":\"d8392df8-775a-4eb9-a694-57684091cca7\",\"message_id\":\"f806a304-6d6d-4ae8-9e90-627504616ac6\",\"fixture_id\":\"pdf-small-1mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_1mib.pdf\",\"bytes\":1102246},\"intent_time_ms\":1794655811251}" source=console
+time="2026-11-14T18:30:11+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:30:11.258Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":50,\"vu\":21,\"request_id\":\"8353ef93-fb16-43a6-9c77-392cf2151c2c\",\"fixture_id\":\"pdf-small-1mib\",\"stream_id\":\"1794655811252-0\",\"publish_duration_ms\":5}" source=console
+
+running (0h10m11.0s), 004/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  20% ] 004/030 VUs  10m11.0s/52m0s  0.12 iters/s
+
+running (0h10m12.0s), 004/030 VUs, 47 complete and 0 interrupted iterations
+pipeline_load   [  20% ] 004/030 VUs  10m12.0s/52m0s  0.12 iters/s
+time="2026-11-14T18:30:13+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:30:13.008Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":40,\"vu\":15,\"request_id\":\"2ad16aa8-9452-4677-9850-8f59ec9b7ab9\",\"conversation_id\":\"79654d98-b50e-4bc4-904b-636446b7ef44\",\"message_id\":\"a83bddd8-9f39-46a2-9a69-f7ecfa03073b\",\"fixture_id\":\"pdf-small-8mib\",\"dataset\":{\"format\":\"pdf\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/pdf_small_8mib.pdf\",\"bytes\":8843585},\"stream_id\":\"1794655693004-0\",\"polling\":{\"poll_count\":120,\"read_errors\":1,\"last_observed_status\":\"PROCESSING\",\"e2e_duration_ms\":null},\"outcome\":\"OBSERVATION_TIMEOUT\"}" source=console
+time="2026-11-14T18:30:13+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:30:13.036Z\",\"event\":\"OUTCOME\",\"run_id\":\"run-1794655173-small\",\"iteration\":49,\"vu\":24,\"request_id\":\"2952b34b-2edf-48ec-86f5-2a67e47ea255\",\"conversation_id\":\"b03499fb-a583-4af2-842c-5866d9bf96d4\",\"message_id\":\"4d956046-20ec-4d8b-bade-213d95f8ddf5\",\"fixture_id\":\"xlsx-small-1mib\",\"dataset\":{\"format\":\"xlsx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/xlsx_small_1mib.xlsx\",\"bytes\":1150755},\"stream_id\":\"1794655801002-0\",\"polling\":{\"poll_count\":13,\"read_errors\":0,\"last_observed_status\":\"COMPLETED\",\"e2e_duration_ms\":12033},\"outcome\":\"COMPLETED\"}" source=console
+
+running (0h10m13.0s), 002/030 VUs, 49 complete and 0 interrupted iterations
+pipeline_load   [  20% ] 002/030 VUs  10m13.0s/52m0s  0.12 iters/s
+
+running (0h10m14.0s), 002/030 VUs, 49 complete and 0 interrupted iterations
+pipeline_load   [  20% ] 002/030 VUs  10m14.0s/52m0s  0.12 iters/s
+
+running (0h10m15.0s), 002/030 VUs, 49 complete and 0 interrupted iterations
+pipeline_load   [  20% ] 002/030 VUs  10m15.0s/52m0s  0.12 iters/s
+
+running (0h10m16.0s), 002/030 VUs, 49 complete and 0 interrupted iterations
+pipeline_load   [  20% ] 002/030 VUs  10m16.0s/52m0s  0.12 iters/s
+
+running (0h10m17.0s), 002/030 VUs, 49 complete and 0 interrupted iterations
+pipeline_load   [  20% ] 002/030 VUs  10m17.0s/52m0s  0.12 iters/s
+
+running (0h10m18.0s), 002/030 VUs, 49 complete and 0 interrupted iterations
+pipeline_load   [  20% ] 002/030 VUs  10m18.0s/52m0s  0.12 iters/s
+time="2026-11-14T18:30:19+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:30:19.374Z\",\"event\":\"INTENT\",\"run_id\":\"run-1794655173-small\",\"iteration\":51,\"vu\":18,\"request_id\":\"7b506cd5-3601-4360-8b53-375992487e26\",\"conversation_id\":\"54c97637-aa37-4210-b07f-2d8ea423c8c5\",\"message_id\":\"4a41ba4d-0948-4d52-9bbb-83a69ca7168b\",\"fixture_id\":\"docx-small-1mib\",\"dataset\":{\"format\":\"docx\",\"size_class\":\"small\",\"url\":\"http://minio:9000/dataset/docx_small_1mib.docx\",\"bytes\":1112582},\"intent_time_ms\":1794655819374}" source=console
+time="2026-11-14T18:30:19+07:00" level=info msg="{\"timestamp\":\"2026-11-14T11:30:19.375Z\",\"event\":\"ACCEPTED\",\"run_id\":\"run-1794655173-small\",\"iteration\":51,\"vu\":18,\"request_id\":\"7b506cd5-3601-4360-8b53-375992487e26\",\"fixture_id\":\"docx-small-1mib\",\"stream_id\":\"1794655819374-0\",\"publish_duration_ms\":1}" source=console
+
+running (0h10m19.0s), 003/030 VUs, 49 complete and 0 interrupted iterations
+pipeline_load   [  20% ] 003/030 VUs  10m19.0s/52m0s  0.14 iters/s
+
+running (0h10m20.0s), 003/030 VUs, 49 complete and 0 interrupted iterations
+pipeline_load   [  20% ] 003/030 VUs  10m20.0s/52m0s  0.14 iters/s
+
+running (0h10m21.0s), 003/030 VUs, 49 complete and 0 interrupted iterations
+pipeline_load   [  20% ] 003/030 VUs  10m21.0s/52m0s  0.14 iters/s
+
+running (0h10m22.0s), 003/030 VUs, 49 complete and 0 interrupted iterations
+pipeline_load   [  20% ] 003/030 VUs  10m22.0s/52m0s  0.14 iters/s
+
+running (0h10m23.0s), 003/030 VUs, 49 complete and 0 interrupted iterations
+pipeline_load   [  20% ] 003/030 VUs  10m23.0s/52m0s  0.14 iters/s
