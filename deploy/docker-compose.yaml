@@ -7,6 +7,14 @@ services:
       - "8080:8080"
     depends_on:
       - minio
+      - redis
+
+  redis:
+    image: redis:8-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
 
   minio:
     image: coollabsio/minio:RELEASE.2025-10-15T17-29-55Z
@@ -22,3 +30,4 @@ services:
 
 volumes:
   minio-data:
+  redis-data:
