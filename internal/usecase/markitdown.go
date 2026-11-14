@@ -5,27 +5,13 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
 	"os"
-	"path"
-	"strings"
 
 	"github.com/go-markitdown/internal/services"
+	"github.com/go-markitdown/internal/utils"
 )
 
 const maxFileSize = 16 * 1024 * 1024 // 16MB
-
-var allowedExtensions = map[string]bool{
-	".doc":  true,
-	".docx": true,
-	".xls":  true,
-	".xlsx": true,
-	".csv":  true,
-	".pptx": true,
-	".html": true,
-	".eml":  true,
-	".pdf":  true,
-}
 
 var (
 	ErrUnsupportedFormat = errors.New("unsupported file format")
@@ -35,11 +21,11 @@ var (
 // ConvertURLToMarkdown downloads the file at fileURL, validates its format
 // and size, converts it to markdown and returns the result.
 func ConvertURLToMarkdown(fileURL string) (string, error) {
-	ext, err := extensionOf(fileURL)
+	ext, err := utils.ExtensionOf(fileURL)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("invalid url: %w", err)
 	}
-	if !allowedExtensions[ext] {
+	if !utils.IsAllowedExtension(ext) {
 		return "", ErrUnsupportedFormat
 	}
 
@@ -50,14 +36,6 @@ func ConvertURLToMarkdown(fileURL string) (string, error) {
 	defer os.Remove(filePath)
 
 	return services.ConvertToMarkdown(filePath)
-}
-
-func extensionOf(fileURL string) (string, error) {
-	parsed, err := url.Parse(fileURL)
-	if err != nil {
-		return "", fmt.Errorf("invalid url: %w", err)
-	}
-	return strings.ToLower(path.Ext(parsed.Path)), nil
 }
 
 func downloadFile(fileURL, ext string) (string, error) {

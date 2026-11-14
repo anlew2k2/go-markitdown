@@ -1,13 +1,37 @@
 services:
   extractor:
+    cpus: 2.0
+    mem_limit: 1g
     build:
       context: ..
       dockerfile: deploy/extractor.dockerfile
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"
     depends_on:
       - minio
       - redis
+
+  splitter:
+    cpus: 1.0
+    mem_limit: 512m
+    build:
+      context: ..
+      dockerfile: deploy/splitter.dockerfile
+    expose:
+      - "8080"
+    depends_on:
+      - minio
+      - redis
+
+  nginx:
+    image: nginx:1.27-alpine
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - extractor
+      - splitter
 
   redis:
     image: redis:8-alpine
