@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/anthony-lewis/go-markitdown/internal/handler"
 	"github.com/gin-gonic/gin"
+	"github.com/go-markitdown/internal/handler"
 )
 
 func main() {

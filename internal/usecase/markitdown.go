@@ -10,7 +10,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/anthony-lewis/go-markitdown/internal/services"
+	"github.com/go-markitdown/internal/services"
 )
 
 const maxFileSize = 16 * 1024 * 1024 // 16MB

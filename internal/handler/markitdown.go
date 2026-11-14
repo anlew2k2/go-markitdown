@@ -4,8 +4,8 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/anthony-lewis/go-markitdown/internal/usecase"
 	"github.com/gin-gonic/gin"
+	"github.com/go-markitdown/internal/usecase"
 )
 
 type runMarkitdownRequest struct {

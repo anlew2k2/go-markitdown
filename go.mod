@@ -1,4 +1,4 @@
-module github.com/anthony-lewis/go-markitdown
+module github.com/go-markitdown
 
 go 1.27.1
 
