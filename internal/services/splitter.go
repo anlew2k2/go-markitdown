@@ -2,6 +2,7 @@ package services
 
 import (
 	"bufio"
+	"bytes"
 	"context"
 	"encoding/csv"
 	"errors"
@@ -147,6 +148,23 @@ func splitPDF(ctx context.Context, localPath string, maxPartSize int64, objectPr
 	return urls, nil
 }
 
+// encodedCSVRowSize returns the exact number of bytes csv.Writer would emit
+// for record, so a caller can decide whether it still fits in the current
+// part before writing it (writing first and checking after would let the
+// row that tips a part over the limit end up inside it).
+func encodedCSVRowSize(record []string) (int64, error) {
+	var buf bytes.Buffer
+	w := csv.NewWriter(&buf)
+	if err := w.Write(record); err != nil {
+		return 0, err
+	}
+	w.Flush()
+	if err := w.Error(); err != nil {
+		return 0, err
+	}
+	return int64(buf.Len()), nil
+}
+
 func splitCSV(ctx context.Context, localPath string, maxPartSize int64, objectPrefix string) ([]string, error) {
 	src, err := os.Open(localPath)
 	if err != nil {
@@ -161,45 +179,57 @@ func splitCSV(ctx context.Context, localPath string, maxPartSize int64, objectPr
 	if err != nil {
 		return nil, fmt.Errorf("read csv header: %w", err)
 	}
+	headerSize, err := encodedCSVRowSize(header)
+	if err != nil {
+		return nil, fmt.Errorf("encode csv header: %w", err)
+	}
 
 	var urls []string
 	partNum := 0
+	var currentFile *os.File
+	var currentWriter *csv.Writer
+	var currentSize int64
 
-	newPart := func() (*os.File, *csv.Writer, error) {
+	newPart := func() error {
 		partNum++
 		f, err := os.CreateTemp("", fmt.Sprintf("split-csv-%03d-*.csv", partNum))
 		if err != nil {
-			return nil, nil, err
+			return err
 		}
 		w := csv.NewWriter(f)
 		if err := w.Write(header); err != nil {
-			return nil, nil, err
+			return err
 		}
-		return f, w, nil
-	}
-
-	uploadPart := func(f *os.File, w *csv.Writer) error {
 		w.Flush()
 		if err := w.Error(); err != nil {
-			f.Close()
-			os.Remove(f.Name())
 			return err
 		}
-		info, err := f.Stat()
+		currentFile, currentWriter, currentSize = f, w, headerSize
+		return nil
+	}
+
+	uploadPart := func() error {
+		currentWriter.Flush()
+		if err := currentWriter.Error(); err != nil {
+			currentFile.Close()
+			os.Remove(currentFile.Name())
+			return err
+		}
+		info, err := currentFile.Stat()
 		if err != nil {
-			f.Close()
-			os.Remove(f.Name())
+			currentFile.Close()
+			os.Remove(currentFile.Name())
 			return err
 		}
-		if _, err := f.Seek(0, io.SeekStart); err != nil {
-			f.Close()
-			os.Remove(f.Name())
+		if _, err := currentFile.Seek(0, io.SeekStart); err != nil {
+			currentFile.Close()
+			os.Remove(currentFile.Name())
 			return err
 		}
 		objectName := fmt.Sprintf("%s/part-%03d.csv", objectPrefix, partNum)
-		url, err := UploadObject(ctx, objectName, f, info.Size(), "text/csv")
-		f.Close()
-		os.Remove(f.Name())
+		url, err := UploadObject(ctx, objectName, currentFile, info.Size(), "text/csv")
+		currentFile.Close()
+		os.Remove(currentFile.Name())
 		if err != nil {
 			return err
 		}
@@ -207,8 +237,7 @@ func splitCSV(ctx context.Context, localPath string, maxPartSize int64, objectPr
 		return nil
 	}
 
-	currentFile, currentWriter, err := newPart()
-	if err != nil {
+	if err := newPart(); err != nil {
 		return nil, fmt.Errorf("start csv part: %w", err)
 	}
 
@@ -223,32 +252,41 @@ func splitCSV(ctx context.Context, localPath string, maxPartSize int64, objectPr
 			return nil, fmt.Errorf("read csv row: %w", err)
 		}
 
+		rowSize, err := encodedCSVRowSize(record)
+		if err != nil {
+			currentFile.Close()
+			os.Remove(currentFile.Name())
+			return nil, fmt.Errorf("encode csv row: %w", err)
+		}
+
+		// Roll over to a new part before writing this row if it would push
+		// the current part over the limit — but only when the current part
+		// already holds at least one data row, since a single row bigger
+		// than maxPartSize can't be split any further and must go out alone.
+		if currentSize > headerSize && currentSize+rowSize > maxPartSize {
+			if err := uploadPart(); err != nil {
+				return nil, fmt.Errorf("upload csv part: %w", err)
+			}
+			if err := newPart(); err != nil {
+				return nil, fmt.Errorf("start csv part: %w", err)
+			}
+		}
+
 		if err := currentWriter.Write(record); err != nil {
 			currentFile.Close()
 			os.Remove(currentFile.Name())
 			return nil, fmt.Errorf("write csv row: %w", err)
 		}
 		currentWriter.Flush()
-
-		info, err := currentFile.Stat()
-		if err != nil {
+		if err := currentWriter.Error(); err != nil {
 			currentFile.Close()
 			os.Remove(currentFile.Name())
-			return nil, fmt.Errorf("stat csv part: %w", err)
+			return nil, fmt.Errorf("flush csv row: %w", err)
 		}
-
-		if info.Size() >= maxPartSize {
-			if err := uploadPart(currentFile, currentWriter); err != nil {
-				return nil, fmt.Errorf("upload csv part: %w", err)
-			}
-			currentFile, currentWriter, err = newPart()
-			if err != nil {
-				return nil, fmt.Errorf("start csv part: %w", err)
-			}
-		}
+		currentSize += rowSize
 	}
 
-	if err := uploadPart(currentFile, currentWriter); err != nil {
+	if err := uploadPart(); err != nil {
 		return nil, fmt.Errorf("upload final csv part: %w", err)
 	}
 

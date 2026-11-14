@@ -238,8 +238,21 @@ func (w *emlSplitter) dispatchAttachment(e *message.Entity, filename string) err
 		objectBase += "-" + sanitizeObjectNameSegment(strings.TrimSuffix(filename, ext))
 	}
 
-	if ext != "" && utils.IsAllowedExtension(ext) && written > w.maxPartSize {
-		urls, err := SplitAndUpload(w.ctx, tmpPath, ext, w.maxPartSize, objectBase)
+	if written > w.maxPartSize {
+		if ext != "" && utils.IsAllowedExtension(ext) {
+			urls, err := SplitAndUpload(w.ctx, tmpPath, ext, w.maxPartSize, objectBase)
+			if err != nil {
+				return fmt.Errorf("split attachment %q: %w", filename, err)
+			}
+			w.attachmentURLs = append(w.attachmentURLs, urls...)
+			return nil
+		}
+
+		// No structural splitter applies to this attachment's type (or it
+		// has no recognizable extension): fall back to raw byte chunking so
+		// every uploaded part still respects maxPartSize instead of going
+		// out as one oversized blob.
+		urls, err := splitBytes(w.ctx, tmpPath, ext, w.maxPartSize, objectBase)
 		if err != nil {
 			return fmt.Errorf("split attachment %q: %w", filename, err)
 		}

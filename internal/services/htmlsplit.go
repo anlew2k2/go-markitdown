@@ -62,6 +62,13 @@ var htmlBinaryAttrs = map[string]bool{
 type openHTMLTag struct {
 	name string
 	raw  string // the sanitized opening tag markup, reused verbatim on reopen
+
+	// startOffset is this tag's opening markup's offset into the current
+	// buf, kept up to date across every reset (rotate/rotateBefore). When
+	// this tag is itself a boundary tag, it marks where its whole element
+	// began, so handleEndTag can move the element to the next chunk
+	// instead of letting it overshoot the one it was appended to.
+	startOffset int
 }
 
 // htmlChunkWriter tokenizes HTML as a stream (golang.org/x/net/html's
@@ -140,6 +147,7 @@ func (w *htmlChunkWriter) handleStartTag(tok html.Token, selfClosing bool) error
 		return nil
 	}
 
+	startOffset := w.buf.Len()
 	sanitizeHTMLAttrs(&tok)
 	raw := tok.String()
 	if err := w.append(raw); err != nil {
@@ -150,7 +158,13 @@ func (w *htmlChunkWriter) handleStartTag(tok html.Token, selfClosing bool) error
 		if len(w.open) >= htmlMaxNestDepth {
 			return fmt.Errorf("html nesting depth exceeds %d", htmlMaxNestDepth)
 		}
-		w.open = append(w.open, openHTMLTag{name: name, raw: raw})
+		// Note: if append's hard-cap safety valve fired above, raw was
+		// already flushed out as part of the emitted chunk and startOffset
+		// no longer points at it — an existing limitation of that valve
+		// (it can only fire on one uninterrupted run of htmlHardCapFactor×
+		// maxChunkSize with no boundary tag in it at all, well beyond
+		// anything a boundary-tag-driven split is meant to hit).
+		w.open = append(w.open, openHTMLTag{name: name, raw: raw, startOffset: startOffset})
 	}
 	return nil
 }
@@ -165,33 +179,99 @@ func (w *htmlChunkWriter) handleEndTag(tok html.Token) error {
 		return nil
 	}
 
-	if err := w.append(tok.String()); err != nil {
-		return err
-	}
-
-	closedBoundary := false
+	matchIdx := -1
 	for i := len(w.open) - 1; i >= 0; i-- {
 		if w.open[i].name == name {
-			w.open = w.open[:i]
-			closedBoundary = htmlBoundaryTags[name]
+			matchIdx = i
 			break
 		}
 	}
 
-	if closedBoundary && int64(w.buf.Len()) >= w.maxChunkSize {
-		return w.rotate()
+	if err := w.append(tok.String()); err != nil {
+		return err
 	}
-	return nil
+
+	if matchIdx < 0 {
+		return nil
+	}
+
+	// Read the mark after append (not before): append may have rotated
+	// internally (hard cap) and rewritten every still-open ancestor's
+	// startOffset to match the fresh buffer, so matchIdx stays a valid
+	// index but its stored offset must be re-read now to stay accurate.
+	mark := w.open[matchIdx].startOffset
+	closedBoundary := htmlBoundaryTags[name]
+	w.open = w.open[:matchIdx]
+
+	if !closedBoundary {
+		return nil
+	}
+
+	closeSize := w.openTagsCloseSize()
+	if int64(w.buf.Len())+closeSize < w.maxChunkSize {
+		return nil
+	}
+
+	// Content appended since the last check — possibly spanning more than
+	// just this element, since opening a boundary tag (e.g. <tbody>) isn't
+	// itself checked — is what pushed the chunk over the limit. Find the
+	// closest safe split point at or before it and move everything from
+	// there into the next chunk, instead of letting this one overshoot.
+	if splitMark, keepOpen, ok := w.findRotationMark(mark); ok {
+		w.open = w.open[:keepOpen]
+		return w.rotateBefore(splitMark)
+	}
+	return w.rotate()
+}
+
+// findRotationMark looks for a safe place to end the current chunk at or
+// before the just-closed boundary tag, preferring to keep as much of the
+// buffer as possible: first the tag's own start (tagMark), then each
+// still-open ancestor's start from innermost to outermost. keepOpen says
+// how many leading entries of w.open remain genuinely open if this mark is
+// used (to be closed in the emitted part and reopened in the next one);
+// any ancestor beyond that is carried into the next chunk as part of the
+// moved bytes, since its opening tag already appears there verbatim.
+func (w *htmlChunkWriter) findRotationMark(tagMark int) (mark int, keepOpen int, ok bool) {
+	if tagMark > 0 && int64(tagMark)+w.openTagsCloseSize() < w.maxChunkSize {
+		return tagMark, len(w.open), true
+	}
+	for i := len(w.open) - 1; i >= 0; i-- {
+		candidate := w.open[i].startOffset
+		if candidate <= 0 {
+			continue
+		}
+		var closeSize int64
+		for _, t := range w.open[:i] {
+			closeSize += int64(len(t.name)) + 3
+		}
+		if int64(candidate)+closeSize < w.maxChunkSize {
+			return candidate, i, true
+		}
+	}
+	return 0, 0, false
 }
 
 // append writes s to the current chunk and force-rotates if the hard cap is
 // hit, so a single oversized element can never grow the buffer unbounded.
 func (w *htmlChunkWriter) append(s string) error {
 	w.buf.WriteString(s)
-	if int64(w.buf.Len()) >= w.maxChunkSize*htmlHardCapFactor {
+	if int64(w.buf.Len())+w.openTagsCloseSize() >= w.maxChunkSize*htmlHardCapFactor {
 		return w.rotate()
 	}
 	return nil
+}
+
+// openTagsCloseSize returns how many bytes emitCurrent will add to close
+// every still-open ancestor tag (e.g. "</table>"). Size checks before a
+// rotate must include this, since emitCurrent appends those closing tags
+// to the buffer right before measuring and emitting it.
+func (w *htmlChunkWriter) openTagsCloseSize() int64 {
+	var n int64
+	for _, t := range w.open {
+		n += int64(len(t.name)) + 3 // "</" + name + ">"
+	}
+	return n
 }
 
 // rotate emits the current chunk (closing any open tags) and reopens them
@@ -200,10 +280,36 @@ func (w *htmlChunkWriter) rotate() error {
 	if err := w.emitCurrent(); err != nil {
 		return err
 	}
-	for _, t := range w.open {
-		w.buf.WriteString(t.raw)
-	}
+	w.reopenAncestors()
 	return nil
+}
+
+// rotateBefore splits the buffer at mark — the offset where the element
+// that just overflowed the chunk began — emitting everything before it as
+// the current chunk and carrying that element whole into the next one,
+// instead of letting it inflate the chunk it was appended to.
+func (w *htmlChunkWriter) rotateBefore(mark int) error {
+	data := w.buf.Bytes()
+	overflow := append([]byte(nil), data[mark:]...)
+	w.buf.Truncate(mark)
+
+	if err := w.emitCurrent(); err != nil {
+		return err
+	}
+	w.reopenAncestors()
+	w.buf.Write(overflow)
+	return nil
+}
+
+// reopenAncestors rewrites every still-open ancestor's markup at the start
+// of the (just-reset) buffer, refreshing each one's startOffset to match —
+// rotate and rotateBefore both reset buf, which would otherwise leave
+// those offsets pointing at positions from the previous chunk.
+func (w *htmlChunkWriter) reopenAncestors() {
+	for i := range w.open {
+		w.open[i].startOffset = w.buf.Len()
+		w.buf.WriteString(w.open[i].raw)
+	}
 }
 
 // finish emits whatever remains as the final chunk, closing any open tags
