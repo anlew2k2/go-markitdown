@@ -1,0 +1,5 @@
+.git
+.genex
+docs
+*.log
+.DS_Store
