@@ -8,6 +8,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/minio/minio-go/v7 v7.0.100
 	github.com/pdfcpu/pdfcpu v0.11.0
+	github.com/redis/go-redis/v9 v9.23.0
 	golang.org/x/net v0.62.0
 )
 
@@ -45,7 +46,6 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/quic-go/qpack v0.6.0 // indirect
 	github.com/quic-go/quic-go v0.59.0 // indirect
-	github.com/redis/go-redis/v9 v9.23.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rs/xid v1.6.0 // indirect
 	github.com/tinylib/msgp v1.6.1 // indirect

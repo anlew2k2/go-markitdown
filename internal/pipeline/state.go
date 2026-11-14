@@ -1,8 +1,8 @@
 package pipeline
 
 import (
-	_ "embed"
 	"context"
+	_ "embed"
 	"time"
 
 	"github.com/redis/go-redis/v9"

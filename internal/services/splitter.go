@@ -11,6 +11,8 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strconv"
+	"strings"
 
 	pdfapi "github.com/pdfcpu/pdfcpu/pkg/api"
 	"github.com/pdfcpu/pdfcpu/pkg/pdfcpu/model"
@@ -62,6 +64,26 @@ func SplitAndUpload(ctx context.Context, localPath, ext string, maxPartSize int6
 	default:
 		return splitBytes(ctx, localPath, ext, maxPartSize, objectPrefix)
 	}
+}
+
+// pdfSpanStart extracts the starting page number from a pdfcpu span
+// filename ("<base>_<from>.pdf" or "<base>_<from>-<thru>.pdf"), returning 0
+// if the name doesn't match the expected pattern.
+func pdfSpanStart(name string) int {
+	trimmed := strings.TrimSuffix(name, ".pdf")
+	idx := strings.LastIndex(trimmed, "_")
+	if idx < 0 {
+		return 0
+	}
+	tail := trimmed[idx+1:]
+	if dash := strings.Index(tail, "-"); dash >= 0 {
+		tail = tail[:dash]
+	}
+	n, err := strconv.Atoi(tail)
+	if err != nil {
+		return 0
+	}
+	return n
 }
 
 func splitPDF(ctx context.Context, localPath string, maxPartSize int64, objectPrefix string) ([]string, error) {
@@ -134,7 +156,11 @@ func splitPDF(ctx context.Context, localPath string, maxPartSize int64, objectPr
 		}
 	}
 
-	sort.Slice(entries, func(i, j int) bool { return entries[i].Name() < entries[j].Name() })
+	// pdfcpu names spans "<base>_<from>.pdf" or "<base>_<from>-<thru>.pdf"
+	// using the raw page number, not zero-padded, so a lexical sort on the
+	// filename breaks page order past 9 parts (e.g. "_10" sorts before
+	// "_2"). Sort by the numeric "from" page instead.
+	sort.Slice(entries, func(i, j int) bool { return pdfSpanStart(entries[i].Name()) < pdfSpanStart(entries[j].Name()) })
 
 	urls := make([]string, 0, len(entries))
 	for i, e := range entries {

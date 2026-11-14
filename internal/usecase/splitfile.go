@@ -43,11 +43,11 @@ func SplitFile(ctx context.Context, input SplitFileInput) ([]string, error) {
 		return nil, ErrUnsupportedFormat
 	}
 
-	if size, ok := remoteFileSize(input.FilePath); ok && size <= maxSplitPartSize {
+	if size, ok := remoteFileSize(ctx, input.FilePath); ok && size <= maxSplitPartSize {
 		return []string{input.FilePath}, nil
 	}
 
-	localPath, err := downloadToTemp(input.FilePath, ext)
+	localPath, err := downloadToTemp(ctx, input.FilePath, ext)
 	if err != nil {
 		return nil, err
 	}
@@ -72,8 +72,12 @@ func SplitFile(ctx context.Context, input SplitFileInput) ([]string, error) {
 // remoteFileSize does a cheap HEAD request to learn the file size without
 // downloading it. ok is false whenever the size could not be determined,
 // in which case the caller must fall back to downloading the file.
-func remoteFileSize(fileURL string) (size int64, ok bool) {
-	resp, err := http.Head(fileURL)
+func remoteFileSize(ctx context.Context, fileURL string) (size int64, ok bool) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodHead, fileURL, nil)
+	if err != nil {
+		return 0, false
+	}
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return 0, false
 	}
@@ -85,8 +89,12 @@ func remoteFileSize(fileURL string) (size int64, ok bool) {
 	return resp.ContentLength, true
 }
 
-func downloadToTemp(fileURL, ext string) (string, error) {
-	resp, err := http.Get(fileURL)
+func downloadToTemp(ctx context.Context, fileURL, ext string) (string, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fileURL, nil)
+	if err != nil {
+		return "", fmt.Errorf("build request: %w", err)
+	}
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return "", fmt.Errorf("failed to download file: %w", err)
 	}
