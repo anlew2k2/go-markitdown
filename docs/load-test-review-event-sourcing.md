@@ -1,3 +1,61 @@
+# Review thiết kế k6 — file nhỏ và file lớn
+
+Ngày: 2026-11-14. Verdict: **cần bổ sung trước khi dùng kết quả để công bố capacity cho cả hai nhóm**.
+Review tĩnh trên working tree hiện tại; chưa chạy benchmark, chưa xác minh fixtures hoặc resource limits thực tế. Không sửa script/application code. Phần lịch sử bên dưới giữ lại để truy vết; các nhận xét hiện trạng trong phần cập nhật này thay thế nhận xét cũ khi khác nhau.
+
+## 1. Phát hiện cần xử lý
+
+| Mức | Phát hiện và bằng chứng | Tác động / đề xuất |
+|---|---|---|
+| P1 | Plan §2.5 và `k6/load_test.js:101–127` chỉ có ba file 50 MiB, một giá trị bytes dùng chung. `internal/usecase/splitfile.go:46–61` có nhánh riêng cho file ≤16 MiB. | Chưa đo được capacity file nhỏ. Tách small-only, large-only, mixed; manifest mỗi fixture phải có bytes thực, checksum, format, size_class và số part kỳ vọng được xác minh bằng smoke. Không suy số part từ ceil(bytes/16 MiB), vì cắt theo cấu trúc và tái nén có thể thay đổi kích thước. |
+| P1 | Script chỉ poll tối đa 600s (`:241–272`); README gọi grace 15m là true drain, teardown `:163` khẳng định đã drain. | Grace chỉ chờ iterations còn chạy; khi mọi observer đã timeout, k6 có thể kết thúc sớm dù backend còn backlog. Cần bước hậu kiểm độc lập tiếp tục theo dõi tới khi mọi accepted request terminal và queue/PEL về baseline hoặc hết drain deadline. Chụp output end ID sau bước này, rồi đối soát. Timeout observer không phải FAILED. |
+| P1 | Guardrail outstanding >20/OOM trong plan §3–4 chưa được script triển khai; README §6 xác nhận là gap. Manifest hiện chỉ log sau publish lỗi hoặc sau polling (`:294–323`). | Khi overload vẫn nạp thêm sau observation timeout; nếu ngắt iteration có thể mất request khỏi manifest. Lưu intent trước XADD, accepted ID ngay sau reply; dùng cờ dừng chung theo run, giữ observer/monitor chạy. Outstanding tính theo accepted chưa terminal trên backend, không theo số VU đang chờ. |
+| P2 | `maxVUs=30`, rate tới 5/min, observer tới 10 phút (`:55–59`, `:106`). | Trường hợp mọi request chờ deadline cần khoảng 50 VU cộng headroom. 30 VU chỉ đủ khoảng 6 phút ở 5/min. Chọn VU theo baseline và deadline/rate; nếu guardrail dừng trước thì đánh dấu run đã dừng nạp, không coi là đạt lịch. Kiểm tra dropped iterations và accepted rate thực tế. |
+| P2 | `e2e_duration` chỉ ghi COMPLETED và không có tag (`:279–283`); polling 1s, dataset trộn format. | File nhỏ có thể nhanh hơn chu kỳ poll nên latency quan sát bị lượng tử hóa; mean/p95 chung che giấu nhóm chậm và bỏ request timeout. Dùng timestamp input/output stream cho E2E chính thức; phân nhóm format × size_class, báo failures/timeouts/unresolved cạnh latency của SUCCESS. Không gắn request_id làm metric tag. |
+| P2 | Generator PDF dùng comment padding (`tmp/generate_dataset.py:110`), OOXML dùng ZIP_STORED (`:161`, `:211`). | 50 MiB vật lý không đại diện chi phí extract. Bổ sung tài liệu có nội dung thực; ghi pages/rows/cells, uncompressed bytes, parts và tổng bytes sau split. Giữ synthetic làm nhóm riêng. Không suy rộng sang OCR. |
+| P2 | Plan §2.1 và review cũ nói chưa có worker. Working tree đã có `internal/pipeline/{splitter,extractor}.go`, entrypoints worker và Compose SERVICE_MODE=worker. | Tài liệu hiện trạng đã lỗi thời. Thay precondition bằng build/readiness và smoke thực tế; có code không chứng minh deployment đã sẵn sàng. Các lỗi async/UUID/stage trong review cũ đã được scaffold xử lý. |
+
+## 2. Ma trận workload đề xuất
+
+Các size/rate dưới đây là điểm khởi đầu để thăm dò, không phải yêu cầu sản phẩm hay capacity đã đo. Ngưỡng code là **16 × 1024 × 1024 bytes**.
+
+| Run | Dataset | Mục tiêu / assertion |
+|---|---|---|
+| Small-only | PDF/DOCX/XLSX có nội dung thực, khoảng 100 KiB, 1 MiB, 8 MiB; cố định phân phối | total=1, offset=0, URL gốc đi qua splitted; đo docs/min, overhead HEAD/Redis/subprocess và Extractor. |
+| Boundary smoke | Fixture hợp lệ sát dưới, đúng và sát trên 16 MiB; bytes thực được xác nhận | ≤ ngưỡng không cắt; > ngưỡng vào splitter. Không bắt buộc >ngưỡng luôn ra nhiều part sau tái nén. Đây là kiểm tra định tuyến, không cần full capacity sweep riêng. |
+| Large-only | 50 MiB và 100 MiB nếu thuộc phạm vi được hỗ trợ; từng format riêng trước mix | Parts hợp lệ, mỗi part ≤16 MiB, offsets liên tục, đúng một SUCCESS và đủ URL theo thứ tự; đo split/fanout, part queue, disk/temp, RAM/CPU. Fixture có đơn vị nội dung quá lớn không thể cắt là negative case riêng. |
+| Mixed | Small/large theo tỷ lệ traffic thực; nếu chưa có số liệu dùng 80/20 theo số document và ghi rõ giả định | Đo latency/backlog của small khi có large, so với small-only ở cùng small arrival rate và cùng quota. Tổng throughput tốt không được che mất small bị chờ lâu. |
+| Negative/recovery | File hỏng, part không thể cắt, timeout; overload có giới hạn rồi drain | Chạy riêng khỏi capacity happy-path; đúng một FAILED, sibling dừng/skip, xử lý hết pending và phục hồi được. |
+
+Với small, kiểm tra HEAD có Content-Length và smoke thêm đường fallback khi HEAD không xác định size: worker sẽ download trước khi biết file nhỏ. Giữ chế độ storage cố định trong benchmark, không gộp hai đường thành một baseline.
+
+Large nằm trước small có thể gây head-of-line blocking: Splitter xử lý từng document, một Extractor xử lý từng part. Mixed run nên dùng lịch deterministic có large→small để đo ảnh hưởng, bên cạnh mix có seed cố định. Không cần thay kiến trúc queue để thực hiện phép đo này.
+
+## 3. Lịch tải và điều kiện đạt
+
+1. Cố định 1 Splitter/1 Extractor và quota như Compose; ghi commit/dirty diff, image, Docker VM CPU/RAM/swap, Redis/MinIO config. Tạo run ID duy nhất một lần và truyền chung; không dựa `Date.now()` init riêng của mỗi VU cho correlation.
+2. Smoke từng fixture, kiểm tra output có nội dung đúng dự kiến ngoài status SUCCESS. Warm-up riêng và drain trước run đo.
+3. Large có thể giữ sweep 1→5 docs/min làm thăm dò. Small phải chọn rate từ baseline và tăng tới khi bracket được vùng bão hòa; cùng 1→5 không đủ chứng minh small capacity. Dùng arrival-rate để tránh tốc độ hoàn thành tự kéo giảm input.
+4. Ramp 30–60s, hold ban đầu 10–15 phút; chỉ lấy steady windows khi queue slope và completion ổn định. Ở 1 doc/min, 10 phút chỉ khoảng 10 docs tổng và 3–4 docs/format: không kết luận p99. Kéo dài theo số mẫu cần báo cáo.
+5. Xác nhận từng workload bằng hold độc lập 30–60 phút từ backlog rỗng. Overload dừng theo outstanding/oldest age, OOM hoặc worker death; ghi rõ thời điểm dừng accepted arrivals.
+6. Sau stop input, monitor và hậu kiểm backend tiếp tục đến terminal/queue baseline hoặc deadline. Deadline cần xét baseline E2E, backlog và worker timeout: Splitter mặc định 15 phút, Extractor 5 phút/part; observer 10 phút không bao phủ mọi request hợp lệ.
+
+Điều kiện đạt capacity: accepted rate khớp target trong cửa sổ đo; dropped/interrupted iterations bằng 0; không OOM/restart bất thường; RAM baseline không tăng không kiểm soát; completion rate ổn định và backlog không tăng dai dẳng qua ít nhất ba cửa sổ; sau drain không duplicate terminal hoặc unresolved. Tách negative case khỏi tỷ lệ lỗi happy-path. Chưa có latency SLO sản phẩm nên báo p50/p95 và ảnh hưởng lên small, không tự đặt một ngưỡng pass mới. Nếu rate cao nhất vẫn ổn định, chỉ công bố capacity ít nhất bằng rate đã kiểm chứng.
+
+## 4. Đo và lưu bằng chứng
+
+- Đối soát accepted = SUCCESS + FAILED + unresolved bằng request ID; publish mất reply phải tra input stream. Đếm terminal trùng trước khi dedup. Output stream ID xác định completion-time window; arrival cohort dùng để theo dõi latency và completion muộn.
+- Báo accepted docs/min, SUCCESS docs/min, MiB gốc/min, parts/min, E2E, queue wait và service time nếu có instrumentation; phân nhóm size_class × format. Không cộng service time mọi part song song thành wall-clock document.
+- Giữ polling 1s cho scaffold; không tăng lên 10ms chỉ để đo small. Có thể đọc output sau run theo ID và join manifest để tránh sai số polling mà không cần collector service.
+- Đo input/splitted lag, PEL, oldest outstanding age; XLEN không phải backlog. Docker stats/events cùng cgroup peak/oom counters cho mọi worker; ghi cả temp disk, Redis/MinIO và lỗi monitoring. Trên macOS cgroup nằm trong Docker VM.
+- Lưu manifest trước publish, accepted replies, output raw, worker logs, resource/event logs và config mỗi run. Bảng kết quả phải có size mix/format mix, quota/replicas, số mẫu, cửa sổ đo, throughput, E2E, RAM peak, OOM, backlog đầu/cuối và unresolved.
+
+Nguồn k6 đã đối chiếu: [arrival-rate VU allocation](https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/arrival-rate-vu-allocation/) và [gracefulStop](https://grafana.com/docs/k6/latest/using-k6/scenarios/concepts/graceful-stop/). Grace là thời gian cho iteration hoàn tất, không phải chứng nhận backend drain.
+
+---
+
+## Lịch sử review trước cập nhật small/large
+
 # Review Load Test Plan — Event-Driven Document Pipeline
 
 Ngày: 2026-11-14. Trạng thái: **cần sửa trước benchmark**. Review tĩnh; chưa chạy k6, Docker hay xác minh object trên MinIO. Không sửa kế hoạch gốc/application code.

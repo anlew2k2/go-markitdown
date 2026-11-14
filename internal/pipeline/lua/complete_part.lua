@@ -47,8 +47,8 @@ if redis.call('EXISTS', state_key) == 0 then
   return 'MISSING'
 end
 
-local state = redis.call('HMGET', state_key, 'request_id', 'conversation_id', 'message_id', 'total', 'status')
-local state_rid, state_cid, state_mid, state_total, status = state[1], state[2], state[3], tonumber(state[4]), state[5]
+local state = redis.call('HMGET', state_key, 'request_id', 'conversation_id', 'message_id', 'total', 'status', 'expires_at')
+local state_rid, state_cid, state_mid, state_total, status, state_expires_at = state[1], state[2], state[3], tonumber(state[4]), state[5], tonumber(state[6])
 
 if state_rid ~= request_id or state_cid ~= conversation_id or state_mid ~= message_id
   or state_total == nil or state_total ~= total or offset == nil or offset < 0 or offset >= state_total then
@@ -68,8 +68,13 @@ end
 
 redis.call('HSET', parts_key, 'part:' .. offset, markdown_url)
 redis.call('SADD', completed_key, offset)
-redis.call('EXPIRE', parts_key, ttl)
-redis.call('EXPIRE', completed_key, ttl)
+if state_expires_at then
+  redis.call('EXPIREAT', parts_key, state_expires_at)
+  redis.call('EXPIREAT', completed_key, state_expires_at)
+else
+  redis.call('EXPIRE', parts_key, ttl)
+  redis.call('EXPIRE', completed_key, ttl)
+end
 
 local completed_count = redis.call('SCARD', completed_key)
 if completed_count < state_total then
@@ -100,6 +105,5 @@ local event = {
 local event_id = redis.call('XADD', output_stream, '*', 'data', cjson.encode(event))
 
 redis.call('HSET', state_key, 'status', 'COMPLETED', 'terminal_event_id', event_id, 'completed_at', now)
-redis.call('EXPIRE', state_key, ttl)
 
 return 'FINAL'

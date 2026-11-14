@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -20,6 +21,14 @@ import (
 const defaultJobTimeout = 15 * time.Minute
 
 func main() {
+	if len(os.Args) > 1 && (os.Args[1] == "healthcheck" || os.Args[1] == "-health") {
+		resp, err := http.Get("http://127.0.0.1:8080/ping")
+		if err != nil || resp.StatusCode != http.StatusOK {
+			os.Exit(1)
+		}
+		os.Exit(0)
+	}
+
 	cfg, err := pipeline.LoadConfig(defaultJobTimeout)
 	if err != nil {
 		log.Fatalf("splitter: config: %v", err)

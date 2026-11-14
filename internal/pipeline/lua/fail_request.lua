@@ -63,23 +63,26 @@ local function publish_failed()
   }
   local event_id = redis.call('XADD', output_stream, '*', 'data', cjson.encode(event))
   redis.call('HSET', state_key, 'terminal_event_id', event_id)
-  redis.call('EXPIRE', state_key, ttl)
 end
 
 if mode == 'splitter' then
   if redis.call('EXISTS', state_key) == 1 then
     return 'NOOP'
   end
+  local exp = tonumber(now) + ttl
   redis.call('HSET', state_key,
     'request_id', request_id,
     'conversation_id', conversation_id,
     'message_id', message_id,
+    'total', 0,
     'status', 'FAILED',
     'failed_reason', reason,
     'failed_offset', offset,
     'failed_at', now,
-    'created_at', now
+    'created_at', now,
+    'expires_at', tostring(exp)
   )
+  redis.call('EXPIREAT', state_key, exp)
   publish_failed()
   return 'FAILED'
 end

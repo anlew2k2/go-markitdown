@@ -363,6 +363,9 @@ func splitHTML(ctx context.Context, localPath string, maxPartSize int64, objectP
 
 	var urls []string
 	w := newHTMLChunkWriter(maxPartSize, func(partNum int, r io.Reader, size int64) error {
+		if size > maxPartSize {
+			return fmt.Errorf("html chunk %d exceeds %d bytes limit (%d bytes)", partNum, maxPartSize, size)
+		}
 		objectName := fmt.Sprintf("%s/part-%03d.html", objectPrefix, partNum)
 		url, err := UploadObject(ctx, objectName, r, size, "text/html; charset=utf-8")
 		if err != nil {

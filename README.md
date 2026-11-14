@@ -67,7 +67,7 @@ Three Lua scripts (`internal/pipeline/lua/`) make every state transition atomic 
 | `CONVERT_TIMEOUT` | worker (extractor) | `2m` | bounds the `markitdown` subprocess specifically |
 | `MINIO_ENDPOINT`, `MINIO_ACCESS_KEY`, `MINIO_SECRET_KEY`, `MINIO_BUCKET`, `MINIO_PUBLIC_URL`, `MINIO_USE_SSL` | both | see `internal/services/minio.go` | MinIO connection + public URL used to build part/markdown URLs |
 
-In worker mode both binaries still serve `GET /ping` on `:8080` (for container healthchecks) but none of the HTTP conversion endpoints.
+In worker mode both binaries still serve `GET /ping` on `:8080` (for container healthchecks via native subcommand `./splitter healthcheck` or `./extractor healthcheck`) but none of the HTTP conversion endpoints.
 
 ### Running the demo
 

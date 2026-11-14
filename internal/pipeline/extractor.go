@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sync/atomic"
 	"time"
 
 	"github.com/google/uuid"
@@ -93,14 +94,19 @@ func (w *ExtractorWorker) handle(ctx context.Context, msg Message) error {
 	jobCtx, cancelJob := context.WithTimeout(ctx, w.jobTimeout)
 	defer cancelJob()
 
+	var siblingAborted atomic.Bool
 	pollCtx, stopPoll := context.WithCancel(ctx)
-	go w.watchFailFast(pollCtx, ev.RequestID, cancelJob)
+	go w.watchFailFast(pollCtx, ev.RequestID, &siblingAborted, cancelJob)
 
 	mdPath, convErr := w.convert(jobCtx, ev.FilePath)
 	if convErr != nil {
 		stopPoll()
 		if ctx.Err() != nil {
 			return ctx.Err()
+		}
+		if siblingAborted.Load() || w.isRequestFailed(ctx, ev.RequestID) {
+			log.Printf("extractor: request_id=%s offset=%d aborted due to sibling failure, acking", ev.RequestID, ev.Offset)
+			return nil
 		}
 		log.Printf("extractor: conversion failed for request_id=%s offset=%d: %v", ev.RequestID, ev.Offset, convErr)
 		return w.failAndAck(ctx, ev, convErr.Error())
@@ -112,6 +118,10 @@ func (w *ExtractorWorker) handle(ctx context.Context, msg Message) error {
 	if upErr != nil {
 		if ctx.Err() != nil {
 			return ctx.Err()
+		}
+		if siblingAborted.Load() || w.isRequestFailed(ctx, ev.RequestID) {
+			log.Printf("extractor: request_id=%s offset=%d aborted during upload due to sibling failure, acking", ev.RequestID, ev.Offset)
+			return nil
 		}
 		log.Printf("extractor: upload failed for request_id=%s offset=%d: %v", ev.RequestID, ev.Offset, upErr)
 		return w.failAndAck(ctx, ev, upErr.Error())
@@ -158,7 +168,7 @@ func (w *ExtractorWorker) failAndAck(ctx context.Context, ev SplittedEvent, reas
 // completion for nothing. It is intentionally tolerant of transient Redis
 // errors (it just tries again next tick): losing fail-fast during a brief
 // Redis blip is not a correctness issue, only a delay.
-func (w *ExtractorWorker) watchFailFast(ctx context.Context, requestID string, cancel context.CancelFunc) {
+func (w *ExtractorWorker) watchFailFast(ctx context.Context, requestID string, aborted *atomic.Bool, cancel context.CancelFunc) {
 	ticker := time.NewTicker(failFastPollInterval)
 	defer ticker.Stop()
 	for {
@@ -171,11 +181,17 @@ func (w *ExtractorWorker) watchFailFast(ctx context.Context, requestID string, c
 				continue
 			}
 			if status == StatusFailed {
+				aborted.Store(true)
 				cancel()
 				return
 			}
 		}
 	}
+}
+
+func (w *ExtractorWorker) isRequestFailed(ctx context.Context, requestID string) bool {
+	status, err := w.rdb.HGet(ctx, stateKey(requestID), "status").Result()
+	return err == nil && status == StatusFailed
 }
 
 // convert downloads fileURL and runs markitdown against it, writing the

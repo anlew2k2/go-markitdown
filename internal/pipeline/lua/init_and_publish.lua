@@ -51,6 +51,7 @@ if redis.call('EXISTS', state_key) == 1 then
   return 'CONFLICT'
 end
 
+local exp = tonumber(now) + ttl
 redis.call('HSET', state_key,
   'request_id', request_id,
   'conversation_id', conversation_id,
@@ -59,9 +60,9 @@ redis.call('HSET', state_key,
   'total', total,
   'status', 'PROCESSING',
   'created_at', now,
-  'expires_at', tostring(tonumber(now) + ttl)
+  'expires_at', tostring(exp)
 )
-redis.call('EXPIRE', state_key, ttl)
+redis.call('EXPIREAT', state_key, exp)
 
 for i = 1, total do
   local part_url = ARGV[7 + i]

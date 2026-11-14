@@ -132,8 +132,18 @@ func processOne(ctx context.Context, rdb *redis.Client, stream, group string, m 
 			return ctx.Err()
 		}
 	}
-	if err := rdb.XAck(ctx, stream, group, m.ID).Err(); err != nil {
-		log.Printf("pipeline: ack failed for %s %s: %v", stream, m.ID, err)
+	for {
+		err := rdb.XAck(ctx, stream, group, m.ID).Err()
+		if err == nil {
+			break
+		}
+		if ctx.Err() != nil {
+			return ctx.Err()
+		}
+		log.Printf("pipeline: ack failed for %s %s, retrying: %v", stream, m.ID, err)
+		if !sleep(ctx, retryBackoff) {
+			return ctx.Err()
+		}
 	}
 	return nil
 }

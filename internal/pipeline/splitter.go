@@ -50,12 +50,18 @@ func (w *SplitterWorker) handle(ctx context.Context, msg Message) error {
 		return nil
 	}
 
-	exists, err := w.rdb.Exists(ctx, stateKey(in.RequestID)).Result()
+	existing, err := w.rdb.HMGet(ctx, stateKey(in.RequestID), "conversation_id", "message_id").Result()
 	if err != nil {
 		return err
 	}
-	if exists == 1 {
-		log.Printf("splitter: request_id=%s already has state, skipping re-split", in.RequestID)
+	if existing[0] != nil {
+		cid, _ := existing[0].(string)
+		mid, _ := existing[1].(string)
+		if cid == in.ConversationID && mid == in.MessageID {
+			log.Printf("splitter: request_id=%s already has state, skipping re-split", in.RequestID)
+		} else {
+			log.Printf("splitter: request_id=%s conflicts with an existing request of different identity, acking without change", in.RequestID)
+		}
 		return nil
 	}
 

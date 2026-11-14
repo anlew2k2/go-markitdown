@@ -14,6 +14,11 @@ services:
       MINIO_BUCKET: split-files
     expose:
       - "8080"
+    healthcheck:
+      test: ["CMD", "/app/extractor", "healthcheck"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
     depends_on:
       minio:
         condition: service_healthy
@@ -35,6 +40,11 @@ services:
       MINIO_BUCKET: split-files
     expose:
       - "8080"
+    healthcheck:
+      test: ["CMD", "/app/splitter", "healthcheck"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
     depends_on:
       minio:
         condition: service_healthy
@@ -79,7 +89,7 @@ services:
     volumes:
       - minio-data:/data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      test: ["CMD", "mc", "ready", "local"]
       interval: 5s
       timeout: 3s
       retries: 10

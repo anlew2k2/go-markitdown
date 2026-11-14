@@ -1,0 +1,142 @@
+services:
+  redis:
+    image: redis:8-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "16379:6379"
+    volumes:
+      - test-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 2s
+      retries: 10
+
+  minio:
+    image: coollabsio/minio:RELEASE.2025-10-15T17-29-55Z
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "19000:9000"
+      - "19001:9001"
+    volumes:
+      - test-minio-data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 3s
+      timeout: 2s
+      retries: 10
+
+  splitter:
+    cpus: 1.0
+    mem_limit: 512m
+    build:
+      context: ..
+      dockerfile: deploy/splitter.dockerfile
+    environment:
+      SERVICE_MODE: worker
+      REDIS_ADDR: redis:6379
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: split-files
+      CONSUMER_NAME: splitter-1
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "/app/splitter", "healthcheck"]
+      interval: 3s
+      timeout: 2s
+      retries: 10
+    depends_on:
+      minio:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  extractor-1:
+    cpus: 2.0
+    mem_limit: 1g
+    build:
+      context: ..
+      dockerfile: deploy/extractor.dockerfile
+    environment:
+      SERVICE_MODE: worker
+      REDIS_ADDR: redis:6379
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: split-files
+      CONSUMER_NAME: extractor-1
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "/app/extractor", "healthcheck"]
+      interval: 3s
+      timeout: 2s
+      retries: 10
+    depends_on:
+      minio:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  extractor-2:
+    cpus: 2.0
+    mem_limit: 1g
+    build:
+      context: ..
+      dockerfile: deploy/extractor.dockerfile
+    environment:
+      SERVICE_MODE: worker
+      REDIS_ADDR: redis:6379
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: split-files
+      CONSUMER_NAME: extractor-2
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "/app/extractor", "healthcheck"]
+      interval: 3s
+      timeout: 2s
+      retries: 10
+    depends_on:
+      minio:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  extractor-3:
+    cpus: 2.0
+    mem_limit: 1g
+    build:
+      context: ..
+      dockerfile: deploy/extractor.dockerfile
+    environment:
+      SERVICE_MODE: worker
+      REDIS_ADDR: redis:6379
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: split-files
+      CONSUMER_NAME: extractor-3
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "/app/extractor", "healthcheck"]
+      interval: 3s
+      timeout: 2s
+      retries: 10
+    depends_on:
+      minio:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  test-minio-data:
+  test-redis-data:

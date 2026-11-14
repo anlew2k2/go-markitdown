@@ -1,2 +1,5 @@
 bin/
 tmp/
+
+# Generated per-run test evidence; keep test plans and summary reports tracked.
+/docs/test-results/event-sourcing/run-*/
