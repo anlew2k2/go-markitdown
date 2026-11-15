@@ -2,6 +2,7 @@ package pipeline
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -73,6 +74,10 @@ func (w *SplitterWorker) handle(ctx context.Context, msg Message) error {
 		FilePath:       in.FilePath,
 	})
 	cancel()
+
+	if splitErr == nil && (len(urls) < 1 || len(urls) > MaxParts) {
+		splitErr = fmt.Errorf("split produced %d part(s), want 1..%d", len(urls), MaxParts)
+	}
 
 	if splitErr != nil {
 		if ctx.Err() != nil {
