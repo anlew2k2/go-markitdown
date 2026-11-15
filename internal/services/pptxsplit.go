@@ -183,7 +183,7 @@ func splitPPTX(ctx context.Context, localPath string, maxPartSize int64, objectP
 			continue
 		}
 		sharedEntries = append(sharedEntries, zf)
-		sharedOverhead += int64(zf.UncompressedSize64)
+		sharedOverhead += zipEntryOverhead(zf)
 	}
 
 	weights := make([]int64, len(slides))

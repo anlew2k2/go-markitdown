@@ -177,21 +177,35 @@ func splitPDF(ctx context.Context, localPath string, maxPartSize int64, objectPr
 	return urls, nil
 }
 
-// encodedCSVRowSize returns the exact number of bytes csv.Writer would emit
-// for record, so a caller can decide whether it still fits in the current
-// part before writing it (writing first and checking after would let the
-// row that tips a part over the limit end up inside it).
-func encodedCSVRowSize(record []string) (int64, error) {
-	var buf bytes.Buffer
-	w := csv.NewWriter(&buf)
-	if err := w.Write(record); err != nil {
+// csvRowSizer reuses one buffer and csv.Writer across every row of a single
+// splitCSV invocation to measure encoded size, instead of allocating a fresh
+// bytes.Buffer and csv.Writer per row.
+type csvRowSizer struct {
+	buf bytes.Buffer
+	w   *csv.Writer
+}
+
+func newCSVRowSizer() *csvRowSizer {
+	s := &csvRowSizer{}
+	s.w = csv.NewWriter(&s.buf)
+	return s
+}
+
+// size returns the exact number of bytes csv.Writer would emit for record,
+// so a caller can decide whether it still fits in the current part before
+// writing it (writing first and checking after would let the row that tips
+// a part over the limit end up inside it). On error the sizer must not be
+// reused.
+func (s *csvRowSizer) size(record []string) (int64, error) {
+	s.buf.Reset()
+	if err := s.w.Write(record); err != nil {
 		return 0, err
 	}
-	w.Flush()
-	if err := w.Error(); err != nil {
+	s.w.Flush()
+	if err := s.w.Error(); err != nil {
 		return 0, err
 	}
-	return int64(buf.Len()), nil
+	return int64(s.buf.Len()), nil
 }
 
 func splitCSV(ctx context.Context, localPath string, maxPartSize int64, objectPrefix string) ([]string, error) {
@@ -208,7 +222,8 @@ func splitCSV(ctx context.Context, localPath string, maxPartSize int64, objectPr
 	if err != nil {
 		return nil, fmt.Errorf("read csv header: %w", err)
 	}
-	headerSize, err := encodedCSVRowSize(header)
+	sizer := newCSVRowSizer()
+	headerSize, err := sizer.size(header)
 	if err != nil {
 		return nil, fmt.Errorf("encode csv header: %w", err)
 	}
@@ -286,7 +301,7 @@ func splitCSV(ctx context.Context, localPath string, maxPartSize int64, objectPr
 			return nil, fmt.Errorf("read csv row: %w", err)
 		}
 
-		rowSize, err := encodedCSVRowSize(record)
+		rowSize, err := sizer.size(record)
 		if err != nil {
 			currentFile.Close()
 			os.Remove(currentFile.Name())
@@ -310,12 +325,6 @@ func splitCSV(ctx context.Context, localPath string, maxPartSize int64, objectPr
 			currentFile.Close()
 			os.Remove(currentFile.Name())
 			return nil, fmt.Errorf("write csv row: %w", err)
-		}
-		currentWriter.Flush()
-		if err := currentWriter.Error(); err != nil {
-			currentFile.Close()
-			os.Remove(currentFile.Name())
-			return nil, fmt.Errorf("flush csv row: %w", err)
 		}
 		currentSize += rowSize
 	}

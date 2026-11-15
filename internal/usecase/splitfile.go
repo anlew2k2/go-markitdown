@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/google/uuid"
 
@@ -14,6 +15,12 @@ import (
 )
 
 const maxSplitPartSize = 4 * 1024 * 1024 // 4MB
+
+// headRequestTimeout bounds remoteFileSize's HEAD request on its own,
+// independent of the job's deadline: an origin that stalls or never answers
+// HEAD would otherwise hold a Splitter slot until the job's full timeout
+// before falling back to downloadToTemp.
+const headRequestTimeout = 5 * time.Second
 
 // ErrOLENotSplittable is returned when a legacy OLE document (.doc, .xls)
 // exceeds maxSplitPartSize: these formats have no mature pure-Go support
@@ -73,7 +80,10 @@ func SplitFile(ctx context.Context, input SplitFileInput) ([]string, error) {
 // downloading it. ok is false whenever the size could not be determined,
 // in which case the caller must fall back to downloading the file.
 func remoteFileSize(ctx context.Context, fileURL string) (size int64, ok bool) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodHead, fileURL, nil)
+	headCtx, cancel := context.WithTimeout(ctx, headRequestTimeout)
+	defer cancel()
+
+	req, err := http.NewRequestWithContext(headCtx, http.MethodHead, fileURL, nil)
 	if err != nil {
 		return 0, false
 	}

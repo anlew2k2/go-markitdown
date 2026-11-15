@@ -179,7 +179,7 @@ func splitXLSX(ctx context.Context, localPath string, maxPartSize int64, objectP
 	}
 	var sharedOverhead int64
 	for _, zf := range sharedEntries {
-		sharedOverhead += int64(zf.UncompressedSize64)
+		sharedOverhead += zipEntryOverhead(zf)
 	}
 
 	var keptRels []opcRelationship

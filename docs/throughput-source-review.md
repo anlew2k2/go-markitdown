@@ -1,6 +1,45 @@
 # Review tối ưu throughput toàn hệ thống
 
-Ngày: 2026-11-15. Trạng thái: đề xuất, chưa triển khai.
+Ngày: 2026-11-15. Trạng thái: mục 1–4 của shortlist đã triển khai (xem "Đã triển khai" bên dưới); phần còn lại vẫn là đề xuất, chưa triển khai.
+
+## Đã triển khai (2026-11-15)
+
+Bốn việc trong shortlist dưới đây đã được sửa trực tiếp trong code, theo đúng phạm vi tối thiểu đã mô tả:
+
+- **Mục 1** — `internal/services/splitter.go`: bỏ `currentWriter.Flush()`/`Error()` sau mỗi dòng; chỉ còn kiểm tra lỗi `Write`, Flush/Error cuối cùng vẫn nằm trong `uploadPart` trước stat/seek/upload.
+- **Mục 2** — `internal/services/splitter.go`: thay `encodedCSVRowSize` (buffer+writer mới mỗi lần gọi) bằng `csvRowSizer`, một buffer + `csv.Writer` dùng chung cho cả header và mọi row trong một lần `splitCSV`, `Reset` buffer sau mỗi lần đo.
+- **Mục 3** — `internal/usecase/splitfile.go`: thêm `headRequestTimeout = 5s`, `remoteFileSize` tạo context con với timeout riêng cho HEAD; hết hạn thì trả `ok=false` như lỗi khác, caller tự fallback sang `downloadToTemp` bằng context cha (job deadline) như cũ.
+- **Mục 4** — `internal/services/ooxmlzip.go` (`zipEntryOverhead`), áp dụng ở `xlsxsplit.go` và `pptxsplit.go`: `sharedOverhead` đổi từ tổng `UncompressedSize64` sang tổng `CompressedSize64` cộng ước lượng ZIP header overhead (local 30B + central directory 46B + 2×tên entry) cho mỗi shared entry — khớp với cách `copyZipEntryRaw` copy nguyên compressed bytes. Hard cap đầu ra (`uploadLocalFile`, 4 MiB) giữ nguyên, không đổi; `weight` tính theo slide của PPTX (line ~157) không đổi, nằm ngoài phạm vi mục này.
+
+Kiểm chứng đã chạy: `go build ./...`, `go vet ./...`, `go test ./...` (toàn bộ package vẫn `[no test files]`, chỉ xác nhận compile). Một script độc lập ngoài repo xác nhận `csvRowSizer` (buffer tái sử dụng) và việc bỏ flush-per-row cho ra byte output giống hệt cách cũ trên các case quoting/dấu phẩy/newline/unicode. Chưa chạy lại CSV splitter end-to-end qua MinIO thật, chưa có fixture XLSX/PPTX shared-entry lớn để đo part count trước/sau mục 4, và chưa chạy lại load test — đây vẫn là giới hạn kiểm chứng cần benchmark riêng nếu muốn số liệu throughput thực tế. Hai việc điều kiện (HTTP conversion context/timeout; context check trong local parse loop) chủ động bỏ qua trong đợt này theo quyết định của người yêu cầu, chưa xác nhận HTTP mode có đang dùng production hay không.
+
+## Rà soát lại sau hai fix — danh sách hiện hành
+
+Đã đối chiếu source hiện tại: giới hạn split/extract/upload đã là 4 MiB; `SplitterWorker.handle` kiểm tra 1..MaxParts trước khi gọi Lua và đưa count không hợp lệ qua failure path. Hai thay đổi này không còn nằm trong danh sách cần làm. Chưa chạy benchmark mới, nên việc giảm ngưỡng chưa chứng minh đã giải quyết mọi PDF timeout. Các mục phía dưới phần này là review gốc, giữ làm bằng chứng lịch sử; ưu tiên hiện tại theo shortlist sau.
+
+Tiêu chí: sửa cục bộ, giữ kiến trúc và contract, không thêm service/pool/framework chỉ để kỳ vọng tăng throughput.
+
+| Thứ tự | Việc nên làm | Phạm vi tối thiểu | Hiệu quả / độ dễ |
+|---|---|---|---|
+| 1 | Bỏ CSV flush từng dòng | `internal/services/splitter.go:314`: giữ Write error và Flush/Error khi kết thúc part, trước stat/seek/upload | Lợi ích rõ trong CSV splitter; rất dễ, khoảng 1–2 giờ gồm kiểm tra |
+| 2 | Tái sử dụng buffer/writer đo size CSV | `internal/services/splitter.go:184`: một buffer + csv.Writer cho mỗi split invocation; Reset buffer sau mỗi lần đo thành công | Giảm allocation theo số row; dễ, khoảng nửa ngày. Chưa cần đổi toàn bộ cơ chế encode/write |
+| 3 | Giới hạn thời gian HEAD riêng | `internal/usecase/splitfile.go:75`: context timeout ngắn riêng cho HEAD, hết hạn thì fallback GET bằng parent context còn hiệu lực | Tránh một metadata request giữ slot Splitter đến job timeout; dễ, khoảng nửa ngày. Ít tác động nếu origin luôn phản hồi nhanh |
+| 4 | Sửa riêng shared overhead OOXML | `xlsxsplit.go:182`, `pptxsplit.go:186`: raw-copied shared entries dùng compressed size cộng ZIP overhead; giữ hard cap archive thực và budget cho XML viết lại | Có thể giảm mạnh part count khi shared XML nén tốt; độ khó vừa, khoảng 1 ngày với fixture phù hợp. Không đổi toàn bộ weights hoặc thêm adaptive packing trong đợt này |
+
+Mục 2 tách khỏi mục 1 để diff dễ review. Tái sử dụng csv.Writer không được Reset mất dữ liệu trước Flush; writer có lỗi thì abort split, không tái sử dụng tiếp. Encode một lần rồi ghi bytes qua buffered writer có thể làm sau nếu allocation/CPU vẫn đáng kể; không cần làm cùng quick win bỏ flush.
+
+Mục 4 đáng làm hơn sau khi giảm ngưỡng về 4 MiB: shared entry giải nén >4 MiB nhưng compressed nhỏ có thể làm budget về 1 và tạo gần một row/part. Phạm vi nhỏ chỉ sửa phần shared raw bytes; giữ kiểm tra kích thước output, không remap sharedStrings/media/relationships. ZIP overhead cần tính header/central directory/name/extra và phần manifest liên quan; không lấy compressed bytes thuần làm kích thước archive chính xác. Nếu không có fixture kiểm chứng package này, để sau ba việc đầu.
+
+Hai việc có điều kiện, không mặc định gộp vào đợt tối ưu throughput:
+
+- Nếu HTTP conversion được sử dụng: truyền request context và đặt download/conversion timeout bằng helper có sẵn. Đây là sửa lifecycle hợp lý; chưa cần thêm queue/semaphore nếu chưa thấy concurrent request gây cạn tài nguyên.
+- Nếu thấy job vẫn parse sau timeout: thêm check ctx định kỳ trong vòng lặp local và giữa các PDF attempts, dọn temp đúng đường lỗi. Đây chỉ là cooperative cancellation; không giải quyết một PDF library call đang chạy. Không thêm process isolation ở đợt này.
+
+Tạm hoãn: Python warm pool, concurrency trong process, upload song song, progressive fanout, đổi PDF backend/thuật toán split, giải nén XML ra cache/temp để reuse, prune OOXML assets, Redis pipelining/pool tuning và cache conversion. Chưa có số liệu sau thay đổi 4 MiB để biện minh độ phức tạp. Nếu cần scale trước, thử thêm replica với consumer identity riêng và đo CPU/RAM toàn stack; không giả định throughput tăng tuyến tính.
+
+Retention Redis vẫn là việc vận hành dài hạn cần SLA/watermark rõ, không coi là quick fix throughput. Guard count đã sửa được retry vô hạn nhưng còn đặt sau split/upload; chặn >1000 part sớm chỉ đáng thêm khi thực tế có request tạo nhiều part, vì đưa policy xuống mọi splitter không còn là một thay đổi nhỏ.
+
+Khuyến nghị đợt đầu: mục 1–3; mục 4 làm cùng nếu có fixture sharedStrings/shared package lớn. Kiểm tra CSV byte-for-byte, quoting/multiline/header/part boundaries; HEAD timeout phải fallback được và parent cancel phải dừng; OOXML phải giữ thứ tự/nội dung và mọi part <=4 MiB. Không thay application code trong lượt review lại này.
 
 ## Phạm vi và kết luận
 

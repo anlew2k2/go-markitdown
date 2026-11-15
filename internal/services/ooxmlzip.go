@@ -189,6 +189,17 @@ func copyZipEntryRaw(zw *zip.Writer, src *zip.File) error {
 	return nil
 }
 
+// zipEntryOverhead estimates the bytes a raw-copied entry (see
+// copyZipEntryRaw) actually contributes to an output archive: such entries
+// are never re-inflated, so their payload is CompressedSize64 rather than
+// UncompressedSize64, plus the fixed local (30B) and central directory (46B)
+// file header bytes ZIP spends per entry and the two copies of its name
+// those headers carry.
+func zipEntryOverhead(zf *zip.File) int64 {
+	const fixedHeaderBytes = 30 + 46
+	return int64(zf.CompressedSize64) + fixedHeaderBytes + 2*int64(len(zf.Name))
+}
+
 // zipFileByName finds a zip entry by its exact path, or nil if absent.
 func zipFileByName(files []*zip.File, name string) *zip.File {
 	for _, f := range files {
