@@ -134,6 +134,8 @@ Trước tiên đo startup/import và conversion riêng trong image hiện tại
 
 Đã đọc metadata trong container đang chạy: markitdown 0.1.9, pdfminer.six 20260107. Dockerfile không pin `markitdown[all]`, vì vậy cần ghi version/image digest để so A/B; không giả định các image build khác nhau có cùng converter.
 
+**2026-11-15 — đã triển khai và đo A/B thật**: xem `docs/python-worker-reuse-plan.md` (thiết kế) và `docs/python-worker-reuse-results.md` (verification + số liệu). `CONVERTER_BACKEND=persistent` (mặc định vẫn `cli`) dùng pool `markitdown_worker.py` giữ instance `MarkItDown`, protocol JSON Lines qua stdin/stdout, timeout kill+respawn process đúng như hướng đã nêu ở trên. A/B trong container thật (N=1, PDF nhỏ cố định, 10 lần/backend): median per-call giảm từ 951.6ms (CLI) xuống 333.1ms (persistent), ~65%; tổng 10 lần kể cả cold-start giảm ~60%. Chưa đổi mặc định, chưa benchmark dài/soak, chưa so A/B với concurrency > 1 dưới tải thật — xem mục 4 của results doc cho danh sách đầy đủ giới hạn chưa verify.
+
 ### 7. Overlap split với upload bằng queue hữu hạn
 
 Nguồn: `internal/services/splitter.go:169`, `internal/services/splitter.go:264`, `internal/services/docxsplit.go:120`, `internal/services/xlsxsplit.go:320`, `internal/services/htmlsplit.go:365`, `internal/pipeline/splitter.go:94`.

@@ -28,6 +28,14 @@ const (
 	ServiceModeWorker = "worker"
 )
 
+// Converter backends selected via the CONVERTER_BACKEND environment
+// variable (extractor worker mode only; the Splitter and HTTP mode ignore
+// it). See internal/services/{converter,persistent_converter}.go.
+const (
+	ConverterBackendCLI        = "cli"
+	ConverterBackendPersistent = "persistent"
+)
+
 // DefaultStateTTL is the TTL applied to every per-request Redis key
 // (state/completed/parts), per the POC requirement of 24h auto-expiry.
 const DefaultStateTTL = 24 * time.Hour
@@ -44,6 +52,24 @@ type Config struct {
 	ServiceMode    string
 	JobTimeout     time.Duration
 	ConvertTimeout time.Duration
+
+	// WorkerConcurrency bounds how many jobs this process's worker runs at
+	// once (see RunConsumerPool), read from WORKER_CONCURRENCY and
+	// independently configurable per process/container since the Splitter
+	// and Extractor each read their own environment. Must be a positive
+	// integer; an invalid value fails LoadConfig rather than silently
+	// falling back to 1.
+	WorkerConcurrency int
+
+	// ConverterBackend selects the extractor's conversion backend: "cli"
+	// (default, one markitdown subprocess per conversion, unchanged
+	// behavior) or "persistent" (a long-lived pool of markitdown_worker.py
+	// processes, sized to WorkerConcurrency). Ignored by the Splitter.
+	ConverterBackend string
+
+	// ConverterWorkerScript is the path to the persistent-backend's Python
+	// worker script, only read when ConverterBackend is "persistent".
+	ConverterWorkerScript string
 }
 
 // LoadConfig reads Config from the environment. defaultJobTimeout is
@@ -64,6 +90,19 @@ func LoadConfig(defaultJobTimeout time.Duration) (Config, error) {
 		return Config{}, fmt.Errorf("invalid CONVERT_TIMEOUT: %w", err)
 	}
 
+	concurrency, err := strconv.Atoi(envOr("WORKER_CONCURRENCY", "1"))
+	if err != nil {
+		return Config{}, fmt.Errorf("invalid WORKER_CONCURRENCY: %w", err)
+	}
+	if concurrency < 1 {
+		return Config{}, fmt.Errorf("invalid WORKER_CONCURRENCY: must be >= 1, got %d", concurrency)
+	}
+
+	converterBackend := envOr("CONVERTER_BACKEND", ConverterBackendCLI)
+	if converterBackend != ConverterBackendCLI && converterBackend != ConverterBackendPersistent {
+		return Config{}, fmt.Errorf("invalid CONVERTER_BACKEND: %q (want %q or %q)", converterBackend, ConverterBackendCLI, ConverterBackendPersistent)
+	}
+
 	consumer := os.Getenv("CONSUMER_NAME")
 	if consumer == "" {
 		if host, err := os.Hostname(); err == nil && host != "" {
@@ -74,13 +113,16 @@ func LoadConfig(defaultJobTimeout time.Duration) (Config, error) {
 	}
 
 	return Config{
-		RedisAddr:      envOr("REDIS_ADDR", "redis:6379"),
-		RedisPassword:  os.Getenv("REDIS_PASSWORD"),
-		RedisDB:        db,
-		ConsumerName:   consumer,
-		ServiceMode:    envOr("SERVICE_MODE", ServiceModeHTTP),
-		JobTimeout:     jobTimeout,
-		ConvertTimeout: convertTimeout,
+		RedisAddr:             envOr("REDIS_ADDR", "redis:6379"),
+		RedisPassword:         os.Getenv("REDIS_PASSWORD"),
+		RedisDB:               db,
+		ConsumerName:          consumer,
+		ServiceMode:           envOr("SERVICE_MODE", ServiceModeHTTP),
+		JobTimeout:            jobTimeout,
+		ConvertTimeout:        convertTimeout,
+		WorkerConcurrency:     concurrency,
+		ConverterBackend:      converterBackend,
+		ConverterWorkerScript: envOr("CONVERTER_WORKER_SCRIPT", "markitdown_worker.py"),
 	}, nil
 }
 

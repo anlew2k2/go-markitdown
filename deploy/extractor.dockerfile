@@ -21,6 +21,9 @@ RUN --mount=type=cache,target=/go/pkg/mod \
 FROM markitdown-base AS runtime
 WORKDIR /app
 COPY --from=builder /out/extractor ./extractor
+# Only used when CONVERTER_BACKEND=persistent (default: cli, unchanged
+# behavior) — see internal/services/persistent_converter.go.
+COPY deploy/markitdown_worker.py ./markitdown_worker.py
 
 EXPOSE 8080
 ENTRYPOINT ["./extractor"]

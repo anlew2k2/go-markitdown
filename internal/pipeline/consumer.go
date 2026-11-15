@@ -3,7 +3,11 @@ package pipeline
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
+	"strconv"
+	"strings"
+	"sync"
 	"time"
 
 	"github.com/redis/go-redis/v9"
@@ -44,6 +48,95 @@ func RunConsumer(ctx context.Context, rdb *redis.Client, stream, group, consumer
 		return err
 	}
 	return readNew(ctx, rdb, stream, group, consumer, handle)
+}
+
+// RunConsumerPool runs concurrency independent, bounded worker loops
+// against the same stream/group, each as its own stable, numbered
+// sub-consumer ("<consumerBase>-slot-<i>", i in [0, concurrency)). Every
+// slot is a full, unmodified RunConsumer loop, so a job is only ever read,
+// processed (download/convert/upload) and ACKed end-to-end by one slot at a
+// time: concurrency slots means at most concurrency jobs in flight for this
+// process, never more, and never less bounded than before — no goroutine or
+// dequeue beyond these fixed loops. Values < 1 are treated as 1.
+//
+// Before starting the active slots, it drains pending entries left behind
+// by any consumer identity that used to belong to this consumerBase but no
+// longer does: either a retired slot (index >= concurrency, e.g. after a
+// concurrency downgrade) or the bare consumerBase identity itself (the
+// pre-concurrency naming scheme, for a one-time upgrade from a deployment
+// that predates WORKER_CONCURRENCY). This only recognizes identities
+// derived from consumerBase; it cannot discover pending left by a consumer
+// name that changed for some other reason (e.g. CONSUMER_NAME/hostname
+// changed) — that remains the same known POC limitation documented in
+// docs/pod-resource-benchmark-plan.md ("POC không tự reclaim consumer đã
+// biến mất").
+func RunConsumerPool(ctx context.Context, rdb *redis.Client, stream, group, consumerBase string, concurrency int, handle Handler) error {
+	if concurrency < 1 {
+		concurrency = 1
+	}
+	if err := drainRetiredSlots(ctx, rdb, stream, group, consumerBase, concurrency, handle); err != nil {
+		return err
+	}
+
+	errCh := make(chan error, concurrency)
+	var wg sync.WaitGroup
+	for i := 0; i < concurrency; i++ {
+		slot := fmt.Sprintf("%s-slot-%d", consumerBase, i)
+		wg.Add(1)
+		go func(consumer string) {
+			defer wg.Done()
+			errCh <- RunConsumer(ctx, rdb, stream, group, consumer, handle)
+		}(slot)
+	}
+	wg.Wait()
+	close(errCh)
+
+	var first error
+	for err := range errCh {
+		if err != nil && !errors.Is(err, context.Canceled) && first == nil {
+			first = err
+		}
+	}
+	return first
+}
+
+// drainRetiredSlots looks up every consumer Redis currently knows about for
+// stream/group and, for each one that is a retired identity of
+// consumerBase (see RunConsumerPool) with pending entries, drains it via
+// the same drainPending used for a slot's own startup recovery. Best-effort:
+// if XINFO CONSUMERS itself fails, it logs and continues rather than
+// blocking worker startup on it.
+func drainRetiredSlots(ctx context.Context, rdb *redis.Client, stream, group, consumerBase string, concurrency int, handle Handler) error {
+	infos, err := rdb.XInfoConsumers(ctx, stream, group).Result()
+	if err != nil {
+		if ctx.Err() != nil {
+			return ctx.Err()
+		}
+		log.Printf("pipeline: xinfo consumers on %s/%s failed, skipping retired-slot drain: %v", group, stream, err)
+		return nil
+	}
+
+	slotPrefix := consumerBase + "-slot-"
+	for _, info := range infos {
+		if info.Pending == 0 {
+			continue
+		}
+		name := info.Name
+		retired := name == consumerBase // pre-concurrency bare identity
+		if !retired && strings.HasPrefix(name, slotPrefix) {
+			if idx, err := strconv.Atoi(strings.TrimPrefix(name, slotPrefix)); err == nil && idx >= concurrency {
+				retired = true
+			}
+		}
+		if !retired {
+			continue
+		}
+		log.Printf("pipeline: draining %d pending message(s) left by retired consumer %q on %s (current concurrency=%d)", info.Pending, name, stream, concurrency)
+		if err := drainPending(ctx, rdb, stream, group, name, handle); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func drainPending(ctx context.Context, rdb *redis.Client, stream, group, consumer string, handle Handler) error {

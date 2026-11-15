@@ -23,10 +23,6 @@ const (
 
 	// httpDownloadTimeout bounds downloading one part before conversion.
 	httpDownloadTimeout = 2 * time.Minute
-
-	// markdownStderrLimit caps how much of the markitdown subprocess's
-	// stderr is retained for error reporting.
-	markdownStderrLimit = 64 * 1024
 )
 
 // ExtractorWorker consumes stream:doc-extractor:splitted, converts each part
@@ -38,24 +34,32 @@ type ExtractorWorker struct {
 	jobTimeout     time.Duration
 	convertTimeout time.Duration
 	ttl            time.Duration
+	concurrency    int
+	converter      services.Converter
 }
 
 // NewExtractorWorker builds an ExtractorWorker. jobTimeout bounds one whole
-// part (download+convert+upload); convertTimeout bounds the markitdown
-// subprocess specifically.
-func NewExtractorWorker(rdb *redis.Client, consumer string, jobTimeout, convertTimeout time.Duration) *ExtractorWorker {
+// part (download+convert+upload); convertTimeout bounds the conversion step
+// specifically (see services.Converter). concurrency bounds how many parts
+// this worker processes at once (see RunConsumerPool); values < 1 are
+// treated as 1. converter is the conversion backend (CLI or persistent, per
+// CONVERTER_BACKEND — see cmd/extractor/main.go).
+func NewExtractorWorker(rdb *redis.Client, consumer string, jobTimeout, convertTimeout time.Duration, concurrency int, converter services.Converter) *ExtractorWorker {
 	return &ExtractorWorker{
 		rdb:            rdb,
 		consumer:       consumer,
 		jobTimeout:     jobTimeout,
 		convertTimeout: convertTimeout,
 		ttl:            DefaultStateTTL,
+		concurrency:    concurrency,
+		converter:      converter,
 	}
 }
 
-// Run drains pending and then new splitted messages until ctx is cancelled.
+// Run drains pending and then new splitted messages until ctx is cancelled,
+// across w.concurrency bounded slots.
 func (w *ExtractorWorker) Run(ctx context.Context) error {
-	return RunConsumer(ctx, w.rdb, StreamSplitted, GroupExtractor, w.consumer, w.handle)
+	return RunConsumerPool(ctx, w.rdb, StreamSplitted, GroupExtractor, w.consumer, w.concurrency, w.handle)
 }
 
 func (w *ExtractorWorker) handle(ctx context.Context, msg Message) error {
@@ -69,25 +73,38 @@ func (w *ExtractorWorker) handle(ctx context.Context, msg Message) error {
 		return nil
 	}
 
+	offset := ev.Offset
+	logQueueWait(StageExtractor, w.consumer, ev.RequestID, &offset, msg.ID)
+	jobStart := time.Now()
+	var jobOutcome, jobNote string
+	defer func() {
+		logJob(StageExtractor, w.consumer, ev.RequestID, &offset, jobOutcome, time.Since(jobStart), jobNote)
+	}()
+
 	status, err := w.rdb.HGet(ctx, stateKey(ev.RequestID), "status").Result()
 	if err != nil {
 		if errors.Is(err, redis.Nil) {
 			log.Printf("extractor: missing state for request_id=%s offset=%d, acking", ev.RequestID, ev.Offset)
+			jobOutcome, jobNote = OutcomeSuccess, "skipped: no state for request_id, acked"
 			return nil
 		}
+		jobOutcome, jobNote = OutcomeIncomplete, "infra error reading state; message retried"
 		return err
 	}
 	if status == StatusFailed || status == StatusCompleted {
 		log.Printf("extractor: request_id=%s offset=%d already %s, skipping", ev.RequestID, ev.Offset, status)
+		jobOutcome, jobNote = OutcomeSuccess, "skipped: request already terminal"
 		return nil
 	}
 
 	already, err := w.rdb.SIsMember(ctx, completedKey(ev.RequestID), ev.Offset).Result()
 	if err != nil {
+		jobOutcome, jobNote = OutcomeIncomplete, "infra error checking completed set; message retried"
 		return err
 	}
 	if already {
 		log.Printf("extractor: request_id=%s offset=%d already completed, skipping", ev.RequestID, ev.Offset)
+		jobOutcome, jobNote = OutcomeSuccess, "skipped: offset already completed"
 		return nil
 	}
 
@@ -98,17 +115,20 @@ func (w *ExtractorWorker) handle(ctx context.Context, msg Message) error {
 	pollCtx, stopPoll := context.WithCancel(ctx)
 	go w.watchFailFast(pollCtx, ev.RequestID, &siblingAborted, cancelJob)
 
-	mdPath, convErr := w.convert(jobCtx, ev.FilePath)
+	mdPath, convErr := w.convert(jobCtx, ev)
 	if convErr != nil {
 		stopPoll()
 		if ctx.Err() != nil {
+			jobOutcome, jobNote = OutcomeIncomplete, "shutdown during convert; left pending for recovery"
 			return ctx.Err()
 		}
 		if siblingAborted.Load() || w.isRequestFailed(ctx, ev.RequestID) {
 			log.Printf("extractor: request_id=%s offset=%d aborted due to sibling failure, acking", ev.RequestID, ev.Offset)
+			jobOutcome, jobNote = OutcomeSuccess, "aborted: sibling offset failed first"
 			return nil
 		}
 		log.Printf("extractor: conversion failed for request_id=%s offset=%d: %v", ev.RequestID, ev.Offset, convErr)
+		jobOutcome, jobNote = OutcomeFailure, "conversion failed, FAILED output published"
 		return w.failAndAck(ctx, ev, convErr.Error())
 	}
 	defer os.Remove(mdPath)
@@ -117,13 +137,16 @@ func (w *ExtractorWorker) handle(ctx context.Context, msg Message) error {
 	stopPoll()
 	if upErr != nil {
 		if ctx.Err() != nil {
+			jobOutcome, jobNote = OutcomeIncomplete, "shutdown during upload; left pending for recovery"
 			return ctx.Err()
 		}
 		if siblingAborted.Load() || w.isRequestFailed(ctx, ev.RequestID) {
 			log.Printf("extractor: request_id=%s offset=%d aborted during upload due to sibling failure, acking", ev.RequestID, ev.Offset)
+			jobOutcome, jobNote = OutcomeSuccess, "aborted: sibling offset failed during upload"
 			return nil
 		}
 		log.Printf("extractor: upload failed for request_id=%s offset=%d: %v", ev.RequestID, ev.Offset, upErr)
+		jobOutcome, jobNote = OutcomeFailure, "upload failed, FAILED output published"
 		return w.failAndAck(ctx, ev, upErr.Error())
 	}
 
@@ -131,6 +154,7 @@ func (w *ExtractorWorker) handle(ctx context.Context, msg Message) error {
 		return CompletePart(ctx, w.rdb, ev, mdURL, w.ttl)
 	})
 	if err != nil {
+		jobOutcome, jobNote = OutcomeIncomplete, "infra error committing completion; message retried"
 		return err
 	}
 
@@ -148,6 +172,7 @@ func (w *ExtractorWorker) handle(ctx context.Context, msg Message) error {
 	default:
 		log.Printf("extractor: request_id=%s offset=%d unexpected complete_part status %q", ev.RequestID, ev.Offset, completeStatus)
 	}
+	jobOutcome = OutcomeSuccess
 	return nil
 }
 
@@ -194,10 +219,10 @@ func (w *ExtractorWorker) isRequestFailed(ctx context.Context, requestID string)
 	return err == nil && status == StatusFailed
 }
 
-// convert downloads fileURL and runs markitdown against it, writing the
+// convert downloads ev.FilePath and runs markitdown against it, writing the
 // resulting Markdown to a fresh temp file (never held as a string in
 // memory) whose path is returned for the caller to upload and remove.
-func (w *ExtractorWorker) convert(ctx context.Context, fileURL string) (string, error) {
+func (w *ExtractorWorker) convert(ctx context.Context, ev SplittedEvent) (string, error) {
 	out, err := os.CreateTemp("", "extractor-*.md")
 	if err != nil {
 		return "", fmt.Errorf("create markdown temp file: %w", err)
@@ -205,7 +230,11 @@ func (w *ExtractorWorker) convert(ctx context.Context, fileURL string) (string, 
 	outPath := out.Name()
 	out.Close()
 
-	if err := usecase.ConvertURLToMarkdownFile(ctx, fileURL, outPath, httpDownloadTimeout, w.convertTimeout, markdownStderrLimit); err != nil {
+	offset := ev.Offset
+	onPhase := func(phase string, dur time.Duration, perr error) {
+		logPhase(StageExtractor, w.consumer, ev.RequestID, &offset, phase, dur, perr)
+	}
+	if err := usecase.ConvertURLToMarkdownFile(ctx, w.converter, ev.FilePath, outPath, httpDownloadTimeout, w.convertTimeout, onPhase); err != nil {
 		os.Remove(outPath)
 		return "", err
 	}
@@ -213,6 +242,14 @@ func (w *ExtractorWorker) convert(ctx context.Context, fileURL string) (string, 
 }
 
 func (w *ExtractorWorker) upload(ctx context.Context, ev SplittedEvent, mdPath string) (string, error) {
+	start := time.Now()
+	url, err := w.doUpload(ctx, ev, mdPath)
+	offset := ev.Offset
+	logPhase(StageExtractor, w.consumer, ev.RequestID, &offset, PhaseUpload, time.Since(start), err)
+	return url, err
+}
+
+func (w *ExtractorWorker) doUpload(ctx context.Context, ev SplittedEvent, mdPath string) (string, error) {
 	f, err := os.Open(mdPath)
 	if err != nil {
 		return "", fmt.Errorf("open markdown output: %w", err)

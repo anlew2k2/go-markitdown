@@ -34,6 +34,18 @@ type SplitFileInput struct {
 	ConversationID uuid.UUID
 	MessageID      uuid.UUID
 	FilePath       string
+
+	// OnPhase, if non-nil, is called once per sub-step ("download" for the
+	// HEAD/GET fetch, "split_upload" for the structural split plus its
+	// per-part uploads) with that step's elapsed time and error. It is
+	// optional and never required for correctness; the HTTP handler leaves
+	// it nil. "split_upload" is reported as one combined phase rather than
+	// separate split/upload figures because services.SplitAndUpload
+	// interleaves encoding and uploading each part (see
+	// internal/services/splitter.go) — separating them would require
+	// restructuring every format splitter into a produce/upload pipeline,
+	// out of scope here (see docs/throughput-source-review.md item 7).
+	OnPhase PhaseObserver
 }
 
 // SplitFile fetches the file referenced by input.FilePath. If it already
@@ -50,11 +62,14 @@ func SplitFile(ctx context.Context, input SplitFileInput) ([]string, error) {
 		return nil, ErrUnsupportedFormat
 	}
 
+	downloadStart := time.Now()
 	if size, ok := remoteFileSize(ctx, input.FilePath); ok && size <= maxSplitPartSize {
+		observe(input.OnPhase, "download", downloadStart, nil)
 		return []string{input.FilePath}, nil
 	}
 
 	localPath, err := downloadToTemp(ctx, input.FilePath, ext)
+	observe(input.OnPhase, "download", downloadStart, err)
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +88,10 @@ func SplitFile(ctx context.Context, input SplitFileInput) ([]string, error) {
 	}
 
 	objectPrefix := fmt.Sprintf("splits/%s/%s/%s", input.ConversationID, input.MessageID, input.RequestID)
-	return services.SplitAndUpload(ctx, localPath, ext, maxSplitPartSize, objectPrefix)
+	splitStart := time.Now()
+	urls, err := services.SplitAndUpload(ctx, localPath, ext, maxSplitPartSize, objectPrefix)
+	observe(input.OnPhase, "split_upload", splitStart, err)
+	return urls, err
 }
 
 // remoteFileSize does a cheap HEAD request to learn the file size without

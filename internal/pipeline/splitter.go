@@ -16,21 +16,25 @@ import (
 // via usecase.SplitFile and atomically publishes the resulting parts to
 // stream:doc-extractor:splitted.
 type SplitterWorker struct {
-	rdb        *redis.Client
-	consumer   string
-	jobTimeout time.Duration
-	ttl        time.Duration
+	rdb         *redis.Client
+	consumer    string
+	jobTimeout  time.Duration
+	ttl         time.Duration
+	concurrency int
 }
 
 // NewSplitterWorker builds a SplitterWorker. jobTimeout bounds one
-// download+split+upload job (usecase.SplitFile).
-func NewSplitterWorker(rdb *redis.Client, consumer string, jobTimeout time.Duration) *SplitterWorker {
-	return &SplitterWorker{rdb: rdb, consumer: consumer, jobTimeout: jobTimeout, ttl: DefaultStateTTL}
+// download+split+upload job (usecase.SplitFile). concurrency bounds how
+// many such jobs this worker runs at once (see RunConsumerPool); values < 1
+// are treated as 1.
+func NewSplitterWorker(rdb *redis.Client, consumer string, jobTimeout time.Duration, concurrency int) *SplitterWorker {
+	return &SplitterWorker{rdb: rdb, consumer: consumer, jobTimeout: jobTimeout, ttl: DefaultStateTTL, concurrency: concurrency}
 }
 
-// Run drains pending and then new input messages until ctx is cancelled.
+// Run drains pending and then new input messages until ctx is cancelled,
+// across w.concurrency bounded slots.
 func (w *SplitterWorker) Run(ctx context.Context) error {
-	return RunConsumer(ctx, w.rdb, StreamInput, GroupSplitter, w.consumer, w.handle)
+	return RunConsumerPool(ctx, w.rdb, StreamInput, GroupSplitter, w.consumer, w.concurrency, w.handle)
 }
 
 func (w *SplitterWorker) handle(ctx context.Context, msg Message) error {
@@ -51,8 +55,16 @@ func (w *SplitterWorker) handle(ctx context.Context, msg Message) error {
 		return nil
 	}
 
+	logQueueWait(StageSplitter, w.consumer, in.RequestID, nil, msg.ID)
+	jobStart := time.Now()
+	var jobOutcome, jobNote string
+	defer func() {
+		logJob(StageSplitter, w.consumer, in.RequestID, nil, jobOutcome, time.Since(jobStart), jobNote)
+	}()
+
 	existing, err := w.rdb.HMGet(ctx, stateKey(in.RequestID), "conversation_id", "message_id").Result()
 	if err != nil {
+		jobOutcome, jobNote = OutcomeIncomplete, "infra error reading existing state; message retried"
 		return err
 	}
 	if existing[0] != nil {
@@ -63,15 +75,20 @@ func (w *SplitterWorker) handle(ctx context.Context, msg Message) error {
 		} else {
 			log.Printf("splitter: request_id=%s conflicts with an existing request of different identity, acking without change", in.RequestID)
 		}
+		jobOutcome, jobNote = OutcomeSuccess, "skipped: duplicate or conflicting request, no split performed"
 		return nil
 	}
 
+	onPhase := func(phase string, dur time.Duration, perr error) {
+		logPhase(StageSplitter, w.consumer, in.RequestID, nil, phase, dur, perr)
+	}
 	jobCtx, cancel := context.WithTimeout(ctx, w.jobTimeout)
 	urls, splitErr := usecase.SplitFile(jobCtx, usecase.SplitFileInput{
 		RequestID:      requestID,
 		ConversationID: conversationID,
 		MessageID:      messageID,
 		FilePath:       in.FilePath,
+		OnPhase:        onPhase,
 	})
 	cancel()
 
@@ -83,6 +100,7 @@ func (w *SplitterWorker) handle(ctx context.Context, msg Message) error {
 		if ctx.Err() != nil {
 			// Shutdown in progress, not a genuine split failure: leave the
 			// message pending for the next run instead of publishing FAILED.
+			jobOutcome, jobNote = OutcomeIncomplete, "shutdown during split; left pending for recovery"
 			return ctx.Err()
 		}
 		log.Printf("splitter: split failed for request_id=%s: %v", in.RequestID, splitErr)
@@ -90,9 +108,11 @@ func (w *SplitterWorker) handle(ctx context.Context, msg Message) error {
 			return FailSplitter(ctx, w.rdb, in, splitErr.Error(), w.ttl)
 		})
 		if err != nil {
+			jobOutcome, jobNote = OutcomeIncomplete, "infra error publishing FAILED; message retried"
 			return err
 		}
 		log.Printf("splitter: request_id=%s fail_request -> %s", in.RequestID, status)
+		jobOutcome, jobNote = OutcomeFailure, "split failed, FAILED output published"
 		return nil
 	}
 
@@ -100,6 +120,7 @@ func (w *SplitterWorker) handle(ctx context.Context, msg Message) error {
 		return InitAndPublish(ctx, w.rdb, in, urls, w.ttl)
 	})
 	if err != nil {
+		jobOutcome, jobNote = OutcomeIncomplete, "infra error publishing parts; message retried"
 		return err
 	}
 
@@ -113,5 +134,6 @@ func (w *SplitterWorker) handle(ctx context.Context, msg Message) error {
 	default:
 		log.Printf("splitter: request_id=%s unexpected init_and_publish status %q", in.RequestID, status)
 	}
+	jobOutcome = OutcomeSuccess
 	return nil
 }

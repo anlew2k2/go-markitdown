@@ -80,8 +80,8 @@ func runWorker(cfg pipeline.Config) {
 	srv := pipeline.StartHealthServer(":8080")
 	defer pipeline.StopHealthServer(srv)
 
-	worker := pipeline.NewSplitterWorker(rdb, cfg.ConsumerName, cfg.JobTimeout)
-	log.Printf("splitter: worker mode started, consumer=%s job_timeout=%s", cfg.ConsumerName, cfg.JobTimeout)
+	worker := pipeline.NewSplitterWorker(rdb, cfg.ConsumerName, cfg.JobTimeout, cfg.WorkerConcurrency)
+	log.Printf("splitter: worker mode started, consumer=%s concurrency=%d job_timeout=%s", cfg.ConsumerName, cfg.WorkerConcurrency, cfg.JobTimeout)
 	if err := worker.Run(ctx); err != nil && !errors.Is(err, context.Canceled) {
 		log.Printf("splitter: worker stopped: %v", err)
 	}

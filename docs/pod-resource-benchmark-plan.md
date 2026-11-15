@@ -1,6 +1,6 @@
 # Benchmark tài nguyên mỗi pod và concurrency
 
-Ngày: 2026-11-15. Trạng thái: **đề xuất; chưa triển khai concurrency, chưa chạy benchmark mới**.
+Ngày: 2026-11-15. Trạng thái: **concurrency (`WORKER_CONCURRENCY`), structured timing logs và compose override đã triển khai và smoke-verify thật (xem [runbook](pod-resource-benchmark-runbook.md) mục 6); chưa chạy sweep CPU/RAM/concurrency dài theo ma trận dưới đây**. Phần "cách chạy" cụ thể (lệnh, kết quả smoke) đã chuyển sang [pod-resource-benchmark-runbook.md](pod-resource-benchmark-runbook.md); tài liệu này giữ vai trò kế hoạch/rationale.
 
 ## 1. Mục tiêu và cơ sở
 
@@ -64,7 +64,7 @@ Giữ corpus/order/seed cố định. Tăng offered load từng bước đến k
 
 ### BR-03 — Concurrency trong một pod
 
-**Điều kiện chưa có:** source hiện không hỗ trợ cấu hình số slot. BR-01/02 chạy được với worker hiện tại; BR-03 trở đi có concurrency >1 chỉ chạy sau khi có bounded worker pool và verification phù hợp. Không dùng nhiều replica để giả lập nhiều slot/pod rồi báo như kết quả thực.
+**Đã sẵn sàng:** `WORKER_CONCURRENCY` (mặc định 1, validate số nguyên dương, fail startup nếu sai) đã triển khai tại `internal/pipeline/{redis,consumer,splitter,extractor}.go` — xem [runbook](pod-resource-benchmark-runbook.md) mục 1 và 6 cho chi tiết cơ chế (N loop `RunConsumer` độc lập theo sub-consumer `<CONSUMER_NAME>-slot-<i>`, mỗi loop giữ nguyên lifecycle download→convert/split→upload→ACK tuần tự) và bằng chứng smoke (concurrency=2 xác nhận 2 offset convert chồng lấn thời gian thật). `deploy/docker-compose.bench.yaml` đặt `EXTRACTOR_CONCURRENCY`/`SPLITTER_CONCURRENCY` qua biến môi trường mà không sửa `docker-compose.test.yaml`. Chưa chạy sweep C=1→2→4 dưới tải thật (k6) — chỉ đã smoke một job 12-part dưới concurrency=2. Không dùng nhiều replica để giả lập nhiều slot/pod rồi báo như kết quả thực.
 
 Tại cấu hình BR-02 đã đạt, so sánh C = 1 → 2 → 4, giữ CPU/RAM cố định trước để thấy có tận dụng được tài nguyên dư không. Sau đó chỉ tăng RAM/CPU cho cấu hình có triển vọng, báo riêng phép so sánh có tăng quota. Không thử C = 8 trừ khi C = 4 còn cải thiện rõ và còn ngân sách.
 
@@ -134,4 +134,4 @@ Nên giữ C = 1 làm baseline, đo C = 2 trước khi chọn nhiều slot/pod. 
 
 Nếu triển khai pool: giới hạn toàn bộ lifecycle download → convert → upload → commit/ACK, không chỉ đoạn conversion; không dequeue vô hạn; giữ retry/idempotency/fail-fast; kiểm chứng duplicate đang in-flight vì precheck hiện tại không phải khóa xử lý độc quyền. Consumer identity/pending recovery phải rõ theo slot và replica. Không tự nhân pool ở cả consumer lẫn converter làm concurrency thực vượt cấu hình. Splitter và extractor có C độc lập.
 
-Kế hoạch này không sửa code, không tạo script và không chạy test. Khoảng trống trước execution: SLO, corpus đại diện/expected_parts sau ngưỡng 4 MiB, bounded pool cho C > 1, timing instrumentation và collector Kubernetes nếu đo trên cluster. BR-01/02 có thể bắt đầu với source tuần tự hiện tại sau smoke và xác minh môi trường.
+2026-11-15 cập nhật: bounded pool cho C > 1 (`WORKER_CONCURRENCY`), timing instrumentation (structured `TIMING` logs) và corpus/expected_parts dưới ngưỡng 4 MiB đã triển khai và smoke-verify thật — xem [runbook](pod-resource-benchmark-runbook.md). Khoảng trống còn lại trước khi kết luận sizing production: SLO E2E/service-time p95 chưa chốt, sweep CPU/RAM/concurrency dài theo BR-02..BR-06 chưa chạy, collector Kubernetes nếu đo trên cluster (hiện chỉ Docker), và regression `pdf-small-8mib` dưới ngưỡng 4 MiB vẫn FAILED (xem runbook mục 6) — cần điều tra riêng (ví dụ split theo trang/budget công việc thay vì byte, theo `docs/throughput-source-review.md` mục 2) trước khi coi ngưỡng 4 MiB là đã giải quyết vấn đề timeout PDF.

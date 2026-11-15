@@ -7,7 +7,7 @@ k6 load-test scaffold for the Event-Driven Document Pipeline (Redis Streams arch
 - [load-test-plan-event-sourcing.md](../docs/load-test-plan-event-sourcing.md)
 - [load-test-review-event-sourcing.md](../docs/load-test-review-event-sourcing.md)
 
-**Status: fixture dataset prepared and verified; the k6 load test itself has not been run.** All 13 entries in `k6/fixtures/manifest.example.json` are uploaded to the live MinIO `dataset` bucket and `"verified": true` -- confirmed by fetching and hashing each object directly (`go run ./loadtest/tools/verifyfixtures -write`), not inherited from old evidence. The six small PDF/DOCX/XLSX fixtures and both boundary CSVs were generated with real, varied content by `tmp/generate_real_fixtures.py` (not padding) and uploaded with `go run ./loadtest/tools/seedfixtures`; re-run both if the MinIO volume is ever reset. What's still outstanding: `expected_parts` for every `large` fixture (requires an actual publish + smoke run through the Splitter/Extractor, not just an upload), and the k6 scenarios / `drain` / `resources` tools themselves have not been executed against a live run.
+**Status (2026-11-15): fixture dataset re-verified against the current 4 MiB split threshold, with `expected_parts` observed for every fixture via real smoke publishes; the full k6 load test itself (multi-stage arrival schedule) has still not been run.** All 15 entries in `k6/fixtures/manifest.example.json` are uploaded to the live MinIO `dataset` bucket and `"verified": true` -- confirmed by fetching, hashing and re-classifying `size_class` against the live object (`go run ./loadtest/tools/verifyfixtures -write`), not inherited from old evidence. `size_threshold_bytes` was lowered from 16 MiB to 4 MiB to match the code change in `internal/usecase/{splitfile,markitdown}.go`; `pdf-small-8mib` flipped from `small` to `large` as a result (it is the PDF that timed out at 120s under the old 16 MiB threshold — see its manifest note). The small PDF/DOCX/XLSX fixtures and all four boundary CSVs (the original 16 MiB pair, kept as plain large data points, plus a new 4 MiB pair) were generated with real, varied content by `tmp/generate_real_fixtures.py`/`tmp/generate_boundary_4mib.py` (not padding) and uploaded with `go run ./loadtest/tools/seedfixtures`; re-run those if the MinIO volume is ever reset. `expected_parts` for every fixture was filled in from a real single-fixture publish through the Splitter/Extractor on the `pipelinetest` stack (reading `total` off the real `SUCCESS`/`FAILED` state) — see `docs/pod-resource-benchmark-runbook.md` section 6 for the exact values and caveats (`pdf-small-8mib`'s terminal outcome is FAILED, not SUCCESS, even though it does now split into 3 parts). What's still outstanding: the k6 scenarios themselves (full `ramping-arrival-rate` schedules), `drain` and `resources` have not been executed against a live multi-stage run — only direct Redis publishes were used for the single-fixture smoke checks above.
 
 ---
 
@@ -48,7 +48,7 @@ Unchanged from the pipeline implementation (`internal/pipeline/events.go`, `inte
 - **Input stream:** `stream:doc-extractor:input`, field `data`, JSON `{request_id, conversation_id, message_id, file_path}` (all three IDs must be valid UUIDv4; `file_path` must be an absolute http(s) URL reachable by the Splitter/Extractor containers).
 - **State hash:** `doc-extractor:state:<request_id>`, field `status` in `PROCESSING | COMPLETED | FAILED`.
 - **Output stream:** `stream:doc-extractor:output`, one terminal event per request with `status` in `SUCCESS | FAILED`.
-- **Splitting threshold:** a file `<= 16 MiB` (`maxSplitPartSize` in `internal/usecase/splitfile.go`) is never split; the original URL is returned as the sole part. Only a file over that threshold is split, with part count depending on the document's internal structure, not just its byte size.
+- **Splitting threshold:** a file `<= 4 MiB` (`maxSplitPartSize` in `internal/usecase/splitfile.go`, lowered from 16 MiB on 2026-11-15) is never split; the original URL is returned as the sole part. Only a file over that threshold is split, with part count depending on the document's internal structure, not just its byte size.
 
 ### Outcome classification (k6-side, provisional)
 
@@ -87,10 +87,10 @@ These k6-side outcomes are **provisional**. The authoritative classification is 
 }
 ```
 
-- `size_class` is **small** (`<= 16 MiB`, unsplit) or **large** (`> 16 MiB`, split). It must reflect the real byte count, not a label chosen for convenience.
+- `size_class` is **small** (`<= 4 MiB`, unsplit) or **large** (`> 4 MiB`, split). It must reflect the real byte count, not a label chosen for convenience.
 - `url` is the MinIO address reachable **inside the docker-compose network** -- this is what gets embedded in the input event's `file_path`, since the Splitter/Extractor containers fetch it, not the k6 host. `url_host` is the host-reachable equivalent (e.g. via `deploy/docker-compose.test.yaml`'s published MinIO port), used by `verifyfixtures` and for manual smoke checks.
 - `bytes`/`sha256` must be the **real, measured** values for that specific object -- never one shared size for every file.
-- `expected_parts` is `1` for every `small` fixture (a direct contract guarantee: `SplitFile` returns the original URL unsplit whenever the real file is `<= 16 MiB`). For `large` fixtures it must be `null` until actually observed from a real smoke run's `SUCCESS` output event (`total` field) -- **never** computed as `ceil(bytes / 16MiB)`, since structural splitting and re-encoding (PDF page spans, OOXML zip-part rewriting, CSV row boundaries) do not scale linearly with input size.
+- `expected_parts` is `1` for every `small` fixture (a direct contract guarantee: `SplitFile` returns the original URL unsplit whenever the real file is `<= 4 MiB`). For `large` fixtures it must be `null` until actually observed from a real smoke run's `SUCCESS` output event (`total` field) -- **never** computed as `ceil(bytes / 4MiB)`, since structural splitting and re-encoding (PDF page spans, OOXML zip-part rewriting, CSV row boundaries) do not scale linearly with input size. As of 2026-11-15 every fixture in the shipped manifest has a real observed value (see `docs/pod-resource-benchmark-runbook.md` section 6); keep this invariant when adding new fixtures.
 - `verified: false` would mark a **placeholder** whose object does not exist in MinIO yet. `k6/load_test.js` refuses to use an unverified fixture by default (see `ALLOW_UNVERIFIED_FIXTURES` below) specifically so a capacity run can never silently rest on data that was never confirmed to exist. As of this writing every fixture in the shipped manifest is `verified: true` (see status note above); if you add a new entry before uploading its object, mark it `verified: false` with null `bytes`/`sha256` until you run the verifier.
 
 Three entries (`pdf-large-50mib-synthetic`, `docx-large-50mib-synthetic`, `xlsx-large-50mib-synthetic`) are flagged in their `notes` as synthetic/padded per `docs/load-test-review-event-sourcing.md` P2 -- their physical size is real, but they are not representative of a real document's extraction cost. Prefer `pdf-large-23mib-real` wherever a claim about real-document cost matters.
@@ -109,7 +109,7 @@ Three entries (`pdf-large-50mib-synthetic`, `docx-large-50mib-synthetic`, `xlsx-
    ```
 3. For every `large` fixture you intend to use, publish it alone once, read the resulting `SUCCESS` event on `stream:doc-extractor:output`, and fill in `expected_parts` from its `total` field by hand. **This step has not been done for any `large` fixture yet** -- it requires an actual run through the Splitter/Extractor, not just an upload.
 
-A boundary-smoke run (fixtures just under/at/over 16 MiB) is done by pinning the fixture set explicitly:
+A boundary-smoke run (fixtures just under/over the current 4 MiB threshold) is done by pinning the fixture set explicitly:
 ```bash
 k6 run -e WORKLOAD=small -e FIXTURE_IDS=csv-boundary-under-16mib k6/load_test.js
 k6 run -e WORKLOAD=large -e FIXTURE_IDS=csv-boundary-above-16mib k6/load_test.js
@@ -199,6 +199,8 @@ This intentionally avoids a metrics platform or extra service: it is one Redis c
 ## 6. Running
 
 Each invocation targets exactly one workload. `RUN_ID` should be generated once by the shell and reused across the `drain record`/`run` calls that bracket it.
+
+For varying the Splitter/Extractor's own CPU, RAM, replica count or `WORKER_CONCURRENCY` across runs (without hand-editing `deploy/docker-compose.test.yaml`), combine it with `deploy/docker-compose.bench.yaml` -- see `docs/pod-resource-benchmark-runbook.md` for the full command reference, including per-stage isolation and N=1/2/4 concurrency/topology comparisons.
 
 ```bash
 export RUN_ID="run-$(date +%s)"

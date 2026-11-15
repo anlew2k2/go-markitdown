@@ -1,0 +1,107 @@
+# Benchmark override for deploy/docker-compose.test.yaml.
+#
+# Lets an operator vary CPU, RAM and WORKER_CONCURRENCY per run via shell
+# environment variables, WITHOUT hand-editing docker-compose.test.yaml for
+# each run (per docs/pod-resource-benchmark-plan.md section 2). Combine the
+# two files with `-f`; Compose merges this one on top.
+#
+# Default scenario (current defaults below): single-extractor-pod baseline,
+# 1 CPU / 512 MiB, concurrency 1 -- only start extractor-1, never
+# extractor-2/3 (they stay defined, for the N-pod comparisons further down,
+# but Compose only starts a service you name in `up`):
+#
+#   docker compose -p pipelinetest \
+#     -f deploy/docker-compose.test.yaml -f deploy/docker-compose.bench.yaml \
+#     up -d --build redis minio splitter extractor-1
+#
+# To go back to the old 3-pod/2 CPU/1 GiB topology, override explicitly and
+# list all three services:
+#
+#   export EXTRACTOR_CPUS=2.0 EXTRACTOR_MEM=1g EXTRACTOR_CONCURRENCY=2
+#   docker compose -p pipelinetest \
+#     -f deploy/docker-compose.test.yaml -f deploy/docker-compose.bench.yaml \
+#     up -d --build redis minio splitter extractor-1 extractor-2 extractor-3
+#
+# Isolating one stage (BR-01 methodology): pass an explicit service list to
+# `up`/`stop` instead of touching this file — Compose only starts/affects the
+# services you name (plus their depends_on). For example, to measure the
+# Extractor alone after the Splitter has built a backlog of real parts:
+#
+#   docker compose -p pipelinetest -f deploy/docker-compose.test.yaml -f deploy/docker-compose.bench.yaml \
+#     stop splitter                      # stop producing new splitted parts
+#   docker compose -p pipelinetest -f deploy/docker-compose.test.yaml -f deploy/docker-compose.bench.yaml \
+#     up -d extractor-1 extractor-2 extractor-3   # only these run
+#
+# and the reverse (Splitter alone, Extractors stopped) to measure Splitter
+# footprint without Extractor contending for the same Docker VM CPU/RAM.
+#
+# Topology N=4 (BR-04): extractor-4 only starts when you pass the "replica4"
+# profile (it is never included by a plain `up` with no service names or
+# profile), so the default 1 Splitter + 3 Extractor topology is unchanged
+# unless you opt in:
+#
+#   docker compose -p pipelinetest -f deploy/docker-compose.test.yaml -f deploy/docker-compose.bench.yaml \
+#     --profile replica4 up -d extractor-4
+#
+# See docs/pod-resource-benchmark-plan.md for the full run matrix and
+# docs/pod-resource-benchmark-runbook.md for copy-pasteable command sequences
+# per scenario (BR-01..BR-06).
+
+services:
+  splitter:
+    cpus: ${SPLITTER_CPUS:-1.0}
+    mem_limit: ${SPLITTER_MEM:-512m}
+    environment:
+      WORKER_CONCURRENCY: ${SPLITTER_CONCURRENCY:-1}
+
+  extractor-1:
+    cpus: ${EXTRACTOR_CPUS:-1.0}
+    mem_limit: ${EXTRACTOR_MEM:-512m}
+    environment:
+      WORKER_CONCURRENCY: ${EXTRACTOR_CONCURRENCY:-1}
+
+  extractor-2:
+    cpus: ${EXTRACTOR_CPUS:-2.0}
+    mem_limit: ${EXTRACTOR_MEM:-1g}
+    environment:
+      WORKER_CONCURRENCY: ${EXTRACTOR_CONCURRENCY:-1}
+
+  extractor-3:
+    cpus: ${EXTRACTOR_CPUS:-2.0}
+    mem_limit: ${EXTRACTOR_MEM:-1g}
+    environment:
+      WORKER_CONCURRENCY: ${EXTRACTOR_CONCURRENCY:-1}
+
+  # Optional 4th Extractor replica, for the N=4-pod topology comparison in
+  # BR-04. Only started when the "replica4" profile is explicitly requested
+  # (--profile replica4) or the service is named explicitly in `up` — never
+  # by a plain `docker compose ... up -d` with no arguments, so it can't
+  # silently change the default 3-replica topology.
+  extractor-4:
+    profiles: ["replica4"]
+    cpus: ${EXTRACTOR_CPUS:-2.0}
+    mem_limit: ${EXTRACTOR_MEM:-1g}
+    build:
+      context: ..
+      dockerfile: deploy/extractor.dockerfile
+    environment:
+      SERVICE_MODE: worker
+      REDIS_ADDR: redis:6379
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: split-files
+      CONSUMER_NAME: extractor-4
+      WORKER_CONCURRENCY: ${EXTRACTOR_CONCURRENCY:-1}
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "/app/extractor", "healthcheck"]
+      interval: 3s
+      timeout: 2s
+      retries: 10
+    depends_on:
+      minio:
+        condition: service_healthy
+      redis:
+        condition: service_healthy

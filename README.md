@@ -64,8 +64,22 @@ Three Lua scripts (`internal/pipeline/lua/`) make every state transition atomic 
 | `REDIS_DB` | worker | `0` | Redis logical DB |
 | `CONSUMER_NAME` | worker | hostname | Stream consumer identity — **must be unique per replica** |
 | `JOB_TIMEOUT` | worker | splitter `15m`, extractor `5m` | bounds one whole job (download+split+upload, or download+convert+upload) |
-| `CONVERT_TIMEOUT` | worker (extractor) | `2m` | bounds the `markitdown` subprocess specifically |
+| `CONVERT_TIMEOUT` | worker (extractor) | `2m` | bounds the conversion step specifically (CLI subprocess, or one request to a persistent worker) |
+| `WORKER_CONCURRENCY` | worker | `1` | bounded in-process concurrency (see below); invalid (non-integer or < 1) values fail startup |
+| `CONVERTER_BACKEND` | worker (extractor) | `cli` | `cli` (one `markitdown` subprocess per conversion, unchanged) or `persistent` (a pool of long-lived `markitdown_worker.py` processes, sized to `WORKER_CONCURRENCY` — see below); invalid values fail startup |
+| `CONVERTER_WORKER_SCRIPT` | worker (extractor), `persistent` backend only | `markitdown_worker.py` | path to the persistent backend's Python worker script |
 | `MINIO_ENDPOINT`, `MINIO_ACCESS_KEY`, `MINIO_SECRET_KEY`, `MINIO_BUCKET`, `MINIO_PUBLIC_URL`, `MINIO_USE_SSL` | both | see `internal/services/minio.go` | MinIO connection + public URL used to build part/markdown URLs |
+
+#### Bounded in-process concurrency (`WORKER_CONCURRENCY`)
+
+Each worker runs `WORKER_CONCURRENCY` independent, bounded consumer loops ("slots") against the same stream/group, each as its own stable sub-consumer identity (`<CONSUMER_NAME>-slot-<i>`). Every slot is a full, unmodified consumer loop — one job in flight per slot, download/split-or-convert/upload/commit/ACK, end to end — so `WORKER_CONCURRENCY=N` means at most N jobs in flight per process, never more, with no change to ACK-after-commit or retry/idempotency semantics. On startup, a worker also drains pending entries left behind by any now-retired identity derived from its own `CONSUMER_NAME` (a slot index no longer in use after a concurrency downgrade, or the pre-`WORKER_CONCURRENCY` bare consumer name) — see `internal/pipeline/consumer.go`. This does not discover a pending entry under an unrelated consumer name (e.g. after a `CONSUMER_NAME`/hostname change); that case still needs the manual `XAUTOCLAIM` below.
+
+#### Persistent converter backend (`CONVERTER_BACKEND=persistent`)
+
+An experimental alternative to the default CLI backend, for the Extractor only: instead of spawning a fresh `markitdown` subprocess per conversion, it keeps a pool of `WORKER_CONCURRENCY` long-lived Python worker processes (`deploy/markitdown_worker.py`, built once at startup) alive for the process's whole lifetime, each serving one conversion at a time over a small JSON-Lines protocol, to amortize Python/MarkItDown import cost. See `docs/python-worker-reuse-plan.md` (design) and `docs/python-worker-reuse-results.md` (verification + A/B measurement) for details and current limitations.
+
+- **Rollback:** unset `CONVERTER_BACKEND` (or set it to `cli`) and restart — no other change is needed; the CLI backend is unaffected by this flag's existence.
+- **Failure handling:** a worker that crashes, times out, or desyncs its protocol is killed (its whole process group) and replaced in the background; an in-flight conversion through it fails like any other conversion error (goes through the existing FAILED/retry path) and the worker is never silently reused mid-response. If a replacement itself cannot start, the backend marks itself unhealthy and stops the Extractor from consuming further (same recovery semantics as SIGTERM: in-flight work is left pending, not marked FAILED) rather than running on a silently smaller pool.
 
 In worker mode both binaries still serve `GET /ping` on `:8080` (for container healthchecks via native subcommand `./splitter healthcheck` or `./extractor healthcheck`) but none of the HTTP conversion endpoints.
 
@@ -117,6 +131,8 @@ The Markdown URLs returned in the `SUCCESS` event also use the `minio` hostname;
 ### Known POC limits
 
 Deliberately out of scope, per [docs/implementation-plan-event-sourcing.md §1](docs/implementation-plan-event-sourcing.md): leases, heartbeats, fencing tokens, a deadline sweeper, an outbox, a retry-budget framework, stream auto-trimming, Redis Cluster, and event-store/replay. The first business failure for a `request_id` is terminal.
+
+The `persistent` converter backend does not provide constant-memory conversion: MarkItDown's own API can hold a document's whole Markdown output in RAM regardless of this backend, exactly as the CLI subprocess does — see `docs/python-worker-reuse-results.md` for what was and wasn't verified.
 
 ## Build & run locally
 
