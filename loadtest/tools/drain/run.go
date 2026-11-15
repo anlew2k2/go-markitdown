@@ -244,6 +244,20 @@ func parseK6Log(path, runID string) (map[string]*requestRecord, []admissionStopE
 	for scanner.Scan() {
 		lineNo++
 		line := strings.TrimSpace(scanner.Text())
+		if line == "" {
+			continue
+		}
+		if line[0] != '{' {
+			if idx := strings.Index(line, `msg="`); idx != -1 {
+				rest := line[idx+4:]
+				if endIdx := strings.LastIndex(rest, `"`); endIdx > 0 {
+					unquoted, err := strconv.Unquote(rest[:endIdx+1])
+					if err == nil {
+						line = strings.TrimSpace(unquoted)
+					}
+				}
+			}
+		}
 		if line == "" || line[0] != '{' {
 			continue
 		}
