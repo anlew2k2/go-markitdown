@@ -237,8 +237,8 @@ func main() {
 	})
 
 	// TC-002: Small file & boundary (report.pdf, boundary_under_16mb, boundary_above_16mb)
-	suite.logStep("TC-002", "Small file and 16MB boundary", "Critical", func() (map[string]interface{}, error) {
-		// Part 1: report.pdf (< 16MB)
+	suite.logStep("TC-002", "Small file and 4MB boundary", "Critical", func() (map[string]interface{}, error) {
+		// Part 1: report.pdf (< 4MB)
 		reqID1 := uuid.NewString()
 		streamID1, err := suite.publishInput(reqID1, uuid.NewString(), uuid.NewString(), "http://minio:9000/dataset/report.pdf")
 		if err != nil {
@@ -267,7 +267,7 @@ func main() {
 			return nil, fmt.Errorf("empty markdown body for req1")
 		}
 
-		// Part 2: boundary_above_16mb.csv (> 16MB) -> should split into 2 parts
+		// Part 2: boundary_above_16mb.csv (> 4MB) -> should split into 2 parts
 		reqID2 := uuid.NewString()
 		streamID2, err := suite.publishInput(reqID2, uuid.NewString(), uuid.NewString(), "http://minio:9000/dataset/boundary_above_16mb.csv")
 		if err != nil {
@@ -377,8 +377,8 @@ func main() {
 		}, nil
 	})
 
-	// TC-004: Splitter failures (404, OLE > 16MB, oversized row)
-	suite.logStep("TC-004", "Splitter failures (404, OLE >16MB, oversized row)", "High", func() (map[string]interface{}, error) {
+	// TC-004: Splitter failures (404, OLE > 4MB, oversized row)
+	suite.logStep("TC-004", "Splitter failures (404, OLE >4MB, oversized row)", "High", func() (map[string]interface{}, error) {
 		// 1. URL 404
 		reqID404 := uuid.NewString()
 		inID404, _ := suite.publishInput(reqID404, uuid.NewString(), uuid.NewString(), "http://minio:9000/dataset/nonexistent_404.pdf")
@@ -391,7 +391,7 @@ func main() {
 			return nil, fmt.Errorf("404 case invalid output event: %+v", out404)
 		}
 
-		// 2. OLE > 16MB (sample_50mb.doc)
+		// 2. OLE > 4MB (sample_50mb.doc)
 		reqIDOLE := uuid.NewString()
 		inIDOLE, _ := suite.publishInput(reqIDOLE, uuid.NewString(), uuid.NewString(), "http://minio:9000/dataset/sample_50mb.doc")
 		stOLE, _, err := suite.waitForTerminal(reqIDOLE, 30*time.Second)
@@ -498,7 +498,7 @@ func main() {
 
 		// Init a multi-part request manually with 2 parts:
 		// Part 0 is corrupted.pdf (will fail conversion immediately)
-		// Part 1 is boundary_under_16mb.csv (valid, under 16MB limit, takes several seconds to convert)
+		// Part 1 is boundary_under_16mb.csv (valid, under the pre-reduction 16MB limit, takes several seconds to convert)
 		partURLs := []string{
 			"http://minio:9000/dataset/corrupted.pdf",
 			"http://minio:9000/dataset/boundary_under_16mb.csv",

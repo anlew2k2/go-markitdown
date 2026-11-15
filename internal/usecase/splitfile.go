@@ -13,7 +13,7 @@ import (
 	"github.com/go-markitdown/internal/utils"
 )
 
-const maxSplitPartSize = 16 * 1024 * 1024 // 16MB
+const maxSplitPartSize = 4 * 1024 * 1024 // 4MB
 
 // ErrOLENotSplittable is returned when a legacy OLE document (.doc, .xls)
 // exceeds maxSplitPartSize: these formats have no mature pure-Go support
@@ -30,9 +30,9 @@ type SplitFileInput struct {
 }
 
 // SplitFile fetches the file referenced by input.FilePath. If it already
-// fits within 16MB, no work is done and the original URL is returned as the
+// fits within 4MB, no work is done and the original URL is returned as the
 // sole result. Otherwise the file is downloaded, split into parts no larger
-// than 16MB and each part is uploaded to MinIO; the URL of every part is
+// than 4MB and each part is uploaded to MinIO; the URL of every part is
 // returned in order.
 func SplitFile(ctx context.Context, input SplitFileInput) ([]string, error) {
 	ext, err := utils.ExtensionOf(input.FilePath)

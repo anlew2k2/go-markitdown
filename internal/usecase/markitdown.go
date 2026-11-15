@@ -13,11 +13,11 @@ import (
 	"github.com/go-markitdown/internal/utils"
 )
 
-const maxFileSize = 16 * 1024 * 1024 // 16MB
+const maxFileSize = 4 * 1024 * 1024 // 4MB
 
 var (
 	ErrUnsupportedFormat = errors.New("unsupported file format")
-	ErrFileTooLarge      = errors.New("file exceeds the 16MB size limit")
+	ErrFileTooLarge      = errors.New("file exceeds the 4MB size limit")
 )
 
 // ConvertURLToMarkdown downloads the file at fileURL, validates its format

@@ -2,7 +2,7 @@
 
 Document splitting and Markdown extraction, as two Go binaries:
 
-- **splitter** (`cmd/splitter`) — splits a document (PDF, DOCX, XLSX, PPTX, CSV, HTML, EML) into parts no larger than 16MB and uploads each part to MinIO. Files already within 16MB are passed through unsplit.
+- **splitter** (`cmd/splitter`) — splits a document (PDF, DOCX, XLSX, PPTX, CSV, HTML, EML) into parts no larger than 4MB and uploads each part to MinIO. Files already within 4MB are passed through unsplit.
 - **extractor** (`cmd/extractor`) — runs the `markitdown` CLI against a document (or one part of one) and uploads the resulting Markdown to MinIO.
 
 Each binary runs in one of two modes, selected by `SERVICE_MODE`:
@@ -24,7 +24,7 @@ Endpoints:
 | GET | `/ping` | both | — |
 | POST | `/api/v1/split-file` | splitter | `{"request_id","conversation_id","message_id","file_path"}` (UUIDs + an HTTP(S) URL) → `{"urls":[...]}` |
 | POST | `/api/v1/subprocess/run` | extractor | `{"args":"<command line>"}` → `{"output":"..."}` |
-| POST | `/api/v1/subprocess/markitdown/run` | extractor | `{"url":"<file url>"}` → `{"markdown":"..."}` (file capped at 16MB) |
+| POST | `/api/v1/subprocess/markitdown/run` | extractor | `{"url":"<file url>"}` → `{"markdown":"..."}` (file capped at 4MB) |
 
 ## Event-driven pipeline (worker mode)
 

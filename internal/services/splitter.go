@@ -151,7 +151,7 @@ func splitPDF(ctx context.Context, localPath string, maxPartSize int64, objectPr
 			break
 		}
 		if span == 1 {
-			return nil, fmt.Errorf("pdf contains page exceeding 16MB limit and cannot be split further")
+			return nil, fmt.Errorf("pdf contains page exceeding 4MB limit and cannot be split further")
 		}
 		span /= 2
 		if span < 1 {
@@ -253,7 +253,7 @@ func splitCSV(ctx context.Context, localPath string, maxPartSize int64, objectPr
 		if info.Size() > maxPartSize {
 			currentFile.Close()
 			os.Remove(currentFile.Name())
-			return fmt.Errorf("csv part exceeds 16MB limit and cannot be split further (%d bytes)", info.Size())
+			return fmt.Errorf("csv part exceeds 4MB limit and cannot be split further (%d bytes)", info.Size())
 		}
 		if _, err := currentFile.Seek(0, io.SeekStart); err != nil {
 			currentFile.Close()
@@ -384,8 +384,8 @@ func uploadLocalFile(ctx context.Context, localPath, objectName, contentType str
 	if err != nil {
 		return "", fmt.Errorf("stat part: %w", err)
 	}
-	if info.Size() > 16*1024*1024 {
-		return "", fmt.Errorf("part exceeds 16MB limit and cannot be split further (%d bytes)", info.Size())
+	if info.Size() > 4*1024*1024 {
+		return "", fmt.Errorf("part exceeds 4MB limit and cannot be split further (%d bytes)", info.Size())
 	}
 
 	return UploadObject(ctx, objectName, f, info.Size(), contentType)

@@ -29,7 +29,7 @@ sequenceDiagram
 
     Client->>InputQ: XADD stream:doc-extractor:input (file_path, request_id...)
     Splitter->>InputQ: XREADGROUP đọc event mới
-    Splitter->>Splitter: Tải file & Split thành N parts (mỗi part <= 16MB)
+    Splitter->>Splitter: Tải file & Split thành N parts (mỗi part <= 4MB)
     Splitter->>MinIO: Upload N parts
     Splitter->>RedisState: Khởi tạo state: total=N, status=PROCESSING
     Splitter->>SplittedQ: XADD N messages (offset=0..N-1, total=N)
@@ -179,7 +179,7 @@ Nếu trong quá trình xử lý có bất kỳ file con nào bị lỗi:
      - Nhận danh sách các URLs từ MinIO (ví dụ $N$ parts).
      - Khởi tạo trạng thái trong Redis: `total = N`, `status = PROCESSING`.
      - Publish $N$ messages vào `stream:doc-extractor:splitted` với `offset = 0 .. N-1`.
-   - Nếu file lỗi (ví dụ file OLE `.doc`/`.xls` vượt 16MB hoặc URL không tải được):
+   - Nếu file lỗi (ví dụ file OLE `.doc`/`.xls` vượt 4MB hoặc URL không tải được):
      - Publish ngay 1 message FAILED vào `stream:doc-extractor:output`.
 3. **Hoàn tất:** Gọi `XACK` message tương ứng trên `stream:doc-extractor:input`.
 
