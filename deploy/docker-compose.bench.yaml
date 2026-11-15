@@ -54,23 +54,84 @@ services:
     environment:
       WORKER_CONCURRENCY: ${SPLITTER_CONCURRENCY:-1}
 
+  # MALLOC_* tune glibc's allocator for the `markitdown` CLI subprocess (Go's
+  # exec.Command inherits the container's env by default -- internal/services/
+  # markitdown.go never overrides cmd.Env, so these reach the subprocess
+  # unchanged). Rationale: under concurrency>1, peak container RSS observed
+  # in practice (2026-11-15 mix benchmark) is live working-set from multiple
+  # *simultaneous* conversions, not reclaimable garbage -- CPython's own GC
+  # cannot reduce that since the data is reachable/in-use while a conversion
+  # runs, and CONVERTER_BACKEND=cli already exits+frees the whole process
+  # after every single file (nothing to "collect" across requests). What
+  # MALLOC_ARENA_MAX/_TRIM_THRESHOLD_/_MMAP_THRESHOLD_ actually address is a
+  # different, real effect: glibc's allocator can retain freed heap pages
+  # (not return them to the OS) and can grow a separate arena per thread,
+  # inflating RSS beyond what's actually live. This is the standard fix for
+  # that specific symptom; it is not a GC setting and won't change the peak
+  # RSS of an a single conversion that is genuinely using that much memory.
   extractor-1:
     cpus: ${EXTRACTOR_CPUS:-1.0}
     mem_limit: ${EXTRACTOR_MEM:-512m}
     environment:
       WORKER_CONCURRENCY: ${EXTRACTOR_CONCURRENCY:-1}
+      MALLOC_ARENA_MAX: "1"
+      MALLOC_TRIM_THRESHOLD_: "131072"
+      MALLOC_MMAP_THRESHOLD_: "131072"
 
   extractor-2:
     cpus: ${EXTRACTOR_CPUS:-2.0}
     mem_limit: ${EXTRACTOR_MEM:-1g}
     environment:
       WORKER_CONCURRENCY: ${EXTRACTOR_CONCURRENCY:-1}
+      MALLOC_ARENA_MAX: "1"
+      MALLOC_TRIM_THRESHOLD_: "131072"
+      MALLOC_MMAP_THRESHOLD_: "131072"
 
   extractor-3:
     cpus: ${EXTRACTOR_CPUS:-2.0}
     mem_limit: ${EXTRACTOR_MEM:-1g}
     environment:
       WORKER_CONCURRENCY: ${EXTRACTOR_CONCURRENCY:-1}
+      MALLOC_ARENA_MAX: "1"
+      MALLOC_TRIM_THRESHOLD_: "131072"
+      MALLOC_MMAP_THRESHOLD_: "131072"
+
+  # Optional 2nd Splitter replica, for topologies that need N>1 Splitter pods
+  # (e.g. 2 Splitter + 2 Extractor mix-ratio benchmarks). Only started when
+  # the "splitter2" profile is explicitly requested (--profile splitter2) or
+  # the service is named explicitly in `up` — never by a plain
+  # `docker compose ... up -d` with no arguments, so it can't silently
+  # change the default single-Splitter topology. Shares SPLITTER_CPUS/MEM/
+  # CONCURRENCY with the base `splitter` service so both pods always get the
+  # same spec from one set of env vars.
+  splitter-2:
+    profiles: ["splitter2"]
+    cpus: ${SPLITTER_CPUS:-1.0}
+    mem_limit: ${SPLITTER_MEM:-512m}
+    build:
+      context: ..
+      dockerfile: deploy/splitter.dockerfile
+    environment:
+      SERVICE_MODE: worker
+      REDIS_ADDR: redis:6379
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_BUCKET: split-files
+      CONSUMER_NAME: splitter-2
+      WORKER_CONCURRENCY: ${SPLITTER_CONCURRENCY:-1}
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "/app/splitter", "healthcheck"]
+      interval: 3s
+      timeout: 2s
+      retries: 10
+    depends_on:
+      minio:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   # Optional 4th Extractor replica, for the N=4-pod topology comparison in
   # BR-04. Only started when the "replica4" profile is explicitly requested
@@ -93,6 +154,9 @@ services:
       MINIO_BUCKET: split-files
       CONSUMER_NAME: extractor-4
       WORKER_CONCURRENCY: ${EXTRACTOR_CONCURRENCY:-1}
+      MALLOC_ARENA_MAX: "1"
+      MALLOC_TRIM_THRESHOLD_: "131072"
+      MALLOC_MMAP_THRESHOLD_: "131072"
     expose:
       - "8080"
     healthcheck:
