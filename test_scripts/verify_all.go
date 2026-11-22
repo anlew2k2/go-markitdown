@@ -800,19 +800,7 @@ func main() {
 			return nil, fmt.Errorf("split-file returned no URLs")
 		}
 
-		// 4. POST /api/v1/subprocess/run on extractor
-		subProcReq := `{"args":"echo hello_http"}`
-		resp3, err := http.Post("http://localhost:"+extractorPort+"/api/v1/subprocess/run", "application/json", strings.NewReader(subProcReq))
-		if err != nil || resp3.StatusCode != 200 {
-			return nil, fmt.Errorf("subprocess/run failed: %v", err)
-		}
-		body3, _ := io.ReadAll(resp3.Body)
-		resp3.Body.Close()
-		if !strings.Contains(string(body3), "hello_http") {
-			return nil, fmt.Errorf("subprocess/run unexpected body: %s", string(body3))
-		}
-
-		// 5. POST /api/v1/subprocess/markitdown/run on extractor
+		// 4. POST /api/v1/subprocess/markitdown/run on extractor
 		mkReq := `{"url":"http://minio:9000/dataset/report.pdf"}`
 		resp4, err := http.Post("http://localhost:"+extractorPort+"/api/v1/subprocess/markitdown/run", "application/json", strings.NewReader(mkReq))
 		if err != nil || resp4.StatusCode != 200 {
@@ -828,7 +816,6 @@ func main() {
 			"splitter_ping":   "pong",
 			"extractor_ping":  "pong",
 			"split_file_urls": splitResp.URLs,
-			"subprocess_run":  string(body3),
 			"markitdown_run":  fmt.Sprintf("%d bytes markdown returned", len(body4)),
 		}, nil
 	})

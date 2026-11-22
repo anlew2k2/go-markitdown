@@ -76,11 +76,7 @@ func ConvertURLToMarkdownFile(ctx context.Context, converter services.Converter,
 }
 
 func downloadFileCtx(ctx context.Context, fileURL, ext string) (string, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fileURL, nil)
-	if err != nil {
-		return "", fmt.Errorf("build request: %w", err)
-	}
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := doSafeRequest(ctx, nil, http.MethodGet, fileURL)
 	if err != nil {
 		return "", fmt.Errorf("failed to download file: %w", err)
 	}
@@ -110,7 +106,10 @@ func downloadFileCtx(ctx context.Context, fileURL, ext string) (string, error) {
 }
 
 func downloadFile(fileURL, ext string) (string, error) {
-	resp, err := http.Get(fileURL)
+	ctx, cancel := context.WithTimeout(context.Background(), defaultDownloadTimeout)
+	defer cancel()
+
+	resp, err := doSafeRequest(ctx, nil, http.MethodGet, fileURL)
 	if err != nil {
 		return "", fmt.Errorf("failed to download file: %w", err)
 	}

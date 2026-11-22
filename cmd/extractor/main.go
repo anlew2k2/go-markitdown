@@ -60,7 +60,6 @@ func runHTTP() {
 	})
 
 	v1 := router.Group("/api/v1")
-	v1.POST("/subprocess/run", handler.RunSubProcess)
 	v1.POST("/subprocess/markitdown/run", handler.RunMarkitdown)
 
 	router.Run() // listens on 0.0.0.0:8080 by default

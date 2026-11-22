@@ -52,7 +52,11 @@ func SplitFile(c *gin.Context) {
 		FilePath:       req.FilePath,
 	})
 	if err != nil {
-		if errors.Is(err, usecase.ErrUnsupportedFormat) || errors.Is(err, usecase.ErrOLENotSplittable) {
+		if errors.Is(err, usecase.ErrUnsupportedFormat) ||
+			errors.Is(err, usecase.ErrOLENotSplittable) ||
+			errors.Is(err, usecase.ErrSplitFileTooLarge) ||
+			errors.Is(err, usecase.ErrInvalidURL) ||
+			errors.Is(err, usecase.ErrBlockedURL) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}

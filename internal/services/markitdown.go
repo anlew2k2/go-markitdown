@@ -13,7 +13,15 @@ import (
 // ConvertToMarkdown runs the markitdown CLI against a local file and returns
 // the resulting markdown.
 func ConvertToMarkdown(filePath string) (string, error) {
-	return RunCommand(fmt.Sprintf("markitdown %s", filePath))
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
+	defer cancel()
+
+	cmd := exec.CommandContext(ctx, "markitdown", filePath)
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return string(output), fmt.Errorf("markitdown failed: %w", err)
+	}
+	return string(output), nil
 }
 
 // limitedWriter retains at most limit bytes written to it, silently

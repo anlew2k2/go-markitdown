@@ -26,7 +26,10 @@ func RunMarkitdown(c *gin.Context) {
 
 	markdown, err := usecase.ConvertURLToMarkdown(req.URL)
 	if err != nil {
-		if errors.Is(err, usecase.ErrUnsupportedFormat) || errors.Is(err, usecase.ErrFileTooLarge) {
+		if errors.Is(err, usecase.ErrUnsupportedFormat) ||
+			errors.Is(err, usecase.ErrFileTooLarge) ||
+			errors.Is(err, usecase.ErrInvalidURL) ||
+			errors.Is(err, usecase.ErrBlockedURL) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}

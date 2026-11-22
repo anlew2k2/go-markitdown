@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -14,7 +15,12 @@ import (
 	"github.com/go-markitdown/internal/utils"
 )
 
-const maxSplitPartSize = 4 * 1024 * 1024 // 4MB
+const (
+	maxSplitPartSize     = 4 * 1024 * 1024   // 4MB
+	maxSplitDownloadSize = 100 * 1024 * 1024 // 100MB
+)
+
+var ErrSplitFileTooLarge = errors.New("file exceeds the 100MB download limit")
 
 // headRequestTimeout bounds remoteFileSize's HEAD request on its own,
 // independent of the job's deadline: an origin that stalls or never answers
@@ -101,11 +107,7 @@ func remoteFileSize(ctx context.Context, fileURL string) (size int64, ok bool) {
 	headCtx, cancel := context.WithTimeout(ctx, headRequestTimeout)
 	defer cancel()
 
-	req, err := http.NewRequestWithContext(headCtx, http.MethodHead, fileURL, nil)
-	if err != nil {
-		return 0, false
-	}
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := doSafeRequest(headCtx, nil, http.MethodHead, fileURL)
 	if err != nil {
 		return 0, false
 	}
@@ -118,11 +120,7 @@ func remoteFileSize(ctx context.Context, fileURL string) (size int64, ok bool) {
 }
 
 func downloadToTemp(ctx context.Context, fileURL, ext string) (string, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, fileURL, nil)
-	if err != nil {
-		return "", fmt.Errorf("build request: %w", err)
-	}
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := doSafeRequest(ctx, nil, http.MethodGet, fileURL)
 	if err != nil {
 		return "", fmt.Errorf("failed to download file: %w", err)
 	}
@@ -138,9 +136,14 @@ func downloadToTemp(ctx context.Context, fileURL, ext string) (string, error) {
 	}
 	defer tmpFile.Close()
 
-	if _, err := io.Copy(tmpFile, resp.Body); err != nil {
+	written, err := io.Copy(tmpFile, io.LimitReader(resp.Body, maxSplitDownloadSize+1))
+	if err != nil {
 		os.Remove(tmpFile.Name())
 		return "", fmt.Errorf("failed to save file: %w", err)
+	}
+	if written > maxSplitDownloadSize {
+		os.Remove(tmpFile.Name())
+		return "", ErrSplitFileTooLarge
 	}
 
 	return tmpFile.Name(), nil
