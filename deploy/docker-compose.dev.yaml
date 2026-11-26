@@ -1,0 +1,28 @@
+# Loopback-only local development override for deploy/docker-compose.yaml.
+# Usage: docker compose -f deploy/docker-compose.yaml -f deploy/docker-compose.dev.yaml up -d
+services:
+  extractor:
+    environment:
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-devminioadmin}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-devminiosecret}
+
+  splitter:
+    environment:
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-devminioadmin}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-devminiosecret}
+
+  nginx:
+    ports:
+      - "127.0.0.1:8080:8080"
+
+  redis:
+    ports:
+      - "127.0.0.1:6379:6379"
+
+  minio:
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-devminioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-devminiosecret}
+    ports:
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"

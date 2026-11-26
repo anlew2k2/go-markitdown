@@ -100,14 +100,21 @@ func SplitFile(ctx context.Context, input SplitFileInput) ([]string, error) {
 	return urls, err
 }
 
-// remoteFileSize does a cheap HEAD request to learn the file size without
-// downloading it. ok is false whenever the size could not be determined,
-// in which case the caller must fall back to downloading the file.
+// remoteFileSize learns the file size without downloading it. Presigned internal
+// MinIO URLs verify against MinIO directly; external URLs use a bounded HEAD.
 func remoteFileSize(ctx context.Context, fileURL string) (size int64, ok bool) {
 	headCtx, cancel := context.WithTimeout(ctx, headRequestTimeout)
 	defer cancel()
 
-	resp, err := doSafeRequest(headCtx, nil, http.MethodHead, fileURL)
+	var (
+		resp *http.Response
+		err  error
+	)
+	if services.IsPresignedInternalObjectURL(fileURL) {
+		resp, err = services.FetchInternalPresignedObject(headCtx, http.MethodHead, fileURL)
+	} else {
+		resp, err = doSafeRequest(headCtx, nil, http.MethodHead, fileURL)
+	}
 	if err != nil {
 		return 0, false
 	}
@@ -120,30 +127,46 @@ func remoteFileSize(ctx context.Context, fileURL string) (size int64, ok bool) {
 }
 
 func downloadToTemp(ctx context.Context, fileURL, ext string) (string, error) {
-	resp, err := doSafeRequest(ctx, nil, http.MethodGet, fileURL)
-	if err != nil {
-		return "", fmt.Errorf("failed to download file: %w", err)
+	return downloadSourceToTemp(ctx, fileURL, "split-*", ext, maxSplitDownloadSize, ErrSplitFileTooLarge)
+}
+
+func downloadSourceToTemp(ctx context.Context, fileURL, prefix, ext string, maxSize int64, tooLargeErr error) (string, error) {
+	var (
+		resp *http.Response
+		err  error
+	)
+	if services.IsPresignedInternalObjectURL(fileURL) {
+		resp, err = services.FetchInternalPresignedObject(ctx, http.MethodGet, fileURL)
+		if err != nil {
+			return "", fmt.Errorf("failed to download internal object: %w", err)
+		}
+	} else {
+		resp, err = doSafeRequest(ctx, nil, http.MethodGet, fileURL)
+		if err != nil {
+			return "", fmt.Errorf("failed to download file: %w", err)
+		}
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		return "", fmt.Errorf("failed to download file: status %d", resp.StatusCode)
 	}
+	body := resp.Body
 
-	tmpFile, err := os.CreateTemp("", "split-*"+ext)
+	tmpFile, err := os.CreateTemp("", prefix+ext)
 	if err != nil {
 		return "", fmt.Errorf("failed to create temp file: %w", err)
 	}
 	defer tmpFile.Close()
 
-	written, err := io.Copy(tmpFile, io.LimitReader(resp.Body, maxSplitDownloadSize+1))
+	written, err := io.Copy(tmpFile, io.LimitReader(body, maxSize+1))
 	if err != nil {
 		os.Remove(tmpFile.Name())
 		return "", fmt.Errorf("failed to save file: %w", err)
 	}
-	if written > maxSplitDownloadSize {
+	if written > maxSize {
 		os.Remove(tmpFile.Name())
-		return "", ErrSplitFileTooLarge
+		return "", tooLargeErr
 	}
 
 	return tmpFile.Name(), nil

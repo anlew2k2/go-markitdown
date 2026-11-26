@@ -4,8 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io"
-	"net/http"
 	"os"
 	"time"
 
@@ -76,64 +74,12 @@ func ConvertURLToMarkdownFile(ctx context.Context, converter services.Converter,
 }
 
 func downloadFileCtx(ctx context.Context, fileURL, ext string) (string, error) {
-	resp, err := doSafeRequest(ctx, nil, http.MethodGet, fileURL)
-	if err != nil {
-		return "", fmt.Errorf("failed to download file: %w", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("failed to download file: status %d", resp.StatusCode)
-	}
-
-	tmpFile, err := os.CreateTemp("", "extract-*"+ext)
-	if err != nil {
-		return "", fmt.Errorf("failed to create temp file: %w", err)
-	}
-	defer tmpFile.Close()
-
-	written, err := io.Copy(tmpFile, io.LimitReader(resp.Body, maxFileSize+1))
-	if err != nil {
-		os.Remove(tmpFile.Name())
-		return "", fmt.Errorf("failed to save file: %w", err)
-	}
-	if written > maxFileSize {
-		os.Remove(tmpFile.Name())
-		return "", ErrFileTooLarge
-	}
-
-	return tmpFile.Name(), nil
+	return downloadSourceToTemp(ctx, fileURL, "extract-*", ext, maxFileSize, ErrFileTooLarge)
 }
 
 func downloadFile(fileURL, ext string) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), defaultDownloadTimeout)
 	defer cancel()
 
-	resp, err := doSafeRequest(ctx, nil, http.MethodGet, fileURL)
-	if err != nil {
-		return "", fmt.Errorf("failed to download file: %w", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("failed to download file: status %d", resp.StatusCode)
-	}
-
-	tmpFile, err := os.CreateTemp("", "markitdown-*"+ext)
-	if err != nil {
-		return "", fmt.Errorf("failed to create temp file: %w", err)
-	}
-	defer tmpFile.Close()
-
-	written, err := io.Copy(tmpFile, io.LimitReader(resp.Body, maxFileSize+1))
-	if err != nil {
-		os.Remove(tmpFile.Name())
-		return "", fmt.Errorf("failed to save file: %w", err)
-	}
-	if written > maxFileSize {
-		os.Remove(tmpFile.Name())
-		return "", ErrFileTooLarge
-	}
-
-	return tmpFile.Name(), nil
+	return downloadSourceToTemp(ctx, fileURL, "markitdown-*", ext, maxFileSize, ErrFileTooLarge)
 }
